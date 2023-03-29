@@ -1,4 +1,4 @@
-package com.zhigaras.fiveletters.ui.theme
+package com.zhigaras.fiveletters.presentation.compose.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
@@ -13,3 +13,4 @@ val Pink40 = Color(0xFF7D5260)
 val gray = Color(0xFF414141)
 val white = Color(0xFFFFFFFF)
 val yellow = Color(0xFFF5D52E)
+val black = Color(0xFF000000)

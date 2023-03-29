@@ -3,17 +3,16 @@ package com.zhigaras.fiveletters
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.layout.*
-import androidx.compose.material3.*
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
-import com.zhigaras.fiveletters.ui.theme.FiveLettersTheme
-import com.zhigaras.fiveletters.ui.theme.gray
-import com.zhigaras.fiveletters.ui.theme.yellow
+import com.zhigaras.fiveletters.presentation.CardState
+import com.zhigaras.fiveletters.presentation.compose.Letter
+import com.zhigaras.fiveletters.presentation.compose.LetterField
+import com.zhigaras.fiveletters.presentation.compose.ui.theme.FiveLettersTheme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -25,55 +24,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    Letter(letter = 'A')
-                }
-            }
-        }
-    }
-}
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun Letter(
-    modifier: Modifier = Modifier,
-    letter: Char
-) {
-    OutlinedCard(
-        onClick = { /*TODO*/ },
-        border = BorderStroke(width = 2.dp, color = yellow),
-        colors = CardDefaults.cardColors(containerColor = gray),
-        modifier = modifier
-            .width(70.dp)
-            .padding(horizontal = 2.dp)
-    ) {
-        Text(
-            text = letter.toString().uppercase(),
-            style = MaterialTheme.typography.displayLarge,
-            modifier = modifier
-                .padding(8.dp)
-                .align(Alignment.CenterHorizontally)
-        )
-    }
-}
-
-@Composable
-fun LetterField(
-    modifier: Modifier = Modifier,
-    letters: List<List<Char>>
-) {
-    Column(
-        verticalArrangement = Arrangement.spacedBy(4.dp),
-        modifier = modifier
-            .fillMaxSize()
-            .padding(8.dp)
-    ) {
-        letters.forEach { letterRow ->
-            Row(
-                horizontalArrangement = Arrangement.Center,
-                modifier = modifier.fillMaxWidth()
-            ) {
-                letterRow.forEach {
-                    Letter(letter = it)
+                    Letter(cardState = CardState.Default('a'))
                 }
             }
         }
@@ -84,7 +35,7 @@ fun LetterField(
 @Composable
 fun LetterPreview() {
     FiveLettersTheme {
-        Letter(letter = 'a')
+        Letter(cardState = CardState.Default('a'))
     }
 }
 
@@ -92,9 +43,9 @@ fun LetterPreview() {
 @Composable
 fun LetterFieldPreview() {
     val row = listOf('a', 'b', 'c', 'ы', 'w')
-    val field = emptyList<List<Char>>().toMutableList()
+    val field = emptyList<List<CardState>>().toMutableList()
     repeat(6) {
-        field.add(row)
+        field.add(row.map { CardState.Exact(it) })
     }
     FiveLettersTheme {
         LetterField(letters = field)

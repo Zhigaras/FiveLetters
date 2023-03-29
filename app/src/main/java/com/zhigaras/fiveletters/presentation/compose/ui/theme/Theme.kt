@@ -1,4 +1,4 @@
-package com.zhigaras.fiveletters.ui.theme
+package com.zhigaras.fiveletters.presentation.compose.ui.theme
 
 import android.app.Activity
 import android.os.Build
