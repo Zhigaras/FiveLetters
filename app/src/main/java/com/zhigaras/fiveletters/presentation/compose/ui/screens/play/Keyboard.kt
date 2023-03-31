@@ -52,7 +52,7 @@ fun Keyboard(
     modifier: Modifier = Modifier
 ) {
     val alphabet = Alphabet.alphabetRu.map { row ->
-        row.map { Letter.Default(type = LetterType.Key(), char = it) }
+        row.map { Letter.Default(type = LetterType.Key, char = it) }
     }
     
     Column(

@@ -41,7 +41,7 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun LetterPreview() {
     FiveLettersTheme {
-        AnimatedLetter(startLetter = Letter.Default(LetterType.Card(), ' '))
+        AnimatedLetter(startLetter = Letter.Default(LetterType.Card, ' '))
     }
 }
 

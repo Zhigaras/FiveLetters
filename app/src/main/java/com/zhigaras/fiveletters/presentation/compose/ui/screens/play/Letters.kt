@@ -57,7 +57,7 @@ fun AnimatedLetter(
         )
     )
     Box(modifier = Modifier
-        .clickable { state = Letter.Wrong(type = LetterType.Card(), char = 'w') }
+        .clickable { state = Letter.Wrong(type = LetterType.Card, char = 'w') }
         .graphicsLayer {
             rotationY = rotation
         }) {
@@ -76,7 +76,7 @@ fun LetterField(
     modifier: Modifier = Modifier
 ) {
     val letterField =
-        List(6) { List(5) { Letter.Default(type = LetterType.Card(), char = ' ') } }
+        List(6) { List(5) { Letter.Default(type = LetterType.Card, char = ' ') } }
     Column(
         verticalArrangement = Arrangement.spacedBy(4.dp, Alignment.CenterVertically),
         modifier = modifier
