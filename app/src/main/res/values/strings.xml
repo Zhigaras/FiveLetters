@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Five Letters</string>
+    <string name="confirm_word">Confirm word</string>
+    <string name="clear_letter">Clear last letter</string>
 </resources>

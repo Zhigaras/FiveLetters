@@ -10,7 +10,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.zhigaras.fiveletters.presentation.Letter
-import com.zhigaras.fiveletters.presentation.LetterState
 import com.zhigaras.fiveletters.presentation.LetterType
 import com.zhigaras.fiveletters.presentation.compose.AnimatedLetter
 import com.zhigaras.fiveletters.presentation.compose.LetterField
@@ -27,6 +26,7 @@ class MainActivity : ComponentActivity() {
                     color = MaterialTheme.colorScheme.background
                 ) {
                     FiveLettersTheme {
+//                        Keyboard()
                         LetterField()
                     }
                 }
@@ -39,7 +39,7 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun LetterPreview() {
     FiveLettersTheme {
-        AnimatedLetter(startLetter = Letter(type = LetterType.Card(), state = LetterState.Default()))
+        AnimatedLetter(startLetter = Letter.Default(LetterType.Card(), ' '))
     }
 }
 

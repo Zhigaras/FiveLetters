@@ -6,20 +6,16 @@ import androidx.compose.animation.core.tween
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.setValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.unit.dp
 import com.zhigaras.fiveletters.presentation.Letter
-import com.zhigaras.fiveletters.presentation.LetterState
 import com.zhigaras.fiveletters.presentation.LetterType
 
 
@@ -29,18 +25,19 @@ fun Letter(
     letter: Letter
 ) {
     OutlinedCard(
-        border = BorderStroke(width = 2.dp, letter.state.borderColor),
-        colors = CardDefaults.cardColors(containerColor = letter.state.cardColor),
-        modifier = modifier
-            .width(letter.type.width)
-            .padding(horizontal = 2.dp)
+        border = BorderStroke(width = letter.type.borderWidth, color = letter.borderColor),
+        shape = RoundedCornerShape(letter.type.cornersRadius),
+        colors = CardDefaults.cardColors(
+            containerColor = letter.cardColor,
+            contentColor = letter.charColor
+        ),
+        modifier = modifier.width(letter.type.width)
     ) {
         Text(
-            text = letter.state.char.toString().uppercase(),
+            text = letter.char.toString().uppercase(),
             fontSize = letter.type.charSize,
-            color = letter.state.charColor,
             modifier = Modifier
-                .padding(8.dp)
+                .padding(letter.type.charPadding)
                 .align(Alignment.CenterHorizontally)
         )
     }
@@ -53,14 +50,14 @@ fun AnimatedLetter(
 ) {
     var state: Letter by remember { mutableStateOf(startLetter) }
     val rotation by animateFloatAsState(
-        targetValue = state.state.angle,
+        targetValue = state.angle,
         animationSpec = tween(
             durationMillis = 1000,
             easing = FastOutSlowInEasing,
         )
     )
-    Box(modifier = modifier
-        .clickable { state = Letter(type = LetterType.Card(), state = LetterState.Exact('w')) }
+    Box(modifier = Modifier
+        .clickable { state = Letter.Wrong(type = LetterType.Card(), char = 'w') }
         .graphicsLayer {
             rotationY = rotation
         }) {
@@ -68,10 +65,7 @@ fun AnimatedLetter(
             Letter(letter = startLetter)
         else
             Letter(
-                modifier = modifier
-                    .graphicsLayer {
-                        rotationY = 180f
-                    },
+                modifier = modifier.graphicsLayer { rotationY = 180f },
                 letter = state
             )
     }
@@ -82,7 +76,7 @@ fun LetterField(
     modifier: Modifier = Modifier
 ) {
     val letterField =
-        List(6) { List(5) { Letter(type = LetterType.Card(), state = LetterState.Default()) } }
+        List(6) { List(5) { Letter.Default(type = LetterType.Card(), char = ' ') } }
     Column(
         verticalArrangement = Arrangement.spacedBy(4.dp),
         modifier = modifier
@@ -91,7 +85,7 @@ fun LetterField(
     ) {
         letterField.forEach { letterRow ->
             Row(
-                horizontalArrangement = Arrangement.Center,
+                horizontalArrangement = Arrangement.spacedBy(4.dp, Alignment.CenterHorizontally),
                 modifier = modifier.fillMaxWidth()
             ) {
                 letterRow.forEach {
