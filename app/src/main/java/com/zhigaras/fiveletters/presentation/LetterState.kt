@@ -16,7 +16,7 @@ abstract class LetterType() {
     abstract val borderWidth: Dp
     
     class Card() : LetterType() {
-        override val charSize: TextUnit = 60.sp
+        override val charSize: TextUnit = 50.sp
         override val width: Dp = 70.dp
         override val charPadding: Dp = letterCardInnerPadding
         override val cornersRadius: Dp = letterCardCornerRadius

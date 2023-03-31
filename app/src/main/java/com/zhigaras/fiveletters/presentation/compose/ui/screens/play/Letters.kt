@@ -1,4 +1,4 @@
-package com.zhigaras.fiveletters.presentation.compose
+package com.zhigaras.fiveletters.presentation.compose.ui.screens.play
 
 import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.animateFloatAsState
@@ -78,9 +78,9 @@ fun LetterField(
     val letterField =
         List(6) { List(5) { Letter.Default(type = LetterType.Card(), char = ' ') } }
     Column(
-        verticalArrangement = Arrangement.spacedBy(4.dp),
+        verticalArrangement = Arrangement.spacedBy(4.dp, Alignment.CenterVertically),
         modifier = modifier
-            .fillMaxSize()
+            .fillMaxWidth()
             .padding(8.dp)
     ) {
         letterField.forEach { letterRow ->

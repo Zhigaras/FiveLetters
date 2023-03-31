@@ -1,4 +1,4 @@
-package com.zhigaras.fiveletters.presentation.compose
+package com.zhigaras.fiveletters.presentation.compose.ui.screens.play
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.clickable
