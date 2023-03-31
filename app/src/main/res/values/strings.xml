@@ -2,4 +2,7 @@
     <string name="app_name">Five Letters</string>
     <string name="confirm_word">Confirm word</string>
     <string name="clear_letter">Clear last letter</string>
+    <string name="five_letters">5 Letters</string>
+    <string name="welcome">Welcome</string>
+    <string name="start">Start</string>
 </resources>

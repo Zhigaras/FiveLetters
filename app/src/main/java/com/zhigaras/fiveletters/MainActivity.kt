@@ -11,9 +11,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.zhigaras.fiveletters.presentation.Letter
 import com.zhigaras.fiveletters.presentation.LetterType
+import com.zhigaras.fiveletters.presentation.compose.ui.screens.menu.MenuScreen
 import com.zhigaras.fiveletters.presentation.compose.ui.screens.play.AnimatedLetter
 import com.zhigaras.fiveletters.presentation.compose.ui.screens.play.LetterField
-import com.zhigaras.fiveletters.presentation.compose.ui.screens.play.PlayScreen
 import com.zhigaras.fiveletters.presentation.compose.ui.theme.FiveLettersTheme
 
 class MainActivity : ComponentActivity() {
@@ -27,7 +27,9 @@ class MainActivity : ComponentActivity() {
                     color = MaterialTheme.colorScheme.background
                 ) {
                     FiveLettersTheme {
-                        PlayScreen()
+//                        PlayScreen()
+//                        SplashScreen()
+                        MenuScreen()
                     }
                 }
             }
