@@ -1,24 +1,38 @@
 package com.zhigaras.fiveletters.model
 
-import com.zhigaras.fiveletters.presentation.Letter
+import com.zhigaras.fiveletters.presentation.LetterItem
+import com.zhigaras.fiveletters.presentation.LetterType
 
 abstract class GameState {
     
-    abstract val result: List<Letter>
+    abstract val result: List<LetterItem>
     
-    object Start : GameState() {
-        override val result: List<Letter> = emptyList()
+    class Start : GameState() {
+        override val result: List<LetterItem> =
+            List(5) { LetterItem.Default(type = LetterType.Card, char = ' ') }
     }
     
-    data class Progress(
-        override val result: List<Letter>
+    class Progress(
+        override val result: List<LetterItem>
     ) : GameState()
     
-    data class GameOver(
-        override val result: List<Letter>
+    class GameOver(
+        override val result: List<LetterItem>
     ) : GameState()
     
-    data class Win(
-        override val result: List<Letter>
+    class Win(
+        override val result: List<LetterItem>
     ) : GameState()
+    
+    override fun toString(): String {
+        return result.map { it.toString() }.joinToString { "\n" }
+    }
+    
+    override fun equals(other: Any?): Boolean {
+        return this.hashCode() == other.hashCode()
+    }
+    
+    override fun hashCode(): Int {
+        return result.hashCode()
+    }
 }

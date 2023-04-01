@@ -14,6 +14,9 @@ import com.zhigaras.fiveletters.presentation.compose.ui.theme.yellow
 
 @Composable
 fun MenuScreen() {
+    
+    // TODO: animated header
+    
     Column(modifier = Modifier.fillMaxSize()) {
         Box(
             modifier = Modifier

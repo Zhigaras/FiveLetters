@@ -1,7 +1,16 @@
 package com.zhigaras.fiveletters.data
 
-class Repository {
+interface Repository {
     
-    val dictionary = listOf("слово", "бегун", "тариф", "выдох")
+    fun randomWord(): String
     
+    class Base() : Repository {
+        
+        private val dictionary = listOf("слово", "бегун", "тариф", "выдох")
+        
+        override fun randomWord(): String {
+            return dictionary.random()
+        }
+    
+    }
 }

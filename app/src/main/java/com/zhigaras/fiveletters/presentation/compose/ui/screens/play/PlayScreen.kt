@@ -7,9 +7,12 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import com.zhigaras.fiveletters.presentation.compose.ui.viewmodels.PlayViewModel
 
 @Composable
-fun PlayScreen() {
+fun PlayScreen(
+    viewModel: PlayViewModel
+) {
     Column(
         verticalArrangement = Arrangement.Bottom,
         modifier = Modifier.fillMaxSize()
@@ -18,8 +21,12 @@ fun PlayScreen() {
             contentAlignment = Alignment.Center,
             modifier = Modifier.weight(1f)
         ) {
-            LetterField()
+            LetterField(gameState = viewModel.gameStateFlow)
         }
-        Keyboard()
+        Keyboard(
+            onKeyClick = { viewModel.inputLetter(it) },
+            onConfirmClick = { viewModel.confirmWord() },
+            onBackspaceClick = { viewModel.removeLetter() }
+        )
     }
 }

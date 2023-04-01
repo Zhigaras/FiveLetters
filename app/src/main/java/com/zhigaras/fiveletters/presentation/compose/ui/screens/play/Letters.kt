@@ -4,7 +4,6 @@ import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.CardDefaults
@@ -15,14 +14,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.unit.dp
-import com.zhigaras.fiveletters.presentation.Letter
-import com.zhigaras.fiveletters.presentation.LetterType
+import com.zhigaras.fiveletters.model.GameState
+import com.zhigaras.fiveletters.presentation.LetterItem
 
 
 @Composable
 fun Letter(
     modifier: Modifier = Modifier,
-    letter: Letter
+    letter: LetterItem
 ) {
     OutlinedCard(
         border = BorderStroke(width = letter.type.borderWidth, color = letter.borderColor),
@@ -46,9 +45,9 @@ fun Letter(
 @Composable
 fun AnimatedLetter(
     modifier: Modifier = Modifier,
-    startLetter: Letter
+    startLetter: LetterItem
 ) {
-    var state: Letter by remember { mutableStateOf(startLetter) }
+    val state: LetterItem by remember { mutableStateOf(startLetter) }
     val rotation by animateFloatAsState(
         targetValue = state.angle,
         animationSpec = tween(
@@ -57,7 +56,7 @@ fun AnimatedLetter(
         )
     )
     Box(modifier = Modifier
-        .clickable { state = Letter.Wrong(type = LetterType.Card, char = 'w') }
+//        .clickable { state = LetterItem.Wrong(type = LetterType.Card, char = 'w') }
         .graphicsLayer {
             rotationY = rotation
         }) {
@@ -73,22 +72,22 @@ fun AnimatedLetter(
 
 @Composable
 fun LetterField(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    gameState: List<GameState>
 ) {
-    val letterField =
-        List(6) { List(5) { Letter.Default(type = LetterType.Card, char = ' ') } }
     Column(
         verticalArrangement = Arrangement.spacedBy(4.dp, Alignment.CenterVertically),
         modifier = modifier
             .fillMaxWidth()
             .padding(8.dp)
     ) {
-        letterField.forEach { letterRow ->
+        gameState.forEach { letterRow ->
             Row(
                 horizontalArrangement = Arrangement.spacedBy(4.dp, Alignment.CenterHorizontally),
                 modifier = modifier.fillMaxWidth()
             ) {
-                letterRow.forEach {
+                letterRow.result.forEach {
+//                    LetterItem(letter = it)
                     AnimatedLetter(startLetter = it)
                 }
             }
