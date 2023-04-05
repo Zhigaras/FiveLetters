@@ -18,8 +18,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.zhigaras.fiveletters.R
 import com.zhigaras.fiveletters.data.Alphabet
-import com.zhigaras.fiveletters.presentation.LetterItem
-import com.zhigaras.fiveletters.presentation.LetterType
+import com.zhigaras.fiveletters.model.LetterState
+import com.zhigaras.fiveletters.model.LetterType
 import com.zhigaras.fiveletters.presentation.compose.ui.theme.black
 import com.zhigaras.fiveletters.presentation.compose.ui.theme.keyboardButtonCornerRadius
 import com.zhigaras.fiveletters.presentation.compose.ui.theme.keyboardButtonInnerPadding
@@ -28,7 +28,7 @@ import com.zhigaras.fiveletters.presentation.compose.ui.theme.yellow
 @Composable
 fun Key(
     modifier: Modifier = Modifier,
-    letter: LetterItem,
+    letter: LetterState,
     onKeyClick: (Char) -> Unit
 ) {
     OutlinedCard(
@@ -58,7 +58,7 @@ fun Keyboard(
     onBackspaceClick: () -> Unit
 ) {
     val alphabet = Alphabet.alphabetRu.map { row ->
-        row.map { LetterItem.Default(type = LetterType.Key, char = it) }
+        row.map { LetterState.Default(type = LetterType.Key, char = it) }
     }
     
     Column(
@@ -122,7 +122,7 @@ fun ConfirmWordButton(
 @Composable
 fun BackspaceButton(
     modifier: Modifier = Modifier,
-    letter: LetterItem,
+    letter: LetterState,
     onBackspaceClick: () -> Unit
 ) {
     OutlinedCard(

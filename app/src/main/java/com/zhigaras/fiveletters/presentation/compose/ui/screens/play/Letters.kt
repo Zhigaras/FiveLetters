@@ -15,13 +15,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.unit.dp
 import com.zhigaras.fiveletters.model.GameState
-import com.zhigaras.fiveletters.presentation.LetterItem
+import com.zhigaras.fiveletters.model.LetterState
 
 
 @Composable
 fun Letter(
     modifier: Modifier = Modifier,
-    letter: LetterItem
+    letter: LetterState
 ) {
     OutlinedCard(
         border = BorderStroke(width = letter.type.borderWidth, color = letter.borderColor),
@@ -45,9 +45,9 @@ fun Letter(
 @Composable
 fun AnimatedLetter(
     modifier: Modifier = Modifier,
-    startLetter: LetterItem
+    startLetter: LetterState
 ) {
-    val state: LetterItem by remember { mutableStateOf(startLetter) }
+    val state: LetterState by remember { mutableStateOf(startLetter) }
     val rotation by animateFloatAsState(
         targetValue = state.angle,
         animationSpec = tween(
@@ -56,7 +56,6 @@ fun AnimatedLetter(
         )
     )
     Box(modifier = Modifier
-//        .clickable { state = LetterItem.Wrong(type = LetterType.Card, char = 'w') }
         .graphicsLayer {
             rotationY = rotation
         }) {
@@ -73,7 +72,7 @@ fun AnimatedLetter(
 @Composable
 fun LetterField(
     modifier: Modifier = Modifier,
-    gameState: List<GameState>
+    gameState: GameState
 ) {
     Column(
         verticalArrangement = Arrangement.spacedBy(4.dp, Alignment.CenterVertically),
@@ -81,13 +80,12 @@ fun LetterField(
             .fillMaxWidth()
             .padding(8.dp)
     ) {
-        gameState.forEach { letterRow ->
+        gameState.result.forEach { letterRow ->
             Row(
                 horizontalArrangement = Arrangement.spacedBy(4.dp, Alignment.CenterHorizontally),
                 modifier = modifier.fillMaxWidth()
             ) {
-                letterRow.result.forEach {
-//                    LetterItem(letter = it)
+                letterRow.row.forEach {
                     AnimatedLetter(startLetter = it)
                 }
             }

@@ -2,7 +2,7 @@ package com.zhigaras.fiveletters
 
 import android.app.Application
 import com.zhigaras.fiveletters.data.Repository
-import com.zhigaras.fiveletters.domain.GameStateCheckable
+import com.zhigaras.fiveletters.domain.GameStateController
 import com.zhigaras.fiveletters.domain.StringConverter
 import com.zhigaras.fiveletters.domain.WordCheckable
 import com.zhigaras.fiveletters.presentation.compose.ui.viewmodels.PlayViewModel
@@ -14,9 +14,10 @@ class App : Application(), ProvideViewModel {
     override fun onCreate() {
         super.onCreate()
         playViewModel = PlayViewModel(
-            StringConverter.Base(),
-            WordCheckable.Base(),
-            GameStateCheckable.Base(),
+            GameStateController.Base(
+                StringConverter.Base(),
+                WordCheckable.Base()
+            ),
             Repository.Base()
         )
     }

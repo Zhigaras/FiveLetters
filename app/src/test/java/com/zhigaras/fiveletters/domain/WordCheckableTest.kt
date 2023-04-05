@@ -1,7 +1,7 @@
 package com.zhigaras.fiveletters.domain
 
-import com.zhigaras.fiveletters.presentation.LetterItem
-import com.zhigaras.fiveletters.presentation.LetterType
+import com.zhigaras.fiveletters.model.LetterState
+import com.zhigaras.fiveletters.model.LetterType
 import org.junit.Assert.*
 import org.junit.Test
 
@@ -13,11 +13,11 @@ class WordCheckableTest {
         val wordToCheck = "asert".toList()
         val actual = wordCheckable.checkWord(wordToCheck, "qwert")
         val expected = listOf(
-            LetterItem.Wrong(LetterType.Card, 'A'),
-            LetterItem.Wrong(LetterType.Card, 'S'),
-            LetterItem.Exact(LetterType.Card, 'E'),
-            LetterItem.Exact(LetterType.Card, 'R'),
-            LetterItem.Exact(LetterType.Card, 'T'),
+            LetterState.Wrong(LetterType.Card, 'A'),
+            LetterState.Wrong(LetterType.Card, 'S'),
+            LetterState.Exact(LetterType.Card, 'E'),
+            LetterState.Exact(LetterType.Card, 'R'),
+            LetterState.Exact(LetterType.Card, 'T'),
         )
         assertEquals(expected, actual)
     }
@@ -28,11 +28,11 @@ class WordCheckableTest {
         val wordToCheck = "zxcvb".toList()
         val actual = wordCheckable.checkWord(wordToCheck, "qwert")
         val expected = listOf(
-            LetterItem.Wrong(LetterType.Card, 'Z'),
-            LetterItem.Wrong(LetterType.Card, 'X'),
-            LetterItem.Wrong(LetterType.Card, 'C'),
-            LetterItem.Wrong(LetterType.Card, 'V'),
-            LetterItem.Wrong(LetterType.Card, 'B'),
+            LetterState.Wrong(LetterType.Card, 'Z'),
+            LetterState.Wrong(LetterType.Card, 'X'),
+            LetterState.Wrong(LetterType.Card, 'C'),
+            LetterState.Wrong(LetterType.Card, 'V'),
+            LetterState.Wrong(LetterType.Card, 'B'),
         )
         assertEquals(expected, actual)
     }
@@ -43,11 +43,11 @@ class WordCheckableTest {
         val wordToCheck = "trewq".toList()
         val actual = wordCheckable.checkWord(wordToCheck, "qwert")
         val expected = listOf(
-            LetterItem.Right(LetterType.Card, 'T'),
-            LetterItem.Right(LetterType.Card, 'R'),
-            LetterItem.Exact(LetterType.Card, 'E'),
-            LetterItem.Right(LetterType.Card, 'W'),
-            LetterItem.Right(LetterType.Card, 'Q'),
+            LetterState.Right(LetterType.Card, 'T'),
+            LetterState.Right(LetterType.Card, 'R'),
+            LetterState.Exact(LetterType.Card, 'E'),
+            LetterState.Right(LetterType.Card, 'W'),
+            LetterState.Right(LetterType.Card, 'Q'),
         )
         assertEquals(expected, actual)
     }
@@ -58,11 +58,11 @@ class WordCheckableTest {
         val wordToCheck = "wertq".toList()
         val actual = wordCheckable.checkWord(wordToCheck, "qwert")
         val expected = listOf(
-            LetterItem.Right(LetterType.Card, 'W'),
-            LetterItem.Right(LetterType.Card, 'E'),
-            LetterItem.Right(LetterType.Card, 'R'),
-            LetterItem.Right(LetterType.Card, 'T'),
-            LetterItem.Right(LetterType.Card, 'Q'),
+            LetterState.Right(LetterType.Card, 'W'),
+            LetterState.Right(LetterType.Card, 'E'),
+            LetterState.Right(LetterType.Card, 'R'),
+            LetterState.Right(LetterType.Card, 'T'),
+            LetterState.Right(LetterType.Card, 'Q'),
         )
         assertEquals(expected, actual)
     }
@@ -73,11 +73,11 @@ class WordCheckableTest {
         val wordToCheck = "qqwtt".toList()
         val actual = wordCheckable.checkWord(wordToCheck, "qwert")
         val expected = listOf(
-            LetterItem.Exact(LetterType.Card, 'Q'),
-            LetterItem.Right(LetterType.Card, 'Q'),
-            LetterItem.Right(LetterType.Card, 'W'),
-            LetterItem.Right(LetterType.Card, 'T'),
-            LetterItem.Exact(LetterType.Card, 'T'),
+            LetterState.Exact(LetterType.Card, 'Q'),
+            LetterState.Right(LetterType.Card, 'Q'),
+            LetterState.Right(LetterType.Card, 'W'),
+            LetterState.Right(LetterType.Card, 'T'),
+            LetterState.Exact(LetterType.Card, 'T'),
         )
         assertEquals(expected, actual)
     }
@@ -88,11 +88,11 @@ class WordCheckableTest {
         val wordToCheck = "qqwtq".toList()
         val actual = wordCheckable.checkWord(wordToCheck, "qwqwq")
         val expected = listOf(
-            LetterItem.Exact(LetterType.Card, 'Q'),
-            LetterItem.Right(LetterType.Card, 'Q'),
-            LetterItem.Right(LetterType.Card, 'W'),
-            LetterItem.Wrong(LetterType.Card, 'T'),
-            LetterItem.Exact(LetterType.Card, 'Q'),
+            LetterState.Exact(LetterType.Card, 'Q'),
+            LetterState.Right(LetterType.Card, 'Q'),
+            LetterState.Right(LetterType.Card, 'W'),
+            LetterState.Wrong(LetterType.Card, 'T'),
+            LetterState.Exact(LetterType.Card, 'Q'),
         )
         assertEquals(expected, actual)
     }
@@ -103,11 +103,11 @@ class WordCheckableTest {
         val wordToCheck = "qwdqc".toList()
         val actual = wordCheckable.checkWord(wordToCheck, "qqqqq")
         val expected = listOf(
-            LetterItem.Exact(LetterType.Card, 'Q'),
-            LetterItem.Wrong(LetterType.Card, 'W'),
-            LetterItem.Wrong(LetterType.Card, 'D'),
-            LetterItem.Exact(LetterType.Card, 'Q'),
-            LetterItem.Wrong(LetterType.Card, 'C'),
+            LetterState.Exact(LetterType.Card, 'Q'),
+            LetterState.Wrong(LetterType.Card, 'W'),
+            LetterState.Wrong(LetterType.Card, 'D'),
+            LetterState.Exact(LetterType.Card, 'Q'),
+            LetterState.Wrong(LetterType.Card, 'C'),
         )
         assertEquals(expected, actual)
     }
@@ -118,11 +118,11 @@ class WordCheckableTest {
         val wordToCheck = "олово".toList()
         val actual = wordCheckable.checkWord(wordToCheck, "слово")
         val expected = listOf(
-            LetterItem.Right(LetterType.Card, 'О'),
-            LetterItem.Exact(LetterType.Card, 'Л'),
-            LetterItem.Exact(LetterType.Card, 'О'),
-            LetterItem.Exact(LetterType.Card, 'В'),
-            LetterItem.Exact(LetterType.Card, 'О'),
+            LetterState.Right(LetterType.Card, 'О'),
+            LetterState.Exact(LetterType.Card, 'Л'),
+            LetterState.Exact(LetterType.Card, 'О'),
+            LetterState.Exact(LetterType.Card, 'В'),
+            LetterState.Exact(LetterType.Card, 'О'),
         )
         assertEquals(expected, actual)
     }
@@ -133,11 +133,11 @@ class WordCheckableTest {
         val wordToCheck = "оплот".toList()
         val actual = wordCheckable.checkWord(wordToCheck, "слово")
         val expected = listOf(
-            LetterItem.Right(LetterType.Card, 'О'),
-            LetterItem.Wrong(LetterType.Card, 'П'),
-            LetterItem.Right(LetterType.Card, 'Л'),
-            LetterItem.Right(LetterType.Card, 'О'),
-            LetterItem.Wrong(LetterType.Card, 'Т'),
+            LetterState.Right(LetterType.Card, 'О'),
+            LetterState.Wrong(LetterType.Card, 'П'),
+            LetterState.Right(LetterType.Card, 'Л'),
+            LetterState.Right(LetterType.Card, 'О'),
+            LetterState.Wrong(LetterType.Card, 'Т'),
         )
         assertEquals(expected, actual)
     }
@@ -148,11 +148,11 @@ class WordCheckableTest {
         val wordToCheck = "окова".toList()
         val actual = wordCheckable.checkWord(wordToCheck, "слово")
         val expected = listOf(
-            LetterItem.Right(LetterType.Card, 'О'),
-            LetterItem.Wrong(LetterType.Card, 'К'),
-            LetterItem.Exact(LetterType.Card, 'О'),
-            LetterItem.Exact(LetterType.Card, 'В'),
-            LetterItem.Wrong(LetterType.Card, 'А'),
+            LetterState.Right(LetterType.Card, 'О'),
+            LetterState.Wrong(LetterType.Card, 'К'),
+            LetterState.Exact(LetterType.Card, 'О'),
+            LetterState.Exact(LetterType.Card, 'В'),
+            LetterState.Wrong(LetterType.Card, 'А'),
         )
         assertEquals(expected, actual)
     }
