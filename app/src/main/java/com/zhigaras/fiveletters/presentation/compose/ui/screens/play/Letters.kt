@@ -1,7 +1,7 @@
 package com.zhigaras.fiveletters.presentation.compose.ui.screens.play
 
+import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.FastOutSlowInEasing
-import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.*
@@ -16,6 +16,7 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.unit.dp
 import com.zhigaras.fiveletters.model.GameState
 import com.zhigaras.fiveletters.model.LetterState
+import com.zhigaras.fiveletters.model.RowState
 
 
 @Composable
@@ -43,29 +44,24 @@ fun Letter(
 }
 
 @Composable
-fun AnimatedLetter(
+fun FlippableLetter(
     modifier: Modifier = Modifier,
-    startLetter: LetterState
+    newLetter: LetterState,
+    state: LetterState
 ) {
-    val state: LetterState by remember { mutableStateOf(startLetter) }
-    val rotation by animateFloatAsState(
-        targetValue = state.angle,
-        animationSpec = tween(
-            durationMillis = 1000,
-            easing = FastOutSlowInEasing,
-        )
-    )
+    val flipRotation = remember { Animatable(0f) }
+    val animationSpec = tween<Float>(2000, easing = FastOutSlowInEasing)
+    LaunchedEffect(key1 = true) {
+        flipRotation.animateTo(targetValue = newLetter.angle, animationSpec = animationSpec)
+    }
     Box(modifier = Modifier
         .graphicsLayer {
-            rotationY = rotation
+            rotationY = flipRotation.value
         }) {
-        if (rotation <= 90f)
-            Letter(letter = startLetter)
+        if (flipRotation.value <= 90f)
+            Letter(letter = state)
         else
-            Letter(
-                modifier = modifier.graphicsLayer { rotationY = 180f },
-                letter = state
-            )
+            Letter(modifier = modifier.graphicsLayer { rotationY = 180f }, letter = newLetter)
     }
 }
 
@@ -81,13 +77,26 @@ fun LetterField(
             .padding(8.dp)
     ) {
         gameState.result.forEach { letterRow ->
-            Row(
-                horizontalArrangement = Arrangement.spacedBy(4.dp, Alignment.CenterHorizontally),
-                modifier = modifier.fillMaxWidth()
-            ) {
-                letterRow.row.forEach {
-                    AnimatedLetter(startLetter = it)
-                }
+            LetterRow(letterRow = letterRow)
+        }
+    }
+}
+
+@Composable
+fun LetterRow(
+    modifier: Modifier = Modifier,
+    letterRow: RowState
+) {
+    Row(
+        horizontalArrangement = Arrangement.spacedBy(4.dp, Alignment.CenterHorizontally),
+        modifier = modifier.fillMaxWidth()
+    ) {
+        letterRow.row.forEach {
+            val state = remember(key1 = it.char) { it }
+            if (letterRow is RowState.Right || letterRow is RowState.Wrong)
+                FlippableLetter(newLetter = it, state = state)
+            else {
+                Letter(letter = it)
             }
         }
     }

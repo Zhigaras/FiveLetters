@@ -21,7 +21,7 @@ class PlayViewModel(
     }
     
     override fun inputLetter(char: Char) {
-        gameStateController.inputLetter(char).let {
+        gameStateController.inputLetter(char.uppercaseChar()).let {
             _gameStateFlow.value = it
         }
     }
