@@ -26,31 +26,6 @@ import com.zhigaras.fiveletters.presentation.compose.ui.theme.keyboardButtonInne
 import com.zhigaras.fiveletters.presentation.compose.ui.theme.yellow
 
 @Composable
-fun Key(
-    modifier: Modifier = Modifier,
-    letter: LetterState,
-    onKeyClick: (Char) -> Unit
-) {
-    OutlinedCard(
-        border = BorderStroke(width = letter.type.borderWidth, color = letter.borderColor),
-        shape = RoundedCornerShape(letter.type.cornersRadius),
-        colors = CardDefaults.cardColors(
-            containerColor = letter.cardColor,
-            contentColor = letter.charColor
-        ),
-        modifier = modifier.clickable { onKeyClick(letter.char) }
-    ) {
-        Text(
-            text = letter.char.toString().uppercase(),
-            fontSize = letter.type.charSize,
-            modifier = Modifier
-                .padding(vertical = letter.type.charPadding)
-                .align(Alignment.CenterHorizontally)
-        )
-    }
-}
-
-@Composable
 fun Keyboard(
     modifier: Modifier = Modifier,
     onKeyClick: (Char) -> Unit,
@@ -90,6 +65,31 @@ fun Keyboard(
                     )
             }
         }
+    }
+}
+
+@Composable
+fun Key(
+    modifier: Modifier = Modifier,
+    letter: LetterState,
+    onKeyClick: (Char) -> Unit
+) {
+    OutlinedCard(
+        border = BorderStroke(width = letter.type.borderWidth, color = letter.borderColor),
+        shape = RoundedCornerShape(letter.type.cornersRadius),
+        colors = CardDefaults.cardColors(
+            containerColor = letter.cardColor,
+            contentColor = letter.charColor
+        ),
+        modifier = modifier.clickable { onKeyClick(letter.char) }
+    ) {
+        Text(
+            text = letter.char.toString().uppercase(),
+            fontSize = letter.type.charSize,
+            modifier = Modifier
+                .padding(vertical = letter.type.charPadding)
+                .align(Alignment.CenterHorizontally)
+        )
     }
 }
 

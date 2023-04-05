@@ -18,53 +18,6 @@ import com.zhigaras.fiveletters.model.GameState
 import com.zhigaras.fiveletters.model.LetterState
 import com.zhigaras.fiveletters.model.RowState
 
-
-@Composable
-fun Letter(
-    modifier: Modifier = Modifier,
-    letter: LetterState
-) {
-    OutlinedCard(
-        border = BorderStroke(width = letter.type.borderWidth, color = letter.borderColor),
-        shape = RoundedCornerShape(letter.type.cornersRadius),
-        colors = CardDefaults.cardColors(
-            containerColor = letter.cardColor,
-            contentColor = letter.charColor
-        ),
-        modifier = modifier.width(letter.type.width)
-    ) {
-        Text(
-            text = letter.char.toString().uppercase(),
-            fontSize = letter.type.charSize,
-            modifier = Modifier
-                .padding(letter.type.charPadding)
-                .align(Alignment.CenterHorizontally)
-        )
-    }
-}
-
-@Composable
-fun FlippableLetter(
-    modifier: Modifier = Modifier,
-    newLetter: LetterState,
-    state: LetterState
-) {
-    val flipRotation = remember { Animatable(0f) }
-    val animationSpec = tween<Float>(2000, easing = FastOutSlowInEasing)
-    LaunchedEffect(key1 = true) {
-        flipRotation.animateTo(targetValue = newLetter.angle, animationSpec = animationSpec)
-    }
-    Box(modifier = Modifier
-        .graphicsLayer {
-            rotationY = flipRotation.value
-        }) {
-        if (flipRotation.value <= 90f)
-            Letter(letter = state)
-        else
-            Letter(modifier = modifier.graphicsLayer { rotationY = 180f }, letter = newLetter)
-    }
-}
-
 @Composable
 fun LetterField(
     modifier: Modifier = Modifier,
@@ -99,6 +52,52 @@ fun LetterRow(
                 Letter(letter = it)
             }
         }
+    }
+}
+
+@Composable
+fun FlippableLetter(
+    modifier: Modifier = Modifier,
+    newLetter: LetterState,
+    state: LetterState
+) {
+    val flipRotation = remember { Animatable(0f) }
+    val animationSpec = tween<Float>(2000, easing = FastOutSlowInEasing)
+    LaunchedEffect(key1 = true) {
+        flipRotation.animateTo(targetValue = newLetter.angle, animationSpec = animationSpec)
+    }
+    Box(modifier = Modifier
+        .graphicsLayer {
+            rotationY = flipRotation.value
+        }) {
+        if (flipRotation.value <= 90f)
+            Letter(letter = state)
+        else
+            Letter(modifier = modifier.graphicsLayer { rotationY = 180f }, letter = newLetter)
+    }
+}
+
+@Composable
+fun Letter(
+    modifier: Modifier = Modifier,
+    letter: LetterState
+) {
+    OutlinedCard(
+        border = BorderStroke(width = letter.type.borderWidth, color = letter.borderColor),
+        shape = RoundedCornerShape(letter.type.cornersRadius),
+        colors = CardDefaults.cardColors(
+            containerColor = letter.cardColor,
+            contentColor = letter.charColor
+        ),
+        modifier = modifier.width(letter.type.width)
+    ) {
+        Text(
+            text = letter.char.toString().uppercase(),
+            fontSize = letter.type.charSize,
+            modifier = Modifier
+                .padding(letter.type.charPadding)
+                .align(Alignment.CenterHorizontally)
+        )
     }
 }
 
