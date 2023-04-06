@@ -7,7 +7,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.colorResource
-import com.zhigaras.fiveletters.presentation.compose.ui.screens.play.PlayScreen
+import com.zhigaras.fiveletters.presentation.compose.ui.screens.splash.SplashScreen
 import com.zhigaras.fiveletters.presentation.compose.ui.theme.FiveLettersTheme
 
 class MainActivity : ComponentActivity() {
@@ -22,8 +22,8 @@ class MainActivity : ComponentActivity() {
                     color = colorResource(id = R.color.black)
                 ) {
                     FiveLettersTheme {
-                        PlayScreen(playViewModel)
-//                        SplashScreen()
+//                        PlayScreen(playViewModel)
+                        SplashScreen()
 //                        MenuScreen()
                     }
                 }
