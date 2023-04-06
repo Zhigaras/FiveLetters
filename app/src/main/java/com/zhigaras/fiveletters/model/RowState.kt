@@ -6,7 +6,9 @@ abstract class RowState {
     
     class Empty(override val row: List<LetterState>) : RowState()
     
-    class Progress(override val row: List<LetterState>) : RowState()
+    class Append(override val row: List<LetterState>) : RowState()
+    
+    class Remove(override val row: List<LetterState>) : RowState()
     
     class Wrong(override val row: List<LetterState>) : RowState()
     

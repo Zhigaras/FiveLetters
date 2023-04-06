@@ -14,8 +14,13 @@ abstract class LetterState() {
     abstract val charColor: Color
     abstract val angle: Float
     abstract val char: Char
+    abstract val action: Action
     
-    data class Default(override val type: LetterType, override val char: Char) : LetterState() {
+    data class Default(
+        override val type: LetterType,
+        override val char: Char,
+        override val action: Action = Action.INIT
+    ) : LetterState() {
         override val borderColor: Color = if (type is LetterType.Card) yellow else gray
         override val cardColor: Color = black
         override val charColor: Color = white
@@ -27,6 +32,7 @@ abstract class LetterState() {
         override val cardColor: Color = black
         override val charColor: Color = white
         override val angle: Float = 0f
+        override val action: Action = Action.APPEND
     }
     
     data class Wrong(override val type: LetterType, override val char: Char) : LetterState() {
@@ -34,6 +40,7 @@ abstract class LetterState() {
         override val cardColor: Color = gray
         override val charColor: Color = white
         override val angle: Float = 180f
+        override val action: Action = Action.CONFIRM
     }
     
     data class Right(override val type: LetterType, override val char: Char) : LetterState() {
@@ -41,6 +48,7 @@ abstract class LetterState() {
         override val cardColor: Color = white
         override val charColor: Color = black
         override val angle: Float = 180f
+        override val action: Action = Action.CONFIRM
     }
     
     data class Exact(override val type: LetterType, override val char: Char) : LetterState() {
@@ -48,6 +56,7 @@ abstract class LetterState() {
         override val cardColor: Color = yellow
         override val charColor: Color = black
         override val angle: Float = 180f
+        override val action: Action = Action.CONFIRM
     }
     
     override fun toString(): String {

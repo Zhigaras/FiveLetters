@@ -1,10 +1,7 @@
 package com.zhigaras.fiveletters.domain
 
 import com.zhigaras.fiveletters.Constants
-import com.zhigaras.fiveletters.model.GameState
-import com.zhigaras.fiveletters.model.RowState
-import com.zhigaras.fiveletters.model.LetterState
-import com.zhigaras.fiveletters.model.LetterType
+import com.zhigaras.fiveletters.model.*
 
 interface GameStateController {
     
@@ -34,7 +31,7 @@ interface GameStateController {
                 val snapshot = gameState.result.toMutableList()
                 val currentRow = snapshot[cursorRow].row.toMutableList()
                 currentRow[cursorColumn] = LetterState.UserClicked(LetterType.Card, char)
-                snapshot[cursorRow] = RowState.Progress(currentRow.toList())
+                snapshot[cursorRow] = RowState.Append(currentRow.toList())
                 cursorColumn++
                 gameState = GameState.Progress(snapshot.toList())
             }
@@ -46,8 +43,9 @@ interface GameStateController {
                 cursorColumn--
                 val snapshot = gameState.result.toMutableList()
                 val currentRow = snapshot[cursorRow].row.toMutableList()
-                currentRow[cursorColumn] = LetterState.Default(LetterType.Card, ' ')
-                snapshot[cursorRow] = RowState.Progress(currentRow.toList())
+                currentRow[cursorColumn] =
+                    LetterState.Default(type = LetterType.Card, char = ' ', action = Action.REMOVE)
+                snapshot[cursorRow] = RowState.Remove(currentRow.toList())
                 gameState = GameState.Progress(snapshot)
             }
             return gameState
@@ -59,7 +57,7 @@ interface GameStateController {
             val checkedWord = wordCheckable.checkWord(wordToCheck, origin)
             snapshot[cursorRow] = checkRowState(checkedWord)
             gameState = GameState.Progress(snapshot)
-            if (snapshot.any {it is RowState.Right})
+            if (snapshot.any { it is RowState.Right })
                 gameState = GameState.Win(snapshot)
             if (cursorRow == Constants.MAX_ROWS - 1)
                 gameState = GameState.GameOver(snapshot)

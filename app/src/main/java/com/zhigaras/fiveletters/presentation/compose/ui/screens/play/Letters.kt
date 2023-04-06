@@ -1,8 +1,6 @@
 package com.zhigaras.fiveletters.presentation.compose.ui.screens.play
 
-import androidx.compose.animation.core.Animatable
-import androidx.compose.animation.core.FastOutSlowInEasing
-import androidx.compose.animation.core.tween
+import androidx.compose.animation.core.*
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -47,9 +45,9 @@ fun LetterRow(
         letterRow.row.forEach {
             val state = remember(key1 = it.char) { it }
             if (letterRow is RowState.Right || letterRow is RowState.Wrong)
-                FlippableLetter(newLetter = it, state = state)
+                FlippableLetter(newLetter = it, oldLetter = state)
             else {
-                Letter(letter = it)
+                BounceLetter(newLetter = it)
             }
         }
     }
@@ -59,7 +57,7 @@ fun LetterRow(
 fun FlippableLetter(
     modifier: Modifier = Modifier,
     newLetter: LetterState,
-    state: LetterState
+    oldLetter: LetterState
 ) {
     val flipRotation = remember { Animatable(0f) }
     val animationSpec = tween<Float>(2000, easing = FastOutSlowInEasing)
@@ -71,9 +69,29 @@ fun FlippableLetter(
             rotationY = flipRotation.value
         }) {
         if (flipRotation.value <= 90f)
-            Letter(letter = state)
+            Letter(letter = oldLetter)
         else
             Letter(modifier = modifier.graphicsLayer { rotationY = 180f }, letter = newLetter)
+    }
+}
+
+@Composable
+fun BounceLetter(
+    modifier: Modifier = Modifier,
+    newLetter: LetterState
+) {
+    val rotation = remember { Animatable(0f) }
+    val animationSpec = tween<Float>(150, easing = FastOutSlowInEasing)
+    LaunchedEffect(key1 = newLetter.char) {
+        rotation.animateTo(targetValue = 3f, animationSpec = animationSpec)
+        rotation.animateTo(targetValue = -3f, animationSpec = animationSpec)
+        rotation.animateTo(targetValue = 0f, animationSpec = animationSpec)
+    }
+    Box(modifier = modifier
+        .graphicsLayer {
+            rotationZ = rotation.value
+        }) {
+        Letter(letter = newLetter)
     }
 }
 
