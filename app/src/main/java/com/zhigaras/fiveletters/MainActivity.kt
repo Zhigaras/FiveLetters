@@ -6,9 +6,9 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.colorResource
 import com.zhigaras.fiveletters.presentation.compose.ui.screens.splash.SplashScreen
 import com.zhigaras.fiveletters.presentation.compose.ui.theme.FiveLettersTheme
+import com.zhigaras.fiveletters.presentation.compose.ui.theme.black
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -19,7 +19,7 @@ class MainActivity : ComponentActivity() {
                 // A surface container using the 'background' color from the theme
                 Surface(
                     modifier = Modifier.fillMaxSize(),
-                    color = colorResource(id = R.color.black)
+                    color = black
                 ) {
                     FiveLettersTheme {
 //                        PlayScreen(playViewModel)

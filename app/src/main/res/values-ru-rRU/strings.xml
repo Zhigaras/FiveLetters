@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Five Letters</string>
+    <string name="confirm_word">Подтвердить слово</string>
+    <string name="clear_letter">Удалить последнюю букву</string>
+    <string name="five_letters">5 Букв</string>
+    <string name="welcome">Добро пожаловать</string>
+    <string name="start">Старт</string>
+    <string name="logo">Логотип</string>
+</resources>
