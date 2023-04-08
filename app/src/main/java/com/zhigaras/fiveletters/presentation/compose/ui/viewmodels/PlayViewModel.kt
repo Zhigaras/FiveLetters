@@ -1,14 +1,14 @@
 package com.zhigaras.fiveletters.presentation.compose.ui.viewmodels
 
 import androidx.lifecycle.ViewModel
-import com.zhigaras.fiveletters.data.Repository
+import com.zhigaras.fiveletters.data.MainRepository
 import com.zhigaras.fiveletters.domain.GameStateController
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 
 class PlayViewModel(
     private val gameStateController: GameStateController,
-    private val repository: Repository
+    private val mainRepository: MainRepository
 ) : ViewModel(), Interact {
     
     private var origin: String = ""
@@ -39,7 +39,7 @@ class PlayViewModel(
     }
     
     override fun getNewOrigin() {
-        origin = repository.randomWord()
+        origin = mainRepository.randomWord()
     }
 }
 

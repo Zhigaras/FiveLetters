@@ -1,12 +1,12 @@
 package com.zhigaras.fiveletters.data
 
-interface Repository {
+interface MainRepository {
     
     fun randomWord(): String
     
     class Base(
         private val wordDao: WordDao
-    ) : Repository {
+    ) : MainRepository {
         
         private val dictionary = listOf("слово", "бегун", "тариф", "выдох")
         
