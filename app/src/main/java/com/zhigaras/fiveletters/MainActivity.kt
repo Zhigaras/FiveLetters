@@ -7,7 +7,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
-import com.zhigaras.fiveletters.presentation.compose.ui.screens.welcome.WelcomeScreen
+import com.zhigaras.fiveletters.presentation.compose.ui.screens.play.PlayScreen
 import com.zhigaras.fiveletters.presentation.compose.ui.theme.FiveLettersTheme
 import com.zhigaras.fiveletters.presentation.compose.ui.viewmodels.PlayViewModel
 import com.zhigaras.fiveletters.presentation.compose.ui.viewmodels.WelcomeViewModel
@@ -28,9 +28,9 @@ class MainActivity : ComponentActivity() {
                 ) {
                     FiveLettersTheme {
 //                        SplashScreen()
-                        WelcomeScreen(welcomeViewModel)
+//                        WelcomeScreen(welcomeViewModel)
 //                        MenuScreen()
-//                        PlayScreen(playViewModel)
+                        PlayScreen(playViewModel)
                     }
                 }
             }
