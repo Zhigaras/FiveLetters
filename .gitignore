@@ -14,3 +14,4 @@
 .cxx
 *.docx
 local.properties
+/.idea/deploymentTargetDropDown.xml
