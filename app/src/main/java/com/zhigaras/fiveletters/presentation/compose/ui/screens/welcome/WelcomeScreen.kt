@@ -11,6 +11,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
@@ -25,14 +26,19 @@ import com.zhigaras.fiveletters.presentation.compose.ui.theme.orange
 import com.zhigaras.fiveletters.presentation.compose.ui.theme.white
 import com.zhigaras.fiveletters.presentation.compose.ui.viewmodels.WelcomeViewModel
 
-@OptIn(ExperimentalAnimationApi::class)
+@OptIn(ExperimentalAnimationApi::class, ExperimentalComposeUiApi::class)
 @Composable
 fun WelcomeScreen(
-    viewModel: WelcomeViewModel
+    viewModel: WelcomeViewModel,
+    navigateToMenu: () -> Unit
 ) {
-
     val scrollState = rememberScrollState()
     val name by viewModel.usernameFlow.collectAsState()
+
+    fun confirmName() {
+        viewModel.saveUsername()
+        navigateToMenu()
+    }
     
     Surface(
         modifier = Modifier
@@ -58,7 +64,7 @@ fun WelcomeScreen(
             NameInputTextField(
                 textState = name,
                 onTextChange = { viewModel.onNameChanged(it) },
-                onNameConfirm = { viewModel.saveUsername() }
+                onNameConfirm = { confirmName() }
             )
             val buttonsTextStyle = MaterialTheme.typography.titleLarge
             val buttonsModifier = Modifier
@@ -72,7 +78,7 @@ fun WelcomeScreen(
                 }
             ) {
                 if (it) {
-                    TextButton(onClick = { TODO() }) {
+                    TextButton(onClick = { confirmName() }) {
                         Text(
                             text = stringResource(R.string.skip_name_input),
                             color = gray10,
@@ -83,7 +89,7 @@ fun WelcomeScreen(
                     }
                 } else {
                     ConfirmNameButton(
-                        onClick = { viewModel.saveUsername() },
+                        onClick = { confirmName() },
                         textStyle = buttonsTextStyle,
                         modifier = buttonsModifier
                     )

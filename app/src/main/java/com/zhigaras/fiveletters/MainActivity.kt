@@ -28,12 +28,11 @@ class MainActivity : ComponentActivity(), ProvideViewModel {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.secondary
                 ) {
-                    FiveLettersTheme {
-                        FiveLettersNavHost(
-                            welcomeViewModel = welcomeViewModel,
-                            playViewModel = playViewModel
-                        )
-                    }
+                    FiveLettersNavHost(
+                        authViewModel = authViewModel,
+                        welcomeViewModel = welcomeViewModel,
+                        playViewModel = playViewModel
+                    )
                 }
             }
         }

@@ -8,6 +8,7 @@
     <string name="start">Старт</string>
     <string name="logo">Логотип</string>
     <string name="hi">Привет!</string>
+    <string name="hi_name">Привет, %1$s!</string>
     <string name="name_request">А как тебя зовут?</string>
     <string name="welcome_button_text">Приятно познакомиться)</string>
     <string name="game_name">Это игра \"5 Букв\".</string>
