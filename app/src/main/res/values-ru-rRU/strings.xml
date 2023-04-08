@@ -12,4 +12,5 @@
     <string name="welcome_button_text">Приятно познакомиться)</string>
     <string name="game_name">Это игра \"5 Букв\".</string>
     <string name="welcome_hint">Имя</string>
+    <string name="skip_name_input">Остаться анонимным</string>
 </resources>

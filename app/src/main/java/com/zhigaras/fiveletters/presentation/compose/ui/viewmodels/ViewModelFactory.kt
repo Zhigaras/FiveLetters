@@ -3,6 +3,7 @@ package com.zhigaras.fiveletters.presentation.compose.ui.viewmodels
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.zhigaras.fiveletters.core.Core
+import com.zhigaras.fiveletters.data.DatastoreManager
 import com.zhigaras.fiveletters.domain.GameStateController
 import com.zhigaras.fiveletters.domain.StringConverter
 import com.zhigaras.fiveletters.domain.WordCheckable
@@ -21,7 +22,10 @@ class ViewModelFactory(
                     ), core.provideRepository()
                 )
             WelcomeViewModel::class.java ->
-                WelcomeViewModel()
+                WelcomeViewModel(
+                    DatastoreManager.Base(core.provideDatastore()),
+                    core.provideDispatchers()
+                )
             else -> throw IllegalArgumentException("Unknown class name: $modelClass")
         }
         return viewModel as T

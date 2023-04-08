@@ -11,4 +11,5 @@
     <string name="welcome_button_text">Nice to meet you)</string>
     <string name="game_name">It is \"5 Letters\" game.</string>
     <string name="welcome_hint">Your name</string>
+    <string name="skip_name_input">Keep anonymity</string>
 </resources>
