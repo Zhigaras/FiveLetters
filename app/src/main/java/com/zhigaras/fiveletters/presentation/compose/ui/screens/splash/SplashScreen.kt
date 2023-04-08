@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.absoluteOffset
 import androidx.compose.foundation.layout.requiredSize
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
@@ -18,7 +19,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.zhigaras.fiveletters.R
-import com.zhigaras.fiveletters.presentation.compose.ui.theme.yellow
 
 @Composable
 fun SplashScreen() {
@@ -56,6 +56,6 @@ fun SplashScreen() {
             .absoluteOffset(y = position.value.dp)
             .requiredSize((scale.value * 2).dp)
             .clip(RoundedCornerShape(scale.value.dp))
-            .background(yellow)
+            .background(MaterialTheme.colorScheme.primary)
     )
 }

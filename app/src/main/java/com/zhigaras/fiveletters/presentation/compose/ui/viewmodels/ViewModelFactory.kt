@@ -8,12 +8,16 @@ import com.zhigaras.fiveletters.domain.GameStateController
 class ViewModelFactory(
     private val gameStateController: GameStateController,
     private val repository: Repository
-): ViewModelProvider.Factory {
+) : ViewModelProvider.Factory {
     
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        if (modelClass == PlayViewModel::class.java) {
-            return PlayViewModel(gameStateController, repository) as T
+        val viewModel = when (modelClass) {
+            PlayViewModel::class.java ->
+                PlayViewModel(gameStateController, repository)
+            WelcomeViewModel::class.java ->
+                WelcomeViewModel()
+            else -> throw IllegalArgumentException("Unknown class name: $modelClass")
         }
-        throw IllegalArgumentException("Unknown class name: $modelClass")
+        return viewModel as T
     }
 }

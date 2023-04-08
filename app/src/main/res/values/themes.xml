@@ -2,7 +2,6 @@
 <resources>
 
     <style name="Theme.FiveLetters" parent="android:Theme.Material.Light.NoActionBar">
-        <item name="android:windowTranslucentStatus">true</item>
         <item name="android:forceDarkAllowed">false</item> <!-- TODO check on API 28 and lower -->
     </style>
 </resources>

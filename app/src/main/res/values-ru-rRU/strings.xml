@@ -7,4 +7,9 @@
     <string name="welcome">Добро пожаловать</string>
     <string name="start">Старт</string>
     <string name="logo">Логотип</string>
+    <string name="hi">Привет!</string>
+    <string name="name_request">А как тебя зовут?</string>
+    <string name="welcome_button_text">Приятно познакомиться)</string>
+    <string name="game_name">Это игра \"5 Букв\".</string>
+    <string name="welcome_hint">Имя</string>
 </resources>
