@@ -7,19 +7,20 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
-import com.zhigaras.fiveletters.presentation.compose.ui.screens.play.PlayScreen
-import com.zhigaras.fiveletters.presentation.compose.ui.screens.welcome.WelcomeScreen
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelStoreOwner
 import com.zhigaras.fiveletters.presentation.compose.ui.theme.FiveLettersTheme
+import com.zhigaras.fiveletters.presentation.compose.ui.viewmodels.AuthViewModel
 import com.zhigaras.fiveletters.presentation.compose.ui.viewmodels.PlayViewModel
 import com.zhigaras.fiveletters.presentation.compose.ui.viewmodels.WelcomeViewModel
+import com.zhigaras.fiveletters.presentation.navigation.FiveLettersNavHost
 
-class MainActivity : ComponentActivity() {
+class MainActivity : ComponentActivity(), ProvideViewModel {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val playViewModel =
-            (application as ProvideViewModel).provideViewModel(PlayViewModel::class.java, this)
-        val welcomeViewModel =
-            (application as ProvideViewModel).provideViewModel(WelcomeViewModel::class.java, this)
+        val authViewModel = provideViewModel(AuthViewModel::class.java, this)
+        val welcomeViewModel = provideViewModel(WelcomeViewModel::class.java, this)
+        val playViewModel = provideViewModel(PlayViewModel::class.java, this)
         setContent {
             FiveLettersTheme {
                 // A surface container using the 'background' color from the theme
@@ -28,13 +29,17 @@ class MainActivity : ComponentActivity() {
                     color = MaterialTheme.colorScheme.secondary
                 ) {
                     FiveLettersTheme {
-//                        SplashScreen()
-                        WelcomeScreen(welcomeViewModel)
-//                        MenuScreen()
-//                        PlayScreen(playViewModel)
+                        FiveLettersNavHost(
+                            welcomeViewModel = welcomeViewModel,
+                            playViewModel = playViewModel
+                        )
                     }
                 }
             }
         }
+    }
+    
+    override fun <T : ViewModel> provideViewModel(clazz: Class<T>, owner: ViewModelStoreOwner): T {
+        return (application as ProvideViewModel).provideViewModel(clazz, this)
     }
 }
