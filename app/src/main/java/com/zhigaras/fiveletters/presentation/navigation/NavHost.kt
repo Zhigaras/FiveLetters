@@ -1,8 +1,7 @@
 package com.zhigaras.fiveletters.presentation.navigation
 
-import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.animation.*
 import androidx.compose.animation.core.tween
-import androidx.compose.animation.fadeIn
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -45,7 +44,7 @@ fun FiveLettersNavHost(
         composable(
             route = Destination.Welcome.route,
             enterTransition = {
-                fadeIn(animationSpec = tween(500))
+                slideInVertically(animationSpec = tween(5))
             }
         
         ) {

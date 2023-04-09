@@ -1,6 +1,7 @@
 package com.zhigaras.fiveletters.presentation.compose.ui.screens.welcome
 
 import androidx.compose.animation.*
+import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.*
@@ -11,8 +12,8 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
@@ -25,8 +26,9 @@ import com.zhigaras.fiveletters.presentation.compose.ui.theme.gray10
 import com.zhigaras.fiveletters.presentation.compose.ui.theme.orange
 import com.zhigaras.fiveletters.presentation.compose.ui.theme.white
 import com.zhigaras.fiveletters.presentation.compose.ui.viewmodels.WelcomeViewModel
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
-@OptIn(ExperimentalAnimationApi::class, ExperimentalComposeUiApi::class)
 @Composable
 fun WelcomeScreen(
     viewModel: WelcomeViewModel,
@@ -34,10 +36,22 @@ fun WelcomeScreen(
 ) {
     val scrollState = rememberScrollState()
     val name by viewModel.usernameFlow.collectAsState()
-
+    val alpha = remember { List(5) { Animatable(0f) } }
+    
     fun confirmName() {
         viewModel.saveUsername()
         navigateToMenu()
+    }
+    
+    fun alphaModifier(index: Int) = Modifier.alpha(alpha[index].value)
+    
+    LaunchedEffect(key1 = true) {
+        alpha.forEach {
+            launch {
+                it.animateTo(1f, animationSpec = tween(2000))
+            }
+            delay(70)
+        }
     }
     
     Surface(
@@ -52,22 +66,29 @@ fun WelcomeScreen(
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Text(text = stringResource(R.string.hi), style = MaterialTheme.typography.displayLarge)
+            Text(
+                text = stringResource(R.string.hi),
+                style = MaterialTheme.typography.displayLarge,
+                modifier = alphaModifier(0)
+            )
             Text(
                 text = stringResource(R.string.game_name),
-                style = MaterialTheme.typography.displaySmall
+                style = MaterialTheme.typography.displaySmall,
+                modifier = alphaModifier(1)
             )
             Text(
                 text = stringResource(R.string.name_request),
-                style = MaterialTheme.typography.displaySmall
+                style = MaterialTheme.typography.displaySmall,
+                modifier = alphaModifier(2)
             )
             NameInputTextField(
                 textState = name,
                 onTextChange = { viewModel.onNameChanged(it) },
-                onNameConfirm = { confirmName() }
+                onNameConfirm = { confirmName() },
+                modifier = alphaModifier(3)
             )
             val buttonsTextStyle = MaterialTheme.typography.titleLarge
-            val buttonsModifier = Modifier
+            val buttonsModifier = alphaModifier(4)
                 .fillMaxWidth()
                 .padding(16.dp)
             AnimatedContent(
@@ -104,7 +125,8 @@ fun WelcomeScreen(
 fun NameInputTextField(
     textState: String,
     onTextChange: (String) -> Unit,
-    onNameConfirm: () -> Unit
+    onNameConfirm: () -> Unit,
+    modifier: Modifier = Modifier
 ) {
     val textFieldTextStyle = MaterialTheme.typography.headlineMedium
     OutlinedTextField(
@@ -134,7 +156,7 @@ fun NameInputTextField(
                 style = textFieldTextStyle
             )
         },
-        modifier = Modifier.padding(vertical = 32.dp, horizontal = 16.dp)
+        modifier = modifier.padding(vertical = 32.dp, horizontal = 16.dp)
     )
 }
 
