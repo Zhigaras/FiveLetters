@@ -2,11 +2,13 @@ package com.zhigaras.fiveletters.model
 
 abstract class Username {
     
-    class NotLoadedYet(): Username()
+    abstract val name: String
     
-    abstract class Loaded(): Username() {
-        
-        abstract val name: String
+    class NotLoadedYet() : Username() {
+        override val name = ""
+    }
+    
+    abstract class Loaded() : Username() {
         
         class Specified(override val name: String) : Loaded()
         
