@@ -1,5 +1,7 @@
 package com.zhigaras.fiveletters.presentation.compose.ui.screens.play
 
+import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -12,22 +14,23 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.zhigaras.fiveletters.R
 import com.zhigaras.fiveletters.data.Alphabet
+import com.zhigaras.fiveletters.model.GameState
 import com.zhigaras.fiveletters.model.LetterState
 import com.zhigaras.fiveletters.model.LetterType
-import com.zhigaras.fiveletters.presentation.compose.ui.theme.black
-import com.zhigaras.fiveletters.presentation.compose.ui.theme.keyboardButtonCornerRadius
-import com.zhigaras.fiveletters.presentation.compose.ui.theme.keyboardButtonInnerPadding
-import com.zhigaras.fiveletters.presentation.compose.ui.theme.yellow
+import com.zhigaras.fiveletters.presentation.compose.ui.theme.*
 
 @Composable
 fun Keyboard(
     modifier: Modifier = Modifier,
+    gameState: GameState,
     onKeyClick: (Char) -> Unit,
     onConfirmClick: () -> Unit,
     onBackspaceClick: () -> Unit
@@ -35,6 +38,8 @@ fun Keyboard(
     val alphabet = Alphabet.alphabetRu.map { row ->
         row.map { LetterState.Default(type = LetterType.Key, char = it) }
     }
+    val isConfirmButtonEnabled = remember { mutableStateOf(false) }
+    isConfirmButtonEnabled.value = gameState is GameState.Progress.FullRow
     
     Column(
         verticalArrangement = Arrangement.spacedBy(4.dp),
@@ -52,6 +57,7 @@ fun Keyboard(
                 if (index == alphabet.lastIndex)
                     ConfirmWordButton(
                         modifier = Modifier.weight(17f),
+                        isEnabled = isConfirmButtonEnabled.value,
                         onConfirmClick = onConfirmClick
                     )
                 row.forEach {
@@ -96,18 +102,32 @@ fun Key(
 @Composable
 fun ConfirmWordButton(
     modifier: Modifier = Modifier,
+    isEnabled: Boolean,
     onConfirmClick: () -> Unit
 ) {
+    val buttonAnimationDuration = 500
+    val containerColor = animateColorAsState(
+        targetValue = if (isEnabled) yellow else black,
+        animationSpec = tween(buttonAnimationDuration)
+    )
+    val contentColor = animateColorAsState(
+        targetValue = if (isEnabled) black else white,
+        animationSpec = tween(buttonAnimationDuration)
+    )
+    val borderColor = animateColorAsState(
+        targetValue = if (isEnabled) yellow else gray,
+        animationSpec = tween(buttonAnimationDuration)
+    )
     OutlinedCard(
-        border = BorderStroke(width = 1.dp, yellow),
+        border = BorderStroke(width = 1.dp, borderColor.value),
         shape = RoundedCornerShape(keyboardButtonCornerRadius),
         colors = CardDefaults.cardColors(
-            containerColor = yellow,
-            contentColor = black
+            containerColor = containerColor.value,
+            contentColor = contentColor.value
         ),
         modifier = modifier
             .fillMaxHeight()
-            .clickable { onConfirmClick() }
+            .clickable(enabled = isEnabled) { onConfirmClick() }
     ) {
         Icon(
             imageVector = Icons.Default.Done,

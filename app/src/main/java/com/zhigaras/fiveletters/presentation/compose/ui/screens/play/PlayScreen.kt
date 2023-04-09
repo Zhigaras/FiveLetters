@@ -27,6 +27,7 @@ fun PlayScreen(
             LetterField(gameState = gameState)
         }
         Keyboard(
+            gameState = gameState,
             onKeyClick = { viewModel.inputLetter(it) },
             onConfirmClick = { viewModel.confirmWord() },
             onBackspaceClick = { viewModel.removeLetter() }

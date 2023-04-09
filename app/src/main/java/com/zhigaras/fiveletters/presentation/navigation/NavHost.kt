@@ -26,7 +26,7 @@ fun FiveLettersNavHost(
     val navController = rememberAnimatedNavController()
     AnimatedNavHost(
         navController = navController,
-        startDestination = Destination.Splash.route,
+        startDestination = Destination.Play.route,
         modifier = Modifier.fillMaxSize()
     ) {
         composable(

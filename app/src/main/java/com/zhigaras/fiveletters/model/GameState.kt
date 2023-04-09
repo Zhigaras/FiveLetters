@@ -18,17 +18,17 @@ abstract class GameState {
             }
     }
     
-    class Progress(
-        override val result: List<RowState>
-    ) : GameState()
+    abstract class Progress() : GameState() {
+        
+        class FullRow(override val result: List<RowState>) : Progress()
+        
+        class NotFullRow(override val result: List<RowState>) : Progress()
+    }
     
-    class GameOver(
-        override val result: List<RowState>
-    ) : GameState()
     
-    class Win(
-        override val result: List<RowState>
-    ) : GameState()
+    class GameOver(override val result: List<RowState>) : GameState()
+    
+    class Win(override val result: List<RowState>) : GameState()
     
     override fun toString(): String {
         return result.map { it.toString() }.joinToString { "\n" }

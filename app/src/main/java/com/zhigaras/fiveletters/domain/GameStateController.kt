@@ -33,7 +33,9 @@ interface GameStateController {
                 currentRow[cursorColumn] = LetterState.UserClicked(LetterType.Card, char)
                 snapshot[cursorRow] = RowState.Append(currentRow.toList())
                 cursorColumn++
-                gameState = GameState.Progress(snapshot.toList())
+                gameState = if (cursorColumn == Constants.MAX_COLUMN)
+                    GameState.Progress.FullRow(snapshot.toList())
+                else GameState.Progress.NotFullRow(snapshot.toList())
             }
             return gameState
         }
@@ -46,7 +48,7 @@ interface GameStateController {
                 currentRow[cursorColumn] =
                     LetterState.Default(type = LetterType.Card, char = ' ', action = Action.REMOVE)
                 snapshot[cursorRow] = RowState.Remove(currentRow.toList())
-                gameState = GameState.Progress(snapshot)
+                gameState = GameState.Progress.NotFullRow(snapshot.toList())
             }
             return gameState
         }
@@ -56,11 +58,11 @@ interface GameStateController {
             val wordToCheck = stringConverter.convertLetterToCharList(snapshot[cursorRow].row)
             val checkedWord = wordCheckable.checkWord(wordToCheck, origin)
             snapshot[cursorRow] = checkRowState(checkedWord)
-            gameState = GameState.Progress(snapshot)
+            gameState = GameState.Progress.NotFullRow(snapshot.toList())
             if (snapshot.any { it is RowState.Right })
-                gameState = GameState.Win(snapshot)
+                gameState = GameState.Win(snapshot.toList())
             if (cursorRow == Constants.MAX_ROWS - 1)
-                gameState = GameState.GameOver(snapshot)
+                gameState = GameState.GameOver(snapshot.toList())
             cursorRow++
             cursorColumn = 0
             return gameState
