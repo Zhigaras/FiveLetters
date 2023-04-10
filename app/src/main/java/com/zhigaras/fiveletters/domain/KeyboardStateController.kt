@@ -10,6 +10,8 @@ interface KeyboardStateController {
     
     fun getDefaultKeyboard(): Keyboard
     
+    fun needToUpdateKey(currentLetter: LetterState, incomingLetter: LetterState): Boolean
+    
     class Base(private val alphabetInstance: Alphabet) : KeyboardStateController {
         
         private var keyboard: Keyboard = getDefaultKeyboard()
@@ -19,11 +21,21 @@ interface KeyboardStateController {
                 keyboard.keys.forEachIndexed { rowIndex, keyRow ->
                     keyRow.forEachIndexed { keyIndex, letter ->
                         keyboard.keys[rowIndex][keyIndex] =
-                            if (letter.char == openedLetter.char) openedLetter.convertCardToKey() else letter
+                            if (needToUpdateKey(letter, openedLetter))
+                                openedLetter.convertCardToKey() else letter
                     }
                 }
             }
             return keyboard
+        }
+        
+        override fun needToUpdateKey(
+            currentLetter: LetterState,
+            incomingLetter: LetterState
+        ): Boolean {
+            return currentLetter.char == incomingLetter.char && incomingLetter.isBetter(
+                currentLetter
+            )
         }
         
         override fun getDefaultKeyboard() = Keyboard.Base(alphabetInstance)

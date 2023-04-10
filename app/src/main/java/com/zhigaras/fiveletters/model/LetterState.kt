@@ -15,6 +15,7 @@ abstract class LetterState {
     abstract val angle: Float
     abstract val char: Char
     abstract val action: Action
+    abstract val grade: Int
     
     fun convertCardToKey(): LetterState {
         return when (this) {
@@ -23,6 +24,10 @@ abstract class LetterState {
             is Exact -> Exact(LetterType.Key, char)
             else -> Default(LetterType.Key, char)
         }
+    }
+    
+    fun isBetter(oldLetter: LetterState): Boolean {
+        return oldLetter.grade < grade
     }
     
     data class Default(
@@ -34,6 +39,7 @@ abstract class LetterState {
         override val cardColor: Color = black
         override val charColor: Color = white
         override val angle: Float = 0f
+        override val grade: Int = 0
     }
     
     data class UserClicked(override val type: LetterType, override val char: Char) : LetterState() {
@@ -42,6 +48,7 @@ abstract class LetterState {
         override val charColor: Color = white
         override val angle: Float = 0f
         override val action: Action = Action.APPEND
+        override val grade: Int = 1
     }
     
     data class Wrong(override val type: LetterType, override val char: Char) : LetterState() {
@@ -50,6 +57,7 @@ abstract class LetterState {
         override val charColor: Color = white
         override val angle: Float = 180f
         override val action: Action = Action.CONFIRM
+        override val grade: Int = 2
     }
     
     data class Right(override val type: LetterType, override val char: Char) : LetterState() {
@@ -58,6 +66,7 @@ abstract class LetterState {
         override val charColor: Color = black
         override val angle: Float = 180f
         override val action: Action = Action.CONFIRM
+        override val grade: Int = 3
     }
     
     data class Exact(override val type: LetterType, override val char: Char) : LetterState() {
@@ -66,6 +75,7 @@ abstract class LetterState {
         override val charColor: Color = black
         override val angle: Float = 180f
         override val action: Action = Action.CONFIRM
+        override val grade: Int = 4
     }
     
     override fun toString(): String {
