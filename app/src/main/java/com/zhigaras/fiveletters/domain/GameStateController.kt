@@ -15,6 +15,8 @@ interface GameStateController {
     
     fun checkRowState(row: List<LetterState>): RowState
     
+    fun getConfirmedRow(): RowState
+    
     class Base(
         private val stringConverter: StringConverter,
         private val wordCheckable: WordCheckable
@@ -31,11 +33,14 @@ interface GameStateController {
                 val snapshot = gameState.result.toMutableList()
                 val currentRow = snapshot[cursorRow].row.toMutableList()
                 currentRow[cursorColumn] = LetterState.UserClicked(LetterType.Card, char)
-                snapshot[cursorRow] = RowState.Append(currentRow.toList())
+                val rowState =
+                    if (cursorColumn == Constants.MAX_COLUMN - 1)
+                        RowState.Append.FullRow(currentRow.toList())
+                    else
+                        RowState.Append.NotFullRow(currentRow.toList())
+                snapshot[cursorRow] = rowState
                 cursorColumn++
-                gameState = if (cursorColumn == Constants.MAX_COLUMN)
-                    GameState.Progress.FullRow(snapshot.toList())
-                else GameState.Progress.NotFullRow(snapshot.toList())
+                gameState = GameState.Progress(snapshot.toList())
             }
             return gameState
         }
@@ -48,7 +53,7 @@ interface GameStateController {
                 currentRow[cursorColumn] =
                     LetterState.Default(type = LetterType.Card, char = ' ', action = Action.REMOVE)
                 snapshot[cursorRow] = RowState.Remove(currentRow.toList())
-                gameState = GameState.Progress.NotFullRow(snapshot.toList())
+                gameState = GameState.Progress(snapshot.toList())
             }
             return gameState
         }
@@ -58,8 +63,8 @@ interface GameStateController {
             val wordToCheck = stringConverter.convertLetterToCharList(snapshot[cursorRow].row)
             val checkedWord = wordCheckable.checkWord(wordToCheck, origin)
             snapshot[cursorRow] = checkRowState(checkedWord)
-            gameState = GameState.Progress.NotFullRow(snapshot.toList())
-            if (snapshot.any { it is RowState.Right })
+            gameState = GameState.Progress(snapshot.toList())
+            if (snapshot.any { it is RowState.Opened.Right })
                 gameState = GameState.Win(snapshot.toList())
             if (cursorRow == Constants.MAX_ROWS - 1)
                 gameState = GameState.GameOver(snapshot.toList())
@@ -70,9 +75,11 @@ interface GameStateController {
         
         override fun checkRowState(row: List<LetterState>): RowState {
             if (row.all { it is LetterState.Exact }) {
-                return RowState.Right(row)
+                return RowState.Opened.Right(row)
             }
-            return RowState.Wrong(row)
+            return RowState.Opened.Wrong(row)
         }
+        
+        override fun getConfirmedRow(): RowState = gameState.result.last { it is RowState.Opened }
     }
 }

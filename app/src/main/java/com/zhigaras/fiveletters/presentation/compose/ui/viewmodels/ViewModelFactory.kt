@@ -3,9 +3,11 @@ package com.zhigaras.fiveletters.presentation.compose.ui.viewmodels
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.zhigaras.fiveletters.core.Core
+import com.zhigaras.fiveletters.data.Alphabet
 import com.zhigaras.fiveletters.data.DatastoreManager
 import com.zhigaras.fiveletters.data.UsernameRepository
 import com.zhigaras.fiveletters.domain.GameStateController
+import com.zhigaras.fiveletters.domain.KeyboardStateController
 import com.zhigaras.fiveletters.domain.StringConverter
 import com.zhigaras.fiveletters.domain.WordCheckable
 
@@ -23,9 +25,10 @@ class ViewModelFactory(
                     GameStateController.Base(
                         StringConverter.Base(),
                         WordCheckable.Base()
-                    ), core.provideRepository()
+                    ), KeyboardStateController.Base(Alphabet.Base.Ru()),
+                    core.provideRepository()
                 )
-            WelcomeViewModel::class.java -> WelcomeViewModel(usernameRepository,dispatchers)
+            WelcomeViewModel::class.java -> WelcomeViewModel(usernameRepository, dispatchers)
             AuthViewModel::class.java -> AuthViewModel(usernameRepository, dispatchers)
             else -> throw IllegalArgumentException("Unknown class name: $modelClass")
         }

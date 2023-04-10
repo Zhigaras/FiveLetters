@@ -1,6 +1,8 @@
 package com.zhigaras.fiveletters.presentation.compose.ui.screens.play
 
 import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.core.Animatable
+import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.clickable
@@ -14,32 +16,32 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.zhigaras.fiveletters.R
-import com.zhigaras.fiveletters.data.Alphabet
 import com.zhigaras.fiveletters.model.GameState
+import com.zhigaras.fiveletters.model.Keyboard
 import com.zhigaras.fiveletters.model.LetterState
-import com.zhigaras.fiveletters.model.LetterType
+import com.zhigaras.fiveletters.model.RowState
 import com.zhigaras.fiveletters.presentation.compose.ui.theme.*
 
 @Composable
 fun Keyboard(
     modifier: Modifier = Modifier,
     gameState: GameState,
+    keyboard: Keyboard,
     onKeyClick: (Char) -> Unit,
     onConfirmClick: () -> Unit,
     onBackspaceClick: () -> Unit
 ) {
-    val alphabet = Alphabet.alphabetRu.map { row ->
-        row.map { LetterState.Default(type = LetterType.Key, char = it) }
-    }
     val isConfirmButtonEnabled = remember { mutableStateOf(false) }
-    isConfirmButtonEnabled.value = gameState is GameState.Progress.FullRow
+    isConfirmButtonEnabled.value = gameState.result.any { it is RowState.Append.FullRow }
     
     Column(
         verticalArrangement = Arrangement.spacedBy(4.dp),
@@ -47,23 +49,24 @@ fun Keyboard(
             .fillMaxWidth()
             .padding(8.dp)
     ) {
-        alphabet.forEachIndexed { index, row ->
+        keyboard.keys.forEachIndexed { index, row ->
             Row(
                 horizontalArrangement = Arrangement.spacedBy(4.dp),
                 modifier = modifier
                     .fillMaxWidth()
                     .height(IntrinsicSize.Max)
             ) {
-                if (index == alphabet.lastIndex)
+                if (index == keyboard.keys.lastIndex)
                     ConfirmWordButton(
                         modifier = Modifier.weight(17f),
                         isEnabled = isConfirmButtonEnabled.value,
                         onConfirmClick = onConfirmClick
                     )
                 row.forEach {
+//                    val state = remember(key1 = it) { it }
                     Key(modifier = Modifier.weight(10f), letter = it, onKeyClick = onKeyClick)
                 }
-                if (index == alphabet.lastIndex)
+                if (index == keyboard.keys.lastIndex)
                     BackspaceButton(
                         modifier = Modifier.weight(17f),
                         letter = row.first(),
@@ -96,6 +99,33 @@ fun Key(
                 .padding(vertical = letter.type.charPadding)
                 .align(Alignment.CenterHorizontally)
         )
+    }
+}
+
+@Composable
+fun FlippableKey(
+    modifier: Modifier = Modifier,
+    newLetter: LetterState,
+    oldLetter: LetterState,
+    onKeyClick: (Char) -> Unit
+) {
+    val flipRotation = remember { Animatable(0f) }
+    val animationSpec = tween<Float>(2000, easing = FastOutSlowInEasing)
+    LaunchedEffect(key1 = true) {
+        flipRotation.animateTo(targetValue = newLetter.angle, animationSpec = animationSpec)
+    }
+    Box(modifier = modifier
+        .graphicsLayer {
+            rotationY = flipRotation.value
+        }) {
+        if (flipRotation.value <= 90f)
+            Key(letter = oldLetter, onKeyClick = onKeyClick)
+        else
+            Key(
+                modifier = modifier.graphicsLayer { rotationY = 180f },
+                letter = newLetter,
+                onKeyClick = onKeyClick
+            )
     }
 }
 

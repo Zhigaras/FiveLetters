@@ -44,7 +44,7 @@ fun LetterRow(
     ) {
         letterRow.row.forEach {
             val state = remember(key1 = it.char) { it }
-            if (letterRow is RowState.Right || letterRow is RowState.Wrong)
+            if (letterRow is RowState.Opened)
                 FlippableLetter(newLetter = it, oldLetter = state)
             else {
                 BounceLetter(newLetter = it)

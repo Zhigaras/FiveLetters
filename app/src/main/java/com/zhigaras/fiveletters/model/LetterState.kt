@@ -6,7 +6,7 @@ import com.zhigaras.fiveletters.presentation.compose.ui.theme.gray
 import com.zhigaras.fiveletters.presentation.compose.ui.theme.white
 import com.zhigaras.fiveletters.presentation.compose.ui.theme.yellow
 
-abstract class LetterState() {
+abstract class LetterState {
     
     abstract val type: LetterType
     abstract val borderColor: Color
@@ -15,6 +15,15 @@ abstract class LetterState() {
     abstract val angle: Float
     abstract val char: Char
     abstract val action: Action
+    
+    fun convertCardToKey(): LetterState {
+        return when (this) {
+            is Wrong -> Wrong(LetterType.Key, char)
+            is Right -> Right(LetterType.Key, char)
+            is Exact -> Exact(LetterType.Key, char)
+            else -> Default(LetterType.Key, char)
+        }
+    }
     
     data class Default(
         override val type: LetterType,

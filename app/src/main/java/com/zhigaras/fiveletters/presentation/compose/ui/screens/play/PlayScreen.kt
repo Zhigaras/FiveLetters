@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -16,6 +17,7 @@ fun PlayScreen(
     viewModel: PlayViewModel
 ) {
     val gameState by viewModel.gameStateFlow.collectAsStateWithLifecycle()
+    val keyboard by viewModel.keyboardFlow.collectAsState()
     Column(
         verticalArrangement = Arrangement.Bottom,
         modifier = Modifier.fillMaxSize()
@@ -28,6 +30,7 @@ fun PlayScreen(
         }
         Keyboard(
             gameState = gameState,
+            keyboard = keyboard,
             onKeyClick = { viewModel.inputLetter(it) },
             onConfirmClick = { viewModel.confirmWord() },
             onBackspaceClick = { viewModel.removeLetter() }

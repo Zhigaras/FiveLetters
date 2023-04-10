@@ -18,13 +18,7 @@ abstract class GameState {
             }
     }
     
-    abstract class Progress() : GameState() {
-        
-        class FullRow(override val result: List<RowState>) : Progress()
-        
-        class NotFullRow(override val result: List<RowState>) : Progress()
-    }
-    
+    class Progress(override val result: List<RowState>) : GameState()
     
     class GameOver(override val result: List<RowState>) : GameState()
     
