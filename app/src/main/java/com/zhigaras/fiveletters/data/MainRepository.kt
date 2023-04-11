@@ -8,7 +8,7 @@ interface MainRepository {
         private val wordDao: WordDao
     ) : MainRepository {
         
-        private val dictionary = listOf("слово", "бегун", "тариф", "выдох")
+        private val dictionary = listOf("слово")
         
         override fun randomWord(): String {
             return dictionary.random()

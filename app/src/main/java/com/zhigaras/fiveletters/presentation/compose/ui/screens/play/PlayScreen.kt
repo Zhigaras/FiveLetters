@@ -15,6 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.zhigaras.fiveletters.model.GameState
 import com.zhigaras.fiveletters.presentation.compose.ui.viewmodels.PlayViewModel
+import kotlinx.coroutines.delay
 
 @Composable
 fun PlayScreen(
@@ -24,7 +25,11 @@ fun PlayScreen(
 ) {
     val gameState by viewModel.gameStateFlow.collectAsStateWithLifecycle()
     val keyboard by viewModel.keyboardFlow.collectAsStateWithLifecycle()
-    val showDialog = remember(key1 = gameState.inProgress) { mutableStateOf(!gameState.inProgress) }
+    val showDialog = remember { mutableStateOf(false) }
+    LaunchedEffect(key1 = gameState.inProgress) {
+        delay(700)
+        showDialog.value = !gameState.inProgress
+    }
     if (showDialog.value) {
         EndGameDialog(
             onDismiss = { showDialog.value = false },

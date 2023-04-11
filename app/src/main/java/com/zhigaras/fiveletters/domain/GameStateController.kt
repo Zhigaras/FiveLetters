@@ -5,8 +5,6 @@ import com.zhigaras.fiveletters.model.*
 
 interface GameStateController {
     
-    fun getStartGameState(): GameState
-    
     fun inputLetter(char: Char): GameState
     
     fun removeLetter(): GameState
@@ -17,16 +15,16 @@ interface GameStateController {
     
     fun getConfirmedRow(): RowState
     
+    fun newGame(): GameState
+    
     class Base(
         private val stringConverter: StringConverter,
         private val wordCheckable: WordCheckable
     ) : GameStateController {
         
-        private var gameState: GameState = GameState.InProgress.Start()
+        private lateinit var gameState: GameState
         private var cursorRow = 0
         private var cursorColumn = 0
-        
-        override fun getStartGameState() = GameState.InProgress.Start()
         
         override fun inputLetter(char: Char): GameState {
             if (cursorColumn != Constants.MAX_COLUMN) {
@@ -81,5 +79,12 @@ interface GameStateController {
         }
         
         override fun getConfirmedRow(): RowState = gameState.result.last { it is RowState.Opened }
+        
+        override fun newGame(): GameState {
+            gameState = GameState.InProgress.Start()
+            cursorRow = 0
+            cursorColumn = 0
+            return gameState
+        }
     }
 }

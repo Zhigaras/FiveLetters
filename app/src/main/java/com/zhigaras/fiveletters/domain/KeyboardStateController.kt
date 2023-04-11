@@ -14,7 +14,7 @@ interface KeyboardStateController {
     
     class Base(private val alphabetInstance: Alphabet) : KeyboardStateController {
         
-        private var keyboard: Keyboard = getDefaultKeyboard()
+        private lateinit var keyboard: Keyboard
         
         override fun updateKeyboard(openedLetters: List<LetterState>): Keyboard {
             openedLetters.distinct().forEach { openedLetter ->
@@ -38,6 +38,9 @@ interface KeyboardStateController {
             )
         }
         
-        override fun getDefaultKeyboard() = Keyboard.Base(alphabetInstance)
+        override fun getDefaultKeyboard(): Keyboard {
+            keyboard = Keyboard.Base(alphabetInstance)
+            return keyboard
+        }
     }
 }

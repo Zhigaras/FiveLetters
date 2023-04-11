@@ -13,17 +13,13 @@ class PlayViewModel(
     private val mainRepository: MainRepository
 ) : ViewModel(), GameInteract {
     
-    private var origin: String = ""
+    private var origin: String = mainRepository.randomWord()
     
-    private val _gameStateFlow = MutableStateFlow(gameStateController.getStartGameState())
+    private val _gameStateFlow = MutableStateFlow(gameStateController.newGame())
     val gameStateFlow = _gameStateFlow.asStateFlow()
     
     private val _keyboardFlow = MutableStateFlow(keyboardStateController.getDefaultKeyboard())
     val keyboardFlow = _keyboardFlow.asStateFlow()
-    
-    init {
-        getNewOrigin()
-    }
     
     override fun inputLetter(char: Char) {
         gameStateController.inputLetter(char.uppercaseChar()).let {
@@ -46,8 +42,10 @@ class PlayViewModel(
         }
     }
     
-    override fun getNewOrigin() {
+    override fun startNewGame() {
         origin = mainRepository.randomWord()
+        _gameStateFlow.value = gameStateController.newGame()
+        _keyboardFlow.value = keyboardStateController.getDefaultKeyboard()
     }
 }
 
@@ -56,10 +54,10 @@ interface GameInteract {
     
     fun confirmWord()
     
-    fun getNewOrigin()
-    
     fun inputLetter(char: Char)
     
     fun removeLetter()
+    
+    fun startNewGame()
     
 }

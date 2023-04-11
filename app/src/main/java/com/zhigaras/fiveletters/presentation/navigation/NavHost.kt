@@ -26,7 +26,7 @@ fun FiveLettersNavHost(
     val navController = rememberAnimatedNavController()
     AnimatedNavHost(
         navController = navController,
-        startDestination = Destination.Splash.route,
+        startDestination = Destination.Play.route,
         modifier = Modifier.fillMaxSize()
     ) {
         composable(
@@ -59,7 +59,7 @@ fun FiveLettersNavHost(
             PlayScreen(
                 viewModel = playViewModel,
                 toMenuClick = { navController.popBackStack() },
-                onNewGameClick = { /*TODO*/ }
+                onNewGameClick = { playViewModel.startNewGame() }
             )
         }
     }
