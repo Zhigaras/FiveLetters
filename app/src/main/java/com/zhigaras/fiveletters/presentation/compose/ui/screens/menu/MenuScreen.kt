@@ -6,14 +6,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.zhigaras.fiveletters.R
-import com.zhigaras.fiveletters.presentation.compose.ui.theme.black
-import com.zhigaras.fiveletters.presentation.compose.ui.theme.yellow
 
 @Composable
-fun MenuScreen() {
+fun MenuScreen(
+    navigateToPlay: () -> Unit
+) {
     
     // TODO: animated header
     
@@ -25,8 +24,8 @@ fun MenuScreen() {
         ) {
             Card(
                 colors = CardDefaults.cardColors(
-                    containerColor = yellow,
-                    contentColor = black
+                    containerColor = MaterialTheme.colorScheme.primary,
+                    contentColor = MaterialTheme.colorScheme.onPrimary
                 ),
                 modifier = Modifier
                     .fillMaxSize()
@@ -54,26 +53,30 @@ fun MenuScreen() {
                 .fillMaxWidth()
                 .weight(10f)
         ) {
-            Button(
-                onClick = { /*TODO*/ },
-                shape = ShapeDefaults.Medium,
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = yellow,
-                    contentColor = black
-                )
-            ) {
-                Text(
-                    text = stringResource(R.string.start),
-                    style = MaterialTheme.typography.titleLarge,
-                    modifier = Modifier.padding(horizontal = 32.dp)
-                )
-            }
+            CommonButton(text = stringResource(R.string.start), onClick = navigateToPlay)
         }
     }
 }
 
-@Preview(showSystemUi = true, showBackground = true)
 @Composable
-fun MenuPreview() {
-    MenuScreen()
+fun CommonButton(
+    modifier: Modifier = Modifier,
+    text: String,
+    onClick: () -> Unit
+) {
+    Button(
+        onClick = { onClick() },
+        shape = ShapeDefaults.Medium,
+        colors = ButtonDefaults.buttonColors(
+            containerColor = MaterialTheme.colorScheme.primary,
+            contentColor = MaterialTheme.colorScheme.onPrimary
+        ),
+        modifier = modifier
+    ) {
+        Text(
+            text = text,
+            style = MaterialTheme.typography.titleLarge,
+            modifier = Modifier.padding(horizontal = 32.dp)
+        )
+    }
 }

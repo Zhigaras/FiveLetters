@@ -1,5 +1,6 @@
 package com.zhigaras.fiveletters.presentation.navigation
 
+import android.util.Log
 import androidx.compose.animation.*
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.fillMaxSize
@@ -26,7 +27,7 @@ fun FiveLettersNavHost(
     val navController = rememberAnimatedNavController()
     AnimatedNavHost(
         navController = navController,
-        startDestination = Destination.Play.route,
+        startDestination = Destination.Splash.route,
         modifier = Modifier.fillMaxSize()
     ) {
         composable(
@@ -44,9 +45,8 @@ fun FiveLettersNavHost(
         composable(
             route = Destination.Welcome.route,
             enterTransition = {
-                slideInVertically(animationSpec = tween(5))
+                slideInVertically(animationSpec = tween(5)) //TODO check
             }
-        
         ) {
             WelcomeScreen(
                 viewModel = welcomeViewModel,
@@ -54,10 +54,15 @@ fun FiveLettersNavHost(
             )
         }
         composable(route = Destination.Menu.route) {
-            MenuScreen()
+            MenuScreen(navigateToPlay = { navController.navigate(Destination.Play.route) })
         }
         composable(route = Destination.Play.route) {
-            PlayScreen(viewModel = playViewModel)
+            Log.d("AAA", it.savedStateHandle.toString())
+            PlayScreen(
+                viewModel = playViewModel,
+                onBackClick = { navController.popBackStack() },
+                onNewGameClick = { /*TODO*/ }
+            )
         }
     }
 }

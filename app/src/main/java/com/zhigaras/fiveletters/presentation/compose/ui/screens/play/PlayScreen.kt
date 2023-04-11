@@ -1,5 +1,10 @@
 package com.zhigaras.fiveletters.presentation.compose.ui.screens.play
 
+import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.with
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -14,7 +19,9 @@ import com.zhigaras.fiveletters.presentation.compose.ui.viewmodels.PlayViewModel
 
 @Composable
 fun PlayScreen(
-    viewModel: PlayViewModel
+    viewModel: PlayViewModel,
+    onBackClick: () -> Unit,
+    onNewGameClick: () -> Unit
 ) {
     val gameState by viewModel.gameStateFlow.collectAsStateWithLifecycle()
     val keyboard by viewModel.keyboardFlow.collectAsState()
@@ -28,12 +35,26 @@ fun PlayScreen(
         ) {
             LetterField(gameState = gameState)
         }
-        Keyboard(
-            gameState = gameState,
-            keyboard = keyboard,
-            onKeyClick = { viewModel.inputLetter(it) },
-            onConfirmClick = { viewModel.confirmWord() },
-            onBackspaceClick = { viewModel.removeLetter() }
-        )
+        Box(
+            modifier = Modifier,
+            contentAlignment = Alignment.BottomCenter
+        ) {
+            AnimatedContent(
+                targetState = gameState.inProgress,
+                transitionSpec = {
+                    fadeIn(animationSpec = tween(1000)) with fadeOut(tween(1000))
+                }
+            ) { inProgress ->
+                if (inProgress)
+                    Keyboard(
+                        gameState = gameState,
+                        keyboard = keyboard,
+                        onKeyClick = { viewModel.inputLetter(it) },
+                        onConfirmClick = { viewModel.confirmWord() },
+                        onBackspaceClick = { viewModel.removeLetter() }
+                    )
+                else KeyboardStub(onBackClick = onBackClick, onNewGameClick = onNewGameClick)
+            }
+        }
     }
 }

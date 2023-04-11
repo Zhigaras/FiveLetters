@@ -2,11 +2,11 @@ package com.zhigaras.fiveletters.model
 
 import com.zhigaras.fiveletters.data.Alphabet
 
-interface Keyboard {
+abstract class Keyboard {
     
-    val keys: MutableList<MutableList<LetterState>>
+    abstract val keys: MutableList<MutableList<LetterState>>
     
-    class Base(alphabet: Alphabet) : Keyboard{
+    class Base(alphabet: Alphabet) : Keyboard(){
         
         override val keys: MutableList<MutableList<LetterState>> = alphabet.getKeyboardAlphabet().map { row ->
             row.map {

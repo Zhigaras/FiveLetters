@@ -22,11 +22,11 @@ interface GameStateController {
         private val wordCheckable: WordCheckable
     ) : GameStateController {
         
-        private var gameState: GameState = GameState.Start()
+        private var gameState: GameState = GameState.InProgress.Start()
         private var cursorRow = 0
         private var cursorColumn = 0
         
-        override fun getStartGameState() = GameState.Start()
+        override fun getStartGameState() = GameState.InProgress.Start()
         
         override fun inputLetter(char: Char): GameState {
             if (cursorColumn != Constants.MAX_COLUMN) {
@@ -40,7 +40,7 @@ interface GameStateController {
                         RowState.Append.NotFullRow(currentRow.toList())
                 snapshot[cursorRow] = rowState
                 cursorColumn++
-                gameState = GameState.Progress(snapshot.toList())
+                gameState = GameState.InProgress.Progress(snapshot.toList())
             }
             return gameState
         }
@@ -53,7 +53,7 @@ interface GameStateController {
                 currentRow[cursorColumn] =
                     LetterState.Default(type = LetterType.Card, char = ' ', action = Action.REMOVE)
                 snapshot[cursorRow] = RowState.Remove(currentRow.toList())
-                gameState = GameState.Progress(snapshot.toList())
+                gameState = GameState.InProgress.Progress(snapshot.toList())
             }
             return gameState
         }
@@ -63,11 +63,11 @@ interface GameStateController {
             val wordToCheck = stringConverter.convertLetterToCharList(snapshot[cursorRow].row)
             val checkedWord = wordCheckable.checkWord(wordToCheck, origin)
             snapshot[cursorRow] = checkRowState(checkedWord)
-            gameState = GameState.Progress(snapshot.toList())
+            gameState = GameState.InProgress.Progress(snapshot.toList())
             if (snapshot.any { it is RowState.Opened.Right })
-                gameState = GameState.Win(snapshot.toList())
+                gameState = GameState.Ended.Win(snapshot.toList())
             if (cursorRow == Constants.MAX_ROWS - 1)
-                gameState = GameState.GameOver(snapshot.toList())
+                gameState = GameState.Ended.GameOver(snapshot.toList())
             cursorRow++
             cursorColumn = 0
             return gameState
