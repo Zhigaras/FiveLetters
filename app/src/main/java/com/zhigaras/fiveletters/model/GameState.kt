@@ -9,7 +9,7 @@ abstract class GameState {
     abstract val inProgress: Boolean
     
     abstract class InProgress : GameState() {
-    
+        
         override val inProgress: Boolean = true
         
         class Start : InProgress() {
@@ -29,10 +29,10 @@ abstract class GameState {
     }
     
     abstract class Ended : GameState() {
-    
+        
         override val inProgress: Boolean = false
         
-        class GameOver(override val result: List<RowState>) : Ended()
+        class Failed(override val result: List<RowState>) : Ended()
         
         class Win(override val result: List<RowState>) : Ended()
         

@@ -9,22 +9,34 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.zhigaras.fiveletters.model.GameState
 import com.zhigaras.fiveletters.presentation.compose.ui.viewmodels.PlayViewModel
 
 @Composable
 fun PlayScreen(
     viewModel: PlayViewModel,
-    onBackClick: () -> Unit,
+    toMenuClick: () -> Unit,
     onNewGameClick: () -> Unit
 ) {
     val gameState by viewModel.gameStateFlow.collectAsStateWithLifecycle()
-    val keyboard by viewModel.keyboardFlow.collectAsState()
+    val keyboard by viewModel.keyboardFlow.collectAsStateWithLifecycle()
+    val showDialog = remember(key1 = gameState.inProgress) { mutableStateOf(!gameState.inProgress) }
+    if (showDialog.value) {
+        EndGameDialog(
+            onDismiss = { showDialog.value = false },
+            toMenuClick = { showDialog.value = false; toMenuClick() },
+            onNewGameClick = onNewGameClick
+        ) {
+            when (gameState) {
+                is GameState.Ended.Failed -> FailDialogContent()
+                is GameState.Ended.Win -> WinDialogContent()
+            }
+        }
+    }
     Column(
         verticalArrangement = Arrangement.Bottom,
         modifier = Modifier.fillMaxSize()
@@ -53,7 +65,7 @@ fun PlayScreen(
                         onConfirmClick = { viewModel.confirmWord() },
                         onBackspaceClick = { viewModel.removeLetter() }
                     )
-                else KeyboardStub(onBackClick = onBackClick, onNewGameClick = onNewGameClick)
+                else KeyboardStub(onBackClick = toMenuClick, onNewGameClick = onNewGameClick)
             }
         }
     }

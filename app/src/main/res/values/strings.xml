@@ -15,4 +15,6 @@
     <string name="skip_name_input">Keep anonymity</string>
     <string name="to_menu">To menu</string>
     <string name="new_word">New word</string>
+    <string name="win_text">Congratulations!</string>
+    <string name="fail_text">Be sure to win next time!</string>
 </resources>

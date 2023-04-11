@@ -1,6 +1,5 @@
 package com.zhigaras.fiveletters.presentation.navigation
 
-import android.util.Log
 import androidx.compose.animation.*
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.fillMaxSize
@@ -57,10 +56,9 @@ fun FiveLettersNavHost(
             MenuScreen(navigateToPlay = { navController.navigate(Destination.Play.route) })
         }
         composable(route = Destination.Play.route) {
-            Log.d("AAA", it.savedStateHandle.toString())
             PlayScreen(
                 viewModel = playViewModel,
-                onBackClick = { navController.popBackStack() },
+                toMenuClick = { navController.popBackStack() },
                 onNewGameClick = { /*TODO*/ }
             )
         }

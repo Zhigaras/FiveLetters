@@ -67,7 +67,7 @@ interface GameStateController {
             if (snapshot.any { it is RowState.Opened.Right })
                 gameState = GameState.Ended.Win(snapshot.toList())
             if (cursorRow == Constants.MAX_ROWS - 1)
-                gameState = GameState.Ended.GameOver(snapshot.toList())
+                gameState = GameState.Ended.Failed(snapshot.toList())
             cursorRow++
             cursorColumn = 0
             return gameState
