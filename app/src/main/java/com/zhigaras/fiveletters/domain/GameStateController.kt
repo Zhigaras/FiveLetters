@@ -62,10 +62,10 @@ interface GameStateController {
             val checkedWord = wordCheckable.checkWord(wordToCheck, origin)
             snapshot[cursorRow] = checkRowState(checkedWord)
             gameState = GameState.InProgress.Progress(snapshot.toList())
-            if (snapshot.any { it is RowState.Opened.Right })
-                gameState = GameState.Ended.Win(snapshot.toList())
             if (cursorRow == Constants.MAX_ROWS - 1)
                 gameState = GameState.Ended.Failed(snapshot.toList())
+            if (snapshot.any { it is RowState.Opened.Right })
+                gameState = GameState.Ended.Win(snapshot.toList())
             cursorRow++
             cursorColumn = 0
             return gameState
