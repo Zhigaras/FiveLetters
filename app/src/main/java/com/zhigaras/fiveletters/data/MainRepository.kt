@@ -1,17 +1,26 @@
 package com.zhigaras.fiveletters.data
 
+import com.zhigaras.fiveletters.model.Word
+import kotlin.random.Random
+
 interface MainRepository {
     
-    fun randomWord(): String
+    suspend fun randomWord(): Word
+    
+    suspend fun getDictionarySize()
     
     class Base(
         private val wordDao: WordDao
     ) : MainRepository {
         
-        private val dictionary = listOf("слово")
+        private var dictionarySize = 0
         
-        override fun randomWord(): String {
-            return dictionary.random()
+        override suspend fun getDictionarySize() {
+            dictionarySize = wordDao.getDictionarySize()
+        }
+    
+        override suspend fun randomWord(): Word {
+            return wordDao.getRandomWord(Random.nextInt(dictionarySize))
         }
     }
 }

@@ -16,7 +16,7 @@ interface DatabaseModule {
                 WordDatabase::class.java,
                 WordDatabase.DATABASE_NAME
             )
-                .createFromAsset("database/word.db")
+                .createFromAsset("databases/wordsRu.db")
                 .build()
         }
         

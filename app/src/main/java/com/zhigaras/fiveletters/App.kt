@@ -16,9 +16,7 @@ class App : Application(), ProvideViewModel {
     override fun onCreate() {
         super.onCreate()
         
-        val provideInstance =
-            if (BuildConfig.DEBUG) ProvideInstance.Mock(this)
-            else ProvideInstance.Release(this)
+        val provideInstance = ProvideInstance.Release(this)
         
         core = Core.Base(this, provideInstance)
         

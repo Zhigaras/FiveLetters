@@ -3,6 +3,7 @@ package com.zhigaras.fiveletters.presentation.compose.ui.viewmodels
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.zhigaras.fiveletters.core.Core
+import com.zhigaras.fiveletters.core.DispatchersModule
 import com.zhigaras.fiveletters.data.Alphabet
 import com.zhigaras.fiveletters.data.DatastoreManager
 import com.zhigaras.fiveletters.data.UsernameRepository
@@ -26,7 +27,8 @@ class ViewModelFactory(
                         StringConverter.Base(),
                         WordCheckable.Base()
                     ), KeyboardStateController.Base(Alphabet.Base.Ru()),
-                    core.provideRepository()
+                    core.provideRepository(),
+                    DispatchersModule.Base()
                 )
             WelcomeViewModel::class.java -> WelcomeViewModel(usernameRepository, dispatchers)
             AuthViewModel::class.java -> AuthViewModel(usernameRepository, dispatchers)

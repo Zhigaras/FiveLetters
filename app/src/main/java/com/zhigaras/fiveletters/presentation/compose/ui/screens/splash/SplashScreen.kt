@@ -23,10 +23,12 @@ import com.zhigaras.fiveletters.R
 import com.zhigaras.fiveletters.model.Username
 import com.zhigaras.fiveletters.presentation.compose.ui.viewmodels.AuthViewModel
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 @Composable
 fun SplashScreen(
     viewModel: AuthViewModel,
+    initRepository: suspend () -> Unit,
     navigateToWelcome: () -> Unit,
     navigateToMenu: () -> Unit
 ) {
@@ -40,7 +42,12 @@ fun SplashScreen(
     val needToShowGreeting = remember { mutableStateOf(false) }
     
     LaunchedEffect(key1 = true) {
-        viewModel.checkUsername()
+        launch {
+            viewModel.checkUsername()
+        }
+        launch {
+            initRepository()
+        }
         alpha.animateTo(
             targetValue = 1f,
             animationSpec = tween(2000, easing = Ease)

@@ -26,7 +26,7 @@ fun FiveLettersNavHost(
     val navController = rememberAnimatedNavController()
     AnimatedNavHost(
         navController = navController,
-        startDestination = Destination.Play.route,
+        startDestination = Destination.Splash.route,
         modifier = Modifier.fillMaxSize()
     ) {
         composable(
@@ -38,7 +38,8 @@ fun FiveLettersNavHost(
             SplashScreen(
                 viewModel = authViewModel,
                 navigateToWelcome = { navController.navigate(Destination.Welcome.route) },
-                navigateToMenu = { navController.navigate(Destination.Menu.route) }
+                navigateToMenu = { navController.navigate(Destination.Menu.route) },
+                initRepository = { playViewModel.initRepository() }
             )
         }
         composable(
