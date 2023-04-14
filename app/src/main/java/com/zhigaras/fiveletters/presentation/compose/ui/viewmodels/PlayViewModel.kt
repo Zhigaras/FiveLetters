@@ -6,6 +6,7 @@ import com.zhigaras.fiveletters.core.DispatchersModule
 import com.zhigaras.fiveletters.data.MainRepository
 import com.zhigaras.fiveletters.domain.GameStateController
 import com.zhigaras.fiveletters.domain.KeyboardStateController
+import com.zhigaras.fiveletters.model.GameState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
@@ -38,22 +39,25 @@ class PlayViewModel(
     }
     
     override fun confirmWord() {
-        gameStateController.checkGameState(origin).let {
-            _gameStateFlow.value = it
-        }
-        keyboardStateController.updateKeyboard(gameStateController.getConfirmedRow().row).let {
-            _keyboardFlow.value = it
+        viewModelScope.launch(dispatchers.io()) {
+            val result = gameStateController.checkGameState(origin)
+            _gameStateFlow.value = result
+            if (result !is GameState.InProgress.InvalidWord)
+                keyboardStateController.updateKeyboard(gameStateController.getConfirmedRow().row)
+                    .let {
+                        _keyboardFlow.value = it
+                    }
         }
     }
     
     override suspend fun initRepository() {
         mainRepository.getDictionarySize()
-        origin = mainRepository.randomWord().word
+        origin = mainRepository.randomWord().word.uppercase()
     }
     
     override fun startNewGame() {
         viewModelScope.launch(dispatchers.io()) {
-            origin = mainRepository.randomWord().word
+            origin = mainRepository.randomWord().word.uppercase()
             _gameStateFlow.value = gameStateController.newGame()
             _keyboardFlow.value = keyboardStateController.getDefaultKeyboard()
         }

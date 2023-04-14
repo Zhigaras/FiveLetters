@@ -67,7 +67,7 @@ dependencies {
     implementation "androidx.datastore:datastore-preferences:1.1.0-alpha04"
 
     //Room
-    def roomVersion = "2.4.3"
+    def roomVersion = "2.5.1"
     implementation "androidx.room:room-runtime:$roomVersion"
     kapt "androidx.room:room-compiler:$roomVersion"
     implementation "androidx.room:room-ktx:$roomVersion"

@@ -9,6 +9,8 @@ interface MainRepository {
     
     suspend fun getDictionarySize()
     
+    suspend fun isWordValid(word: String): Boolean
+    
     class Base(
         private val wordDao: WordDao
     ) : MainRepository {
@@ -18,9 +20,13 @@ interface MainRepository {
         override suspend fun getDictionarySize() {
             dictionarySize = wordDao.getDictionarySize()
         }
-    
+        
         override suspend fun randomWord(): Word {
             return wordDao.getRandomWord(Random.nextInt(dictionarySize))
+        }
+        
+        override suspend fun isWordValid(word: String): Boolean {
+            return wordDao.isWordExist(word)
         }
     }
 }

@@ -26,6 +26,8 @@ abstract class GameState {
         
         class Progress(override val result: List<RowState>) : InProgress()
         
+        class InvalidWord(override val result: List<RowState>) : InProgress()
+        
     }
     
     abstract class Ended : GameState() {

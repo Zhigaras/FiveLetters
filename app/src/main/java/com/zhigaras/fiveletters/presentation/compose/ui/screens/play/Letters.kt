@@ -44,10 +44,10 @@ fun LetterRow(
     ) {
         letterRow.row.forEach {
             val state = remember(key1 = it.char) { it }
-            if (letterRow is RowState.Opened)
-                FlippableLetter(newLetter = it, oldLetter = state)
-            else {
-                BounceLetter(newLetter = it)
+            when (letterRow) {
+                is RowState.Opened -> FlippableLetter(newLetter = it, oldLetter = state)
+                is RowState.Append.FullRow.InvalidWord -> InvalidWordLetter(letter = it)
+                else -> BounceLetter(newLetter = it)
             }
         }
     }
@@ -73,6 +73,14 @@ fun FlippableLetter(
         else
             Letter(modifier = modifier.graphicsLayer { rotationY = 180f }, letter = newLetter)
     }
+}
+
+@Composable
+fun InvalidWordLetter(
+    modifier: Modifier = Modifier,
+    letter: LetterState
+) {
+    Letter(letter = letter)
 }
 
 @Composable

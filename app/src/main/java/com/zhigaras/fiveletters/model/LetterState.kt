@@ -1,10 +1,7 @@
 package com.zhigaras.fiveletters.model
 
 import androidx.compose.ui.graphics.Color
-import com.zhigaras.fiveletters.presentation.compose.ui.theme.black
-import com.zhigaras.fiveletters.presentation.compose.ui.theme.gray
-import com.zhigaras.fiveletters.presentation.compose.ui.theme.white
-import com.zhigaras.fiveletters.presentation.compose.ui.theme.yellow
+import com.zhigaras.fiveletters.presentation.compose.ui.theme.*
 
 abstract class LetterState {
     
@@ -42,8 +39,9 @@ abstract class LetterState {
         override val grade: Int = 0
     }
     
-    data class UserClicked(override val type: LetterType, override val char: Char) : LetterState() {
-        override val borderColor: Color = if (type is LetterType.Card) yellow else gray
+    data class UserClicked(override val char: Char) : LetterState() {
+        override val type: LetterType = LetterType.Card
+        override val borderColor: Color = yellow
         override val cardColor: Color = black
         override val charColor: Color = white
         override val angle: Float = 0f
@@ -76,6 +74,16 @@ abstract class LetterState {
         override val angle: Float = 180f
         override val action: Action = Action.CONFIRM
         override val grade: Int = 4
+    }
+    
+    data class InvalidWord(override val char: Char) : LetterState() {
+        override val type: LetterType = LetterType.Card
+        override val borderColor: Color = yellow
+        override val cardColor: Color = black
+        override val charColor: Color = red
+        override val angle: Float = 0f
+        override val action: Action = Action.APPEND
+        override val grade: Int = 0
     }
     
     override fun toString(): String {

@@ -12,5 +12,8 @@ interface WordDao {
     
     @Query("SELECT * FROM words_ru LIMIT 1 OFFSET :num")
     suspend fun getRandomWord(num: Int): Word
-
+    
+    @Query("SELECT EXISTS(SELECT * FROM WORDS_RU WHERE word = :word)")
+    suspend fun isWordExist(word: String): Boolean
+    
 }

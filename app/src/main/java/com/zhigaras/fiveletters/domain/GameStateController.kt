@@ -9,16 +9,13 @@ interface GameStateController {
     
     fun removeLetter(): GameState
     
-    fun checkGameState(origin: String): GameState
-    
-    fun checkRowState(row: List<LetterState>): RowState
+    suspend fun checkGameState(origin: String): GameState
     
     fun getConfirmedRow(): RowState
     
     fun newGame(): GameState
     
     class Base(
-        private val stringConverter: StringConverter,
         private val wordCheckable: WordCheckable
     ) : GameStateController {
         
@@ -30,10 +27,10 @@ interface GameStateController {
             if (cursorColumn != Constants.MAX_COLUMN) {
                 val snapshot = gameState.result.toMutableList()
                 val currentRow = snapshot[cursorRow].row.toMutableList()
-                currentRow[cursorColumn] = LetterState.UserClicked(LetterType.Card, char)
+                currentRow[cursorColumn] = LetterState.UserClicked(char)
                 val rowState =
                     if (cursorColumn == Constants.MAX_COLUMN - 1)
-                        RowState.Append.FullRow(currentRow.toList())
+                        RowState.Append.FullRow.UncheckedWord(currentRow.toList())
                     else
                         RowState.Append.NotFullRow(currentRow.toList())
                 snapshot[cursorRow] = rowState
@@ -47,7 +44,8 @@ interface GameStateController {
             if (cursorColumn != 0) {
                 cursorColumn--
                 val snapshot = gameState.result.toMutableList()
-                val currentRow = snapshot[cursorRow].row.toMutableList()
+                val currentRow: MutableList<LetterState> =
+                    snapshot[cursorRow].row.map { LetterState.UserClicked(it.char) }.toMutableList()
                 currentRow[cursorColumn] =
                     LetterState.Default(type = LetterType.Card, char = ' ', action = Action.REMOVE)
                 snapshot[cursorRow] = RowState.Remove(currentRow.toList())
@@ -56,26 +54,21 @@ interface GameStateController {
             return gameState
         }
         
-        override fun checkGameState(origin: String): GameState {
+        override suspend fun checkGameState(origin: String): GameState {
             val snapshot = gameState.result.toMutableList()
-            val wordToCheck = stringConverter.convertLetterToCharList(snapshot[cursorRow].row)
-            val checkedWord = wordCheckable.checkWord(wordToCheck, origin)
-            snapshot[cursorRow] = checkRowState(checkedWord)
+            snapshot[cursorRow] = wordCheckable.checkWord(snapshot[cursorRow].row, origin)
             gameState = GameState.InProgress.Progress(snapshot.toList())
             if (cursorRow == Constants.MAX_ROWS - 1)
                 gameState = GameState.Ended.Failed(snapshot.toList())
             if (snapshot.any { it is RowState.Opened.Right })
                 gameState = GameState.Ended.Win(snapshot.toList())
-            cursorRow++
-            cursorColumn = 0
-            return gameState
-        }
-        
-        override fun checkRowState(row: List<LetterState>): RowState {
-            if (row.all { it is LetterState.Exact }) {
-                return RowState.Opened.Right(row)
+            if (snapshot[cursorRow] is RowState.Append.FullRow.InvalidWord)
+                gameState = GameState.InProgress.InvalidWord(snapshot.toList())
+            if (gameState !is GameState.InProgress.InvalidWord) {
+                cursorRow++
+                cursorColumn = 0
             }
-            return RowState.Opened.Wrong(row)
+            return gameState
         }
         
         override fun getConfirmedRow(): RowState = gameState.result.last { it is RowState.Opened }

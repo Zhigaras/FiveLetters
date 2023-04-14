@@ -9,7 +9,6 @@ import com.zhigaras.fiveletters.data.DatastoreManager
 import com.zhigaras.fiveletters.data.UsernameRepository
 import com.zhigaras.fiveletters.domain.GameStateController
 import com.zhigaras.fiveletters.domain.KeyboardStateController
-import com.zhigaras.fiveletters.domain.StringConverter
 import com.zhigaras.fiveletters.domain.WordCheckable
 
 class ViewModelFactory(
@@ -20,14 +19,14 @@ class ViewModelFactory(
         val usernameRepository =
             UsernameRepository.Base(DatastoreManager.Base(core.provideDatastore()))
         val dispatchers = core.provideDispatchers()
+        val repository = core.provideRepository()
         val viewModel = when (modelClass) {
             PlayViewModel::class.java ->
                 PlayViewModel(
                     GameStateController.Base(
-                        StringConverter.Base(),
-                        WordCheckable.Base()
+                        WordCheckable.Base(repository)
                     ), KeyboardStateController.Base(Alphabet.Base.Ru()),
-                    core.provideRepository(),
+                    repository,
                     DispatchersModule.Base()
                 )
             WelcomeViewModel::class.java -> WelcomeViewModel(usernameRepository, dispatchers)
