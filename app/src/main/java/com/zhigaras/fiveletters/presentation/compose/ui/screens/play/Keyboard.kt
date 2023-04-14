@@ -12,11 +12,9 @@ import androidx.compose.material.icons.filled.Done
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedCard
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -59,7 +57,7 @@ fun Keyboard(
                         onConfirmClick = onConfirmClick
                     )
                 row.forEach {
-                    Key(modifier = Modifier.weight(10f), letter = it, onKeyClick = onKeyClick)
+                    it.Key(modifier = Modifier.weight(10f), onKeyClick = onKeyClick)
                 }
                 if (index == keyboard.keys.lastIndex)
                     BackspaceButton(
@@ -69,39 +67,6 @@ fun Keyboard(
                     )
             }
         }
-    }
-}
-
-@Composable
-fun Key(
-    modifier: Modifier = Modifier,
-    letter: LetterState,
-    onKeyClick: (Char) -> Unit
-) {
-    val buttonAnimationDuration = 500
-    val (containerColor, contentColor, borderColor) = listOf(
-        letter.cardColor,
-        letter.charColor,
-        letter.borderColor
-    ).map {
-        animateColorAsState(targetValue = it, animationSpec = tween(buttonAnimationDuration))
-    }
-    OutlinedCard(
-        border = BorderStroke(width = letter.type.borderWidth, color = borderColor.value),
-        shape = RoundedCornerShape(letter.type.cornersRadius),
-        colors = CardDefaults.cardColors(
-            containerColor = containerColor.value,
-            contentColor = contentColor.value
-        ),
-        modifier = modifier.clickable { onKeyClick(letter.char) }
-    ) {
-        Text(
-            text = letter.char.toString().uppercase(),
-            fontSize = letter.type.charSize,
-            modifier = Modifier
-                .padding(vertical = letter.type.charPadding)
-                .align(Alignment.CenterHorizontally)
-        )
     }
 }
 

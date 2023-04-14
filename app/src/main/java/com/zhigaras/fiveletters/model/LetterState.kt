@@ -1,5 +1,18 @@
 package com.zhigaras.fiveletters.model
 
+import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.core.tween
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.OutlinedCard
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import com.zhigaras.fiveletters.presentation.compose.ui.theme.*
 
@@ -13,6 +26,60 @@ abstract class LetterState {
     abstract val char: Char
     abstract val action: Action
     abstract val grade: Int
+    @Composable
+    fun Letter(
+        modifier: Modifier = Modifier
+    ) {
+        OutlinedCard(
+            border = BorderStroke(width = type.borderWidth, color = borderColor),
+            shape = RoundedCornerShape(type.cornersRadius),
+            colors = CardDefaults.cardColors(
+                containerColor = cardColor,
+                contentColor = charColor
+            ),
+            modifier = modifier.width(type.width)
+        ) {
+            Text(
+                text = char.toString().uppercase(),
+                fontSize = type.charSize,
+                modifier = Modifier
+                    .padding(type.charPadding)
+                    .align(Alignment.CenterHorizontally)
+            )
+        }
+    }
+    
+    @Composable
+    fun Key(
+        modifier: Modifier = Modifier,
+        onKeyClick: (Char) -> Unit
+    ) {
+        val buttonAnimationDuration = 500
+        val (containerColor, contentColor, borderColor) = listOf(
+            cardColor,
+            charColor,
+            borderColor
+        ).map {
+            animateColorAsState(targetValue = it, animationSpec = tween(buttonAnimationDuration))
+        }
+        OutlinedCard(
+            border = BorderStroke(width = type.borderWidth, color = borderColor.value),
+            shape = RoundedCornerShape(type.cornersRadius),
+            colors = CardDefaults.cardColors(
+                containerColor = containerColor.value,
+                contentColor = contentColor.value
+            ),
+            modifier = modifier.clickable { onKeyClick(char) }
+        ) {
+            Text(
+                text = char.toString().uppercase(),
+                fontSize = type.charSize,
+                modifier = Modifier
+                    .padding(vertical = type.charPadding)
+                    .align(Alignment.CenterHorizontally)
+            )
+        }
+    }
     
     fun convertCardToKey(): LetterState {
         return when (this) {

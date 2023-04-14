@@ -1,13 +1,10 @@
 package com.zhigaras.fiveletters.presentation.compose.ui.screens.play
 
 import androidx.compose.animation.core.*
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.OutlinedCard
-import androidx.compose.material3.Text
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
@@ -69,9 +66,9 @@ fun FlippableLetter(
             rotationY = flipRotation.value
         }) {
         if (flipRotation.value <= 90f)
-            Letter(letter = oldLetter)
+            oldLetter.Letter()
         else
-            Letter(modifier = modifier.graphicsLayer { rotationY = 180f }, letter = newLetter)
+            newLetter.Letter(modifier = modifier.graphicsLayer { rotationY = 180f })
     }
 }
 
@@ -80,7 +77,23 @@ fun InvalidWordLetter(
     modifier: Modifier = Modifier,
     letter: LetterState
 ) {
-    Letter(letter = letter)
+    val drag = remember { Animatable(0f) }
+    LaunchedEffect(key1 = letter.char) {
+        drag.animateTo(targetValue = 50f, animationSpec = tween(600, easing = EaseInOutBounce))
+        drag.animateTo(
+            targetValue = 0f,
+            animationSpec = spring(
+                dampingRatio = Spring.DampingRatioHighBouncy,
+                stiffness = Spring.StiffnessLow
+            )
+        )
+    }
+    Box(modifier = modifier
+        .graphicsLayer {
+            rotationY = drag.value
+        }) {
+        letter.Letter()
+    }
 }
 
 @Composable
@@ -99,31 +112,7 @@ fun BounceLetter(
         .graphicsLayer {
             rotationZ = rotation.value
         }) {
-        Letter(letter = newLetter)
-    }
-}
-
-@Composable
-fun Letter(
-    modifier: Modifier = Modifier,
-    letter: LetterState
-) {
-    OutlinedCard(
-        border = BorderStroke(width = letter.type.borderWidth, color = letter.borderColor),
-        shape = RoundedCornerShape(letter.type.cornersRadius),
-        colors = CardDefaults.cardColors(
-            containerColor = letter.cardColor,
-            contentColor = letter.charColor
-        ),
-        modifier = modifier.width(letter.type.width)
-    ) {
-        Text(
-            text = letter.char.toString().uppercase(),
-            fontSize = letter.type.charSize,
-            modifier = Modifier
-                .padding(letter.type.charPadding)
-                .align(Alignment.CenterHorizontally)
-        )
+        newLetter.Letter()
     }
 }
 
