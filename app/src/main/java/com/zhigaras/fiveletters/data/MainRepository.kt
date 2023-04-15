@@ -22,7 +22,7 @@ interface MainRepository {
         }
         
         override suspend fun randomWord(): Word {
-            return wordDao.getRandomWord(Random.nextInt(dictionarySize))
+            return wordDao.getWordWithOffset(Random.nextInt(dictionarySize))
         }
         
         override suspend fun isWordValid(word: String): Boolean {
@@ -30,16 +30,16 @@ interface MainRepository {
         }
     }
     
-    class Fake(private val valid: Boolean): MainRepository {
+    class Fake(private val valid: Boolean) : MainRepository {
         override suspend fun randomWord(): Word {
             return Word(1, "test", false)
         }
-    
+        
         override suspend fun saveDictionarySize() {}
-    
+        
         override suspend fun isWordValid(word: String): Boolean {
             return valid
         }
-    
+        
     }
 }
