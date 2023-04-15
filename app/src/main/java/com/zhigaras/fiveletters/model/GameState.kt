@@ -40,12 +40,11 @@ abstract class GameState {
         
     }
     
-    override fun toString(): String {
-        return result.map { it.toString() }.joinToString { "\n" }
-    }
-    
     override fun equals(other: Any?): Boolean {
-        return this.hashCode() == other.hashCode()
+        if (this === other) return true
+        if (other !is GameState) return false
+        if (this::class.java != other::class.java) return false
+        return result == other.result
     }
     
     override fun hashCode(): Int {

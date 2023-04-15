@@ -26,6 +26,7 @@ abstract class LetterState {
     abstract val char: Char
     abstract val action: Action
     abstract val grade: Int
+    
     @Composable
     fun Letter(
         modifier: Modifier = Modifier
@@ -113,7 +114,7 @@ abstract class LetterState {
         override val charColor: Color = white
         override val angle: Float = 0f
         override val action: Action = Action.APPEND
-        override val grade: Int = 1
+        override val grade: Int = 2
     }
     
     data class Wrong(override val type: LetterType, override val char: Char) : LetterState() {
@@ -122,7 +123,7 @@ abstract class LetterState {
         override val charColor: Color = white
         override val angle: Float = 180f
         override val action: Action = Action.CONFIRM
-        override val grade: Int = 2
+        override val grade: Int = 3
     }
     
     data class Right(override val type: LetterType, override val char: Char) : LetterState() {
@@ -131,7 +132,7 @@ abstract class LetterState {
         override val charColor: Color = black
         override val angle: Float = 180f
         override val action: Action = Action.CONFIRM
-        override val grade: Int = 3
+        override val grade: Int = 4
     }
     
     data class Exact(override val type: LetterType, override val char: Char) : LetterState() {
@@ -140,7 +141,7 @@ abstract class LetterState {
         override val charColor: Color = black
         override val angle: Float = 180f
         override val action: Action = Action.CONFIRM
-        override val grade: Int = 4
+        override val grade: Int = 5
     }
     
     data class InvalidWord(override val char: Char) : LetterState() {
@@ -150,7 +151,7 @@ abstract class LetterState {
         override val charColor: Color = red
         override val angle: Float = 0f
         override val action: Action = Action.APPEND
-        override val grade: Int = 0
+        override val grade: Int = 1
     }
     
     override fun toString(): String {

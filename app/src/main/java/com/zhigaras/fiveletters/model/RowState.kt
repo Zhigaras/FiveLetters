@@ -4,27 +4,39 @@ abstract class RowState {
     
     abstract val row: List<LetterState>
     
-    data class Empty(override val row: List<LetterState>) : RowState()
+    class Empty(override val row: List<LetterState>) : RowState()
     
     abstract class Append() : RowState() {
         
         abstract class FullRow() : Append() {
             
-            data class UncheckedWord(override val row: List<LetterState>) : FullRow()
+            class UncheckedWord(override val row: List<LetterState>) : FullRow()
             
-            data class InvalidWord(override val row: List<LetterState>) : FullRow()
+            class InvalidWord(override val row: List<LetterState>) : FullRow()
             
         }
         
-        data class NotFullRow(override val row: List<LetterState>) : Append()
+        class NotFullRow(override val row: List<LetterState>) : Append()
     }
     
-    data class Remove(override val row: List<LetterState>) : RowState()
+    class Remove(override val row: List<LetterState>) : RowState()
     
     abstract class Opened() : RowState() {
         
-        data class Wrong(override val row: List<LetterState>) : Opened()
+        class Wrong(override val row: List<LetterState>) : Opened()
         
-        data class Right(override val row: List<LetterState>) : Opened()
+        class Right(override val row: List<LetterState>) : Opened()
     }
+    
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (other !is RowState) return false
+        if (this::class.java != other::class.java) return false
+        return row == other.row
+    }
+    
+    override fun hashCode(): Int {
+        return row.hashCode()
+    }
+    
 }
