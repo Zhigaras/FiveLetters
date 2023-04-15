@@ -3,8 +3,7 @@ package com.zhigaras.fiveletters.core
 import android.content.Context
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
-import com.zhigaras.fiveletters.data.MainRepository
-import com.zhigaras.fiveletters.data.WordDatabase
+import com.zhigaras.fiveletters.data.*
 
 interface Core : ProvideRepository {
     
@@ -35,13 +34,23 @@ interface Core : ProvideRepository {
         
         override fun provideDatastore(): DataStore<Preferences> = datastoreModule.provideDatastore()
         
-        override fun provideRepository(): MainRepository =
+        override fun provideMainRepository(): MainRepository =
             MainRepository.Base(databaseModule.provideDatabase().getWordDao())
+        
+        override fun provideUsernameRepository(): UsernameRepository =
+            UsernameRepository.Base(DatastoreManager.Base(provideDatastore()))
+        
+        override fun provideUserStatRepository(): UserStatRepository =
+            UserStatRepository.Base(provideDatabase().getWordDao())
         
     }
 }
 
 interface ProvideRepository {
     
-    fun provideRepository(): MainRepository
+    fun provideMainRepository(): MainRepository
+    
+    fun provideUsernameRepository(): UsernameRepository
+    
+    fun provideUserStatRepository(): UserStatRepository
 }

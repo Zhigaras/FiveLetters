@@ -5,8 +5,6 @@ import androidx.lifecycle.ViewModelProvider
 import com.zhigaras.fiveletters.core.Core
 import com.zhigaras.fiveletters.core.DispatchersModule
 import com.zhigaras.fiveletters.data.Alphabet
-import com.zhigaras.fiveletters.data.DatastoreManager
-import com.zhigaras.fiveletters.data.UsernameRepository
 import com.zhigaras.fiveletters.domain.GameStateController
 import com.zhigaras.fiveletters.domain.KeyboardStateController
 import com.zhigaras.fiveletters.domain.WordCheckable
@@ -16,10 +14,9 @@ class ViewModelFactory(
 ) : ViewModelProvider.Factory {
     
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        val usernameRepository =
-            UsernameRepository.Base(DatastoreManager.Base(core.provideDatastore()))
         val dispatchers = core.provideDispatchers()
-        val repository = core.provideRepository()
+        val repository = core.provideMainRepository()
+        val userRepository = core.provideUsernameRepository()
         val viewModel = when (modelClass) {
             PlayViewModel::class.java ->
                 PlayViewModel(
@@ -29,8 +26,12 @@ class ViewModelFactory(
                     repository,
                     DispatchersModule.Base()
                 )
-            WelcomeViewModel::class.java -> WelcomeViewModel(usernameRepository, dispatchers)
-            AuthViewModel::class.java -> AuthViewModel(usernameRepository, dispatchers)
+            WelcomeViewModel::class.java -> WelcomeViewModel(userRepository, dispatchers)
+            AuthViewModel::class.java -> AuthViewModel(userRepository, dispatchers)
+            MenuViewModel::class.java -> MenuViewModel(
+                core.provideUserStatRepository(),
+                dispatchers
+            )
             else -> throw IllegalArgumentException("Unknown class name: $modelClass")
         }
         return viewModel as T

@@ -11,6 +11,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelStoreOwner
 import com.zhigaras.fiveletters.presentation.compose.ui.theme.FiveLettersTheme
 import com.zhigaras.fiveletters.presentation.compose.ui.viewmodels.AuthViewModel
+import com.zhigaras.fiveletters.presentation.compose.ui.viewmodels.MenuViewModel
 import com.zhigaras.fiveletters.presentation.compose.ui.viewmodels.PlayViewModel
 import com.zhigaras.fiveletters.presentation.compose.ui.viewmodels.WelcomeViewModel
 import com.zhigaras.fiveletters.presentation.navigation.FiveLettersNavHost
@@ -21,9 +22,9 @@ class MainActivity : ComponentActivity(), ProvideViewModel {
         val authViewModel = provideViewModel(AuthViewModel::class.java, this)
         val welcomeViewModel = provideViewModel(WelcomeViewModel::class.java, this)
         val playViewModel = provideViewModel(PlayViewModel::class.java, this)
+        val menuViewModel = provideViewModel(MenuViewModel::class.java, this)
         setContent {
             FiveLettersTheme {
-                // A surface container using the 'background' color from the theme
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.secondary
@@ -31,7 +32,8 @@ class MainActivity : ComponentActivity(), ProvideViewModel {
                     FiveLettersNavHost(
                         authViewModel = authViewModel,
                         welcomeViewModel = welcomeViewModel,
-                        playViewModel = playViewModel
+                        playViewModel = playViewModel,
+                        menuViewModel = menuViewModel
                     )
                 }
             }

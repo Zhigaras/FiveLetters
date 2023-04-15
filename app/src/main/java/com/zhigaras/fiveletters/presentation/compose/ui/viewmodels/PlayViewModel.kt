@@ -54,12 +54,6 @@ class PlayViewModel(
         }
     }
     
-    override suspend fun initRepository() {
-        mainRepository.saveDictionarySize()
-        origin = mainRepository.randomWord()
-        Log.d("AAA", origin.word)
-    }
-    
     override fun startNewGame() {
         viewModelScope.launch(dispatchers.io()) {
             origin = mainRepository.randomWord()
@@ -80,7 +74,4 @@ interface GameInteract {
     fun removeLetter()
     
     fun startNewGame()
-    
-    suspend fun initRepository()
-    
 }

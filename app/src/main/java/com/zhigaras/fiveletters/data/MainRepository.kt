@@ -6,8 +6,6 @@ interface MainRepository {
     
     suspend fun randomWord(): Word
     
-    suspend fun saveDictionarySize()
-    
     suspend fun isWordValid(word: String): Boolean
     
     suspend fun updateWord(word: Word)
@@ -15,12 +13,6 @@ interface MainRepository {
     class Base(
         private val wordDao: WordDao
     ) : MainRepository {
-        
-        private var dictionarySize = 0
-        
-        override suspend fun saveDictionarySize() {
-            dictionarySize = wordDao.getDictionarySize()
-        }
         
         override suspend fun randomWord(): Word {
             return wordDao.getUnsolvedWord()
@@ -39,8 +31,6 @@ interface MainRepository {
         override suspend fun randomWord(): Word {
             return Word(1, "test", false)
         }
-        
-        override suspend fun saveDictionarySize() {}
         
         override suspend fun isWordValid(word: String): Boolean {
             return valid

@@ -13,6 +13,7 @@ import com.zhigaras.fiveletters.presentation.compose.ui.screens.play.PlayScreen
 import com.zhigaras.fiveletters.presentation.compose.ui.screens.splash.SplashScreen
 import com.zhigaras.fiveletters.presentation.compose.ui.screens.welcome.WelcomeScreen
 import com.zhigaras.fiveletters.presentation.compose.ui.viewmodels.AuthViewModel
+import com.zhigaras.fiveletters.presentation.compose.ui.viewmodels.MenuViewModel
 import com.zhigaras.fiveletters.presentation.compose.ui.viewmodels.PlayViewModel
 import com.zhigaras.fiveletters.presentation.compose.ui.viewmodels.WelcomeViewModel
 
@@ -21,7 +22,8 @@ import com.zhigaras.fiveletters.presentation.compose.ui.viewmodels.WelcomeViewMo
 fun FiveLettersNavHost(
     authViewModel: AuthViewModel,
     welcomeViewModel: WelcomeViewModel,
-    playViewModel: PlayViewModel
+    playViewModel: PlayViewModel,
+    menuViewModel: MenuViewModel
 ) {
     val navController = rememberAnimatedNavController()
     AnimatedNavHost(
@@ -38,8 +40,7 @@ fun FiveLettersNavHost(
             SplashScreen(
                 viewModel = authViewModel,
                 navigateToWelcome = { navController.navigate(Destination.Welcome.route) },
-                navigateToMenu = { navController.navigate(Destination.Menu.route) },
-                initRepository = { playViewModel.initRepository() }
+                navigateToMenu = { navController.navigate(Destination.Menu.route) }
             )
         }
         composable(
@@ -54,7 +55,12 @@ fun FiveLettersNavHost(
             )
         }
         composable(route = Destination.Menu.route) {
-            MenuScreen(navigateToPlay = { navController.navigate(Destination.Play.route) })
+            MenuScreen(
+                viewModel = menuViewModel,
+                navigateToPlay = {
+                    playViewModel.startNewGame()
+                    navController.navigate(Destination.Play.route)
+                })
         }
         composable(route = Destination.Play.route) {
             PlayScreen(

@@ -28,7 +28,6 @@ import kotlinx.coroutines.launch
 @Composable
 fun SplashScreen(
     viewModel: AuthViewModel,
-    initRepository: suspend () -> Unit,
     navigateToWelcome: () -> Unit,
     navigateToMenu: () -> Unit
 ) {
@@ -44,9 +43,6 @@ fun SplashScreen(
     LaunchedEffect(key1 = true) {
         launch {
             viewModel.checkUsername()
-        }
-        launch {
-            initRepository()
         }
         alpha.animateTo(
             targetValue = 1f,

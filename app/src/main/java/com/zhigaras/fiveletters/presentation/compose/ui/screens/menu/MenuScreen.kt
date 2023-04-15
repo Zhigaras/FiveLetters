@@ -3,19 +3,24 @@ package com.zhigaras.fiveletters.presentation.compose.ui.screens.menu
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.zhigaras.fiveletters.R
+import com.zhigaras.fiveletters.presentation.compose.ui.viewmodels.MenuViewModel
 
 @Composable
 fun MenuScreen(
+    viewModel: MenuViewModel,
     navigateToPlay: () -> Unit
 ) {
     
     // TODO: animated header
     
+    val userStat by viewModel.userStatFlow.collectAsState()
     Column(modifier = Modifier.fillMaxSize()) {
         Box(
             modifier = Modifier
@@ -39,7 +44,7 @@ fun MenuScreen(
                         .padding(top = 32.dp)
                 )
                 Text(
-                    text = stringResource(R.string.welcome),
+                    text = "${userStat.wins} - ${userStat.winRate}",
                     style = MaterialTheme.typography.displaySmall,
                     modifier = Modifier
                         .align(Alignment.CenterHorizontally)
