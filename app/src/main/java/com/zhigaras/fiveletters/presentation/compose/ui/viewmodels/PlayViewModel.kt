@@ -8,6 +8,7 @@ import com.zhigaras.fiveletters.data.MainRepository
 import com.zhigaras.fiveletters.domain.GameStateController
 import com.zhigaras.fiveletters.domain.KeyboardStateController
 import com.zhigaras.fiveletters.model.GameState
+import com.zhigaras.fiveletters.model.Word
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
@@ -19,7 +20,7 @@ class PlayViewModel(
     private val dispatchers: DispatchersModule
 ) : ViewModel(), GameInteract {
     
-    private var origin: String = ""
+    private lateinit var origin: Word
     
     private val _gameStateFlow = MutableStateFlow(gameStateController.newGame())
     val gameStateFlow = _gameStateFlow.asStateFlow()
@@ -41,8 +42,10 @@ class PlayViewModel(
     
     override fun confirmWord() {
         viewModelScope.launch(dispatchers.io()) {
-            val result = gameStateController.checkGameState(origin)
+            val result = gameStateController.checkGameState(origin.word)
             _gameStateFlow.value = result
+            if (result is GameState.Ended.Win)
+                mainRepository.updateWord(Word(origin.id, origin.word, true))
             if (result !is GameState.InProgress.InvalidWord)
                 keyboardStateController.updateKeyboard(gameStateController.getConfirmedRow().row)
                     .let {
@@ -53,14 +56,14 @@ class PlayViewModel(
     
     override suspend fun initRepository() {
         mainRepository.saveDictionarySize()
-        origin = mainRepository.randomWord().word.uppercase()
-        Log.d("AAA", origin)
+        origin = mainRepository.randomWord()
+        Log.d("AAA", origin.word)
     }
     
     override fun startNewGame() {
         viewModelScope.launch(dispatchers.io()) {
-            origin = mainRepository.randomWord().word.uppercase()
-            Log.d("AAA", origin)
+            origin = mainRepository.randomWord()
+            Log.d("AAA", origin.word)
             _gameStateFlow.value = gameStateController.newGame()
             _keyboardFlow.value = keyboardStateController.getDefaultKeyboard()
         }

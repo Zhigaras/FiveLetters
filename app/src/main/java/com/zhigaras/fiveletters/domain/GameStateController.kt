@@ -56,7 +56,8 @@ interface GameStateController {
         
         override suspend fun checkGameState(origin: String): GameState {
             val snapshot = gameState.result.toMutableList()
-            snapshot[cursorRow] = wordCheckable.checkWord(snapshot[cursorRow].row.map { it.char }, origin)
+            snapshot[cursorRow] =
+                wordCheckable.checkWord(snapshot[cursorRow].row.map { it.char }, origin.uppercase())
             gameState = GameState.InProgress.Progress(snapshot.toList())
             if (cursorRow == Constants.MAX_ROWS - 1)
                 gameState = GameState.Ended.Failed(snapshot.toList())

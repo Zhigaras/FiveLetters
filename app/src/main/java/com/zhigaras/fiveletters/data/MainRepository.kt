@@ -1,7 +1,6 @@
 package com.zhigaras.fiveletters.data
 
 import com.zhigaras.fiveletters.model.Word
-import kotlin.random.Random
 
 interface MainRepository {
     
@@ -10,6 +9,8 @@ interface MainRepository {
     suspend fun saveDictionarySize()
     
     suspend fun isWordValid(word: String): Boolean
+    
+    suspend fun updateWord(word: Word)
     
     class Base(
         private val wordDao: WordDao
@@ -22,11 +23,15 @@ interface MainRepository {
         }
         
         override suspend fun randomWord(): Word {
-            return wordDao.getWordWithOffset(Random.nextInt(dictionarySize))
+            return wordDao.getUnsolvedWord()
         }
         
         override suspend fun isWordValid(word: String): Boolean {
             return wordDao.isWordExist(word)
+        }
+        
+        override suspend fun updateWord(word: Word) {
+            wordDao.update(word)
         }
     }
     
@@ -40,6 +45,8 @@ interface MainRepository {
         override suspend fun isWordValid(word: String): Boolean {
             return valid
         }
+        
+        override suspend fun updateWord(word: Word) {}
         
     }
 }

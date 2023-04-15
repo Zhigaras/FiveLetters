@@ -15,11 +15,6 @@ import org.junit.runner.RunWith
 import org.junit.Assert.*
 import org.junit.Before
 
-/**
- * Instrumented test, which will execute on an Android device.
- *
- * See [testing documentation](http://d.android.com/tools/testing).
- */
 @RunWith(AndroidJUnit4::class)
 class WordDaoTest {
     
@@ -34,7 +29,7 @@ class WordDaoTest {
         wordDao = database.getWordDao()
         runBlocking {
             for (i in 1..testDatabaseSize) {
-                wordDao.insert(Word(i, "testWord $i", false))
+                wordDao.insert(Word(i, "test$i", false))
             }
         }
     }
@@ -50,24 +45,27 @@ class WordDaoTest {
     }
     
     @Test
-    fun getWordWithOffset1_test() = runBlocking {
-        val actual = wordDao.getWordWithOffset(1)
-        assertEquals(actual.id, 2)
-    }
-    
-    @Test
-    fun getWordWithOffset3_test() = runBlocking {
-        val actual = wordDao.getWordWithOffset(3)
-        assertEquals(actual.id, 4)
-    }
-    
-    @Test
     fun isWordExist1_test() = runBlocking {
-        assert(wordDao.isWordExist("testWord 2"))
+        assert(wordDao.isWordExist("test2"))
     }
     
     @Test
     fun isWordExist2_test() = runBlocking {
         assert(!wordDao.isWordExist("testWord 10"))
+    }
+    
+    @Test
+    fun update_test1() = runBlocking {
+        wordDao.update(Word(1, "test1", true))
+        val actual = wordDao.findWord("test1")
+        assertEquals(actual.solvedByUser, true)
+    }
+    
+    @Test
+    fun getSolvedWordsCount_test1() = runBlocking {
+        for (i in 1..3) {
+            wordDao.update(Word(i, "test$i", true))
+        }
+        assertEquals(wordDao.getSolvedWordsCount(), 3)
     }
 }
