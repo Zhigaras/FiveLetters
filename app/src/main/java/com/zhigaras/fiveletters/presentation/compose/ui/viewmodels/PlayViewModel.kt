@@ -1,5 +1,6 @@
 package com.zhigaras.fiveletters.presentation.compose.ui.viewmodels
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.zhigaras.fiveletters.core.DispatchersModule
@@ -53,11 +54,13 @@ class PlayViewModel(
     override suspend fun initRepository() {
         mainRepository.saveDictionarySize()
         origin = mainRepository.randomWord().word.uppercase()
+        Log.d("AAA", origin)
     }
     
     override fun startNewGame() {
         viewModelScope.launch(dispatchers.io()) {
             origin = mainRepository.randomWord().word.uppercase()
+            Log.d("AAA", origin)
             _gameStateFlow.value = gameStateController.newGame()
             _keyboardFlow.value = keyboardStateController.getDefaultKeyboard()
         }

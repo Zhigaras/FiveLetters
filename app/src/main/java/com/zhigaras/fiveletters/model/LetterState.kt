@@ -153,8 +153,4 @@ abstract class LetterState {
         override val action: Action = Action.APPEND
         override val grade: Int = 1
     }
-    
-    override fun toString(): String {
-        return this::class.java.simpleName + this.char
-    }
 }
