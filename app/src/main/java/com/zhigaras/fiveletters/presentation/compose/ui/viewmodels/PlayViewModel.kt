@@ -51,7 +51,7 @@ class PlayViewModel(
     }
     
     override suspend fun initRepository() {
-        mainRepository.getDictionarySize()
+        mainRepository.saveDictionarySize()
         origin = mainRepository.randomWord().word.uppercase()
     }
     

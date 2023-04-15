@@ -7,7 +7,7 @@ import com.zhigaras.fiveletters.model.RowState
 
 interface WordCheckable {
     
-    suspend fun checkWord(word: List<LetterState>, origin: String): RowState
+    suspend fun checkWord(word: List<Char>, origin: String): RowState
     
     fun checkRowState(row: List<LetterState>): RowState
     
@@ -15,12 +15,11 @@ interface WordCheckable {
     
     class Base(private val mainRepository: MainRepository) : WordCheckable {
         
-        override suspend fun checkWord(word: List<LetterState>, origin: String): RowState {
-            if (mainRepository.isWordValid(word.map { it.char.lowercaseChar() }.joinToString(""))) {
+        override suspend fun checkWord(word: List<Char>, origin: String): RowState {
+            if (mainRepository.isWordValid(word.map { it.lowercaseChar() }.joinToString(""))) {
                 val originCharList = origin.toList()
-                val uppercaseChars = word.map { it.char.uppercaseChar() }
                 val result = emptyList<LetterState>().toMutableList()
-                originCharList.zip(uppercaseChars) { o, w ->
+                originCharList.zip(word.map { it }) { o, w ->
                     if (w == o) {
                         result.add(LetterState.Exact(LetterType.Card, w))
                     } else if (originCharList.contains(w)) {
@@ -31,7 +30,7 @@ interface WordCheckable {
                 }
                 return checkRowState(result)
             }
-            return RowState.Append.FullRow.InvalidWord(word.map { LetterState.InvalidWord(it.char) })
+            return RowState.Append.FullRow.InvalidWord(word.map { LetterState.InvalidWord(it) })
         }
         
         override fun checkRowState(row: List<LetterState>): RowState {

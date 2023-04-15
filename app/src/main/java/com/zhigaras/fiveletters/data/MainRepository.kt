@@ -7,7 +7,7 @@ interface MainRepository {
     
     suspend fun randomWord(): Word
     
-    suspend fun getDictionarySize()
+    suspend fun saveDictionarySize()
     
     suspend fun isWordValid(word: String): Boolean
     
@@ -17,7 +17,7 @@ interface MainRepository {
         
         private var dictionarySize = 0
         
-        override suspend fun getDictionarySize() {
+        override suspend fun saveDictionarySize() {
             dictionarySize = wordDao.getDictionarySize()
         }
         
@@ -28,5 +28,18 @@ interface MainRepository {
         override suspend fun isWordValid(word: String): Boolean {
             return wordDao.isWordExist(word)
         }
+    }
+    
+    class Fake(private val valid: Boolean): MainRepository {
+        override suspend fun randomWord(): Word {
+            return Word(1, "test", false)
+        }
+    
+        override suspend fun saveDictionarySize() {}
+    
+        override suspend fun isWordValid(word: String): Boolean {
+            return valid
+        }
+    
     }
 }
