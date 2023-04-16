@@ -37,20 +37,60 @@ fun MenuScreen(
                     .fillMaxSize()
                     .padding(16.dp)
             ) {
-                Text(
-                    text = stringResource(R.string.five_letters),
-                    style = MaterialTheme.typography.displayLarge,
-                    modifier = Modifier
-                        .align(Alignment.CenterHorizontally)
-                        .padding(top = 32.dp)
-                )
-                Text(
-                    text = "${userStat.wins} - ${userStat.winRate} - ${userStat.games} - ${userStat.averageAttempts}",
-                    style = MaterialTheme.typography.displaySmall,
-                    modifier = Modifier
-                        .align(Alignment.CenterHorizontally)
-                        .padding(top = 64.dp)
-                )
+                Column(modifier = Modifier.fillMaxSize()) {
+                    Text(
+                        text = stringResource(R.string.five_letters),
+                        style = MaterialTheme.typography.displayLarge,
+                        modifier = Modifier
+                            .align(Alignment.CenterHorizontally)
+                            .padding(16.dp)
+                    )
+                    Column(
+                        verticalArrangement = Arrangement.spacedBy(8.dp),
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(8.dp)
+                    ) {
+                        Row(
+                            horizontalArrangement = Arrangement.spacedBy(8.dp),
+                            modifier = Modifier.weight(1f)
+                        ) {
+                            StatCard(
+                                modifier = Modifier
+                                    .weight(1f)
+                                    .fillMaxHeight()
+                            ) {
+                                GamesStat(content = userStat.games.toString())
+                            }
+                            StatCard(
+                                modifier = Modifier
+                                    .weight(1f)
+                                    .fillMaxHeight()
+                            ) {
+                                WinsStat(content = userStat.wins.toString())
+                            }
+                        }
+                        Row(
+                            horizontalArrangement = Arrangement.spacedBy(8.dp),
+                            modifier = Modifier.weight(1f)
+                        ) {
+                            StatCard(
+                                modifier = Modifier
+                                    .weight(1f)
+                                    .fillMaxHeight()
+                            ) {
+                                WinRateStat(content = userStat)
+                            }
+                            StatCard(
+                                modifier = Modifier
+                                    .weight(1f)
+                                    .fillMaxHeight()
+                            ) {
+                                AttemptsStat(content = userStat.formattedAttempts)
+                            }
+                        }
+                    }
+                }
             }
         }
         Box(

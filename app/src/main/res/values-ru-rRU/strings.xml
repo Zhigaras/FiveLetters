@@ -18,4 +18,8 @@
     <string name="new_word">Новое слово</string>
     <string name="win_text">Вы выиграли!</string>
     <string name="fail_text">В следующий раз точно получится!</string>
+    <string name="games_played">Игр сыграно</string>
+    <string name="wins">Побед</string>
+    <string name="win_rate">Прогресс</string>
+    <string name="average_attempts">Попыток в среднем</string>
 </resources>

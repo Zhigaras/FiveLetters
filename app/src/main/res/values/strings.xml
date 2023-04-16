@@ -17,4 +17,8 @@
     <string name="new_word">New word</string>
     <string name="win_text">Congratulations!</string>
     <string name="fail_text">Be sure to win next time!</string>
+    <string name="games_played">Games played</string>
+    <string name="wins">Wins</string>
+    <string name="win_rate">Win rate</string>
+    <string name="average_attempts">Attempts on average</string>
 </resources>

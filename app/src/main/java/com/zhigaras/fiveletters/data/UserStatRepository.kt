@@ -23,7 +23,7 @@ interface UserStatRepository : DatastoreManager {
             ) { words, games, attempts ->
                 UserStat(
                     wins = words,
-                    winRate = words.toFloat() / dictionarySize,
+                    progress = words.toFloat() / dictionarySize,
                     games = games,
                     averageAttempts = attempts ?: 0f
                 )
