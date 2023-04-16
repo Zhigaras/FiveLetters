@@ -34,7 +34,7 @@ interface MainRepository : DatastoreManager.UserStat.Write {
     
     class Fake(private val valid: Boolean) : MainRepository {
         override suspend fun randomWord(): Word {
-            return Word(1, "test", false)
+            return Word(1, "test", false, 0)
         }
         
         override suspend fun isWordValid(word: String): Boolean {

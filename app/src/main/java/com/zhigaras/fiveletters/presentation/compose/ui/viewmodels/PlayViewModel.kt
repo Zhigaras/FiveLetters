@@ -42,10 +42,10 @@ class PlayViewModel(
     
     override fun confirmWord() {
         viewModelScope.launch(dispatchers.io()) {
-            val result = gameStateController.checkGameState(origin.word)
+            val result = gameStateController.checkGameState(origin.word) { attempts ->
+                mainRepository.updateWord(Word(origin.id, origin.word, true, attempts))
+            }
             _gameStateFlow.value = result
-            if (result is GameState.Ended.Win)
-                mainRepository.updateWord(Word(origin.id, origin.word, true))
             if (result !is GameState.InProgress.InvalidWord)
                 keyboardStateController.updateKeyboard(gameStateController.getConfirmedRow().row)
                     .let {

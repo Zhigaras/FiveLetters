@@ -9,7 +9,7 @@ interface GameStateController {
     
     fun removeLetter(): GameState
     
-    suspend fun checkGameState(origin: String): GameState
+    suspend fun checkGameState(origin: String, saveAttempts: suspend (Int) -> Unit): GameState
     
     fun getConfirmedRow(): RowState
     
@@ -54,15 +54,20 @@ interface GameStateController {
             return gameState
         }
         
-        override suspend fun checkGameState(origin: String): GameState {
+        override suspend fun checkGameState(
+            origin: String,
+            saveAttempts: suspend (Int) -> Unit
+        ): GameState {
             val snapshot = gameState.result.toMutableList()
             snapshot[cursorRow] =
                 wordCheckable.checkWord(snapshot[cursorRow].row.map { it.char }, origin.uppercase())
             gameState = GameState.InProgress.Progress(snapshot.toList())
             if (cursorRow == Constants.MAX_ROWS - 1)
                 gameState = GameState.Ended.Failed(snapshot.toList())
-            if (snapshot.any { it is RowState.Opened.Right })
+            if (snapshot.any { it is RowState.Opened.Right }) {
                 gameState = GameState.Ended.Win(snapshot.toList())
+                saveAttempts(cursorRow + 1)
+            }
             if (snapshot[cursorRow] is RowState.Append.FullRow.InvalidWord)
                 gameState = GameState.InProgress.InvalidWord(snapshot.toList())
             if (gameState !is GameState.InProgress.InvalidWord) {

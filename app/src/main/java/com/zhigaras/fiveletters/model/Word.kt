@@ -8,5 +8,6 @@ data class Word(
     @PrimaryKey(autoGenerate = true)
     val id: Int,
     val word: String,
-    val solvedByUser: Boolean
+    val solvedByUser: Boolean,
+    val attempts: Int
 )

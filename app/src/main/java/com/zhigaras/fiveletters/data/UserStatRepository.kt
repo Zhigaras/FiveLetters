@@ -16,11 +16,16 @@ interface UserStatRepository : DatastoreManager {
         
         override suspend fun getUserStatFlow(): Flow<UserStat> {
             val dictionarySize = wordDao.getDictionarySize()
-            return wordDao.getSolvedWordsCount().combine(userStat.getGamesCount()) { words, games ->
+            return combine(
+                wordDao.getSolvedWordsCount(),
+                userStat.getGamesCount(),
+                wordDao.getAverageAttempt()
+            ) { words, games, attempts ->
                 UserStat(
                     wins = words,
                     winRate = words.toFloat() / dictionarySize,
-                    games = games
+                    games = games,
+                    averageAttempts = attempts ?: 0f
                 )
             }
         }

@@ -22,6 +22,9 @@ interface WordDao {
     @Query("SELECT EXISTS(SELECT * FROM WORDS_RU WHERE word = :word)")
     suspend fun isWordExist(word: String): Boolean
     
+    @Query("SELECT AVG(attempts) FROM words_ru WHERE solvedByUser = 1")
+    fun getAverageAttempt(): Flow<Float?>
+    
     @Update
     suspend fun update(word: Word)
     

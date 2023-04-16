@@ -21,7 +21,7 @@ fun MenuScreen(
     
     // TODO: animated header
     
-    val userStat by viewModel.userStatFlow().collectAsState(UserStat(0, 0f, 0))
+    val userStat by viewModel.userStatFlow().collectAsState(UserStat(0, 0f, 0, 0f))
     Column(modifier = Modifier.fillMaxSize()) {
         Box(
             modifier = Modifier
@@ -45,7 +45,7 @@ fun MenuScreen(
                         .padding(top = 32.dp)
                 )
                 Text(
-                    text = "${userStat.wins} - ${userStat.winRate} - ${userStat.games}",
+                    text = "${userStat.wins} - ${userStat.winRate} - ${userStat.games} - ${userStat.averageAttempts}",
                     style = MaterialTheme.typography.displaySmall,
                     modifier = Modifier
                         .align(Alignment.CenterHorizontally)
