@@ -2,7 +2,7 @@ package com.zhigaras.fiveletters.data
 
 import com.zhigaras.fiveletters.model.Word
 
-interface MainRepository {
+interface MainRepository : DatastoreManager.UserStat.Write {
     
     suspend fun randomWord(): Word
     
@@ -11,7 +11,8 @@ interface MainRepository {
     suspend fun updateWord(word: Word)
     
     class Base(
-        private val wordDao: WordDao
+        private val wordDao: WordDao,
+        private val userStat: DatastoreManager.UserStat.Write
     ) : MainRepository {
         
         override suspend fun randomWord(): Word {
@@ -25,6 +26,10 @@ interface MainRepository {
         override suspend fun updateWord(word: Word) {
             wordDao.update(word)
         }
+        
+        override suspend fun incrementGamesCounter() {
+            userStat.incrementGamesCounter()
+        }
     }
     
     class Fake(private val valid: Boolean) : MainRepository {
@@ -37,6 +42,8 @@ interface MainRepository {
         }
         
         override suspend fun updateWord(word: Word) {}
+        
+        override suspend fun incrementGamesCounter() {}
         
     }
 }

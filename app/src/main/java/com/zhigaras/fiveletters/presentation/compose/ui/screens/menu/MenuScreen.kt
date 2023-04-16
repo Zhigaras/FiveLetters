@@ -10,6 +10,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.zhigaras.fiveletters.R
+import com.zhigaras.fiveletters.model.UserStat
 import com.zhigaras.fiveletters.presentation.compose.ui.viewmodels.MenuViewModel
 
 @Composable
@@ -20,7 +21,7 @@ fun MenuScreen(
     
     // TODO: animated header
     
-    val userStat by viewModel.userStatFlow.collectAsState()
+    val userStat by viewModel.userStatFlow().collectAsState(UserStat(0, 0f, 0))
     Column(modifier = Modifier.fillMaxSize()) {
         Box(
             modifier = Modifier
@@ -44,7 +45,7 @@ fun MenuScreen(
                         .padding(top = 32.dp)
                 )
                 Text(
-                    text = "${userStat.wins} - ${userStat.winRate}",
+                    text = "${userStat.wins} - ${userStat.winRate} - ${userStat.games}",
                     style = MaterialTheme.typography.displaySmall,
                     modifier = Modifier
                         .align(Alignment.CenterHorizontally)

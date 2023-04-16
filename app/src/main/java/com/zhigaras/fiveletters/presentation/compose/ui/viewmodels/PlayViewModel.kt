@@ -60,6 +60,7 @@ class PlayViewModel(
             Log.d("AAA", origin.word)
             _gameStateFlow.value = gameStateController.newGame()
             _keyboardFlow.value = keyboardStateController.getDefaultKeyboard()
+            mainRepository.incrementGamesCounter()
         }
     }
 }

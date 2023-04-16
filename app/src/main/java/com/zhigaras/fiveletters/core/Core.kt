@@ -28,6 +28,8 @@ interface Core : ProvideRepository {
             provideInstance.provideDatabaseModule()
         }
         
+        private val datastoreManager = DatastoreManager.Base(provideDatastore())
+        
         override fun provideDispatchers(): DispatchersModule = dispatchersModule
         
         override fun provideDatabase(): WordDatabase = databaseModule.provideDatabase()
@@ -35,13 +37,13 @@ interface Core : ProvideRepository {
         override fun provideDatastore(): DataStore<Preferences> = datastoreModule.provideDatastore()
         
         override fun provideMainRepository(): MainRepository =
-            MainRepository.Base(databaseModule.provideDatabase().getWordDao())
+            MainRepository.Base(databaseModule.provideDatabase().getWordDao(), datastoreManager)
         
         override fun provideUsernameRepository(): UsernameRepository =
-            UsernameRepository.Base(DatastoreManager.Base(provideDatastore()))
+            UsernameRepository.Base(datastoreManager)
         
         override fun provideUserStatRepository(): UserStatRepository =
-            UserStatRepository.Base(provideDatabase().getWordDao())
+            UserStatRepository.Base(provideDatabase().getWordDao(), datastoreManager)
         
     }
 }

@@ -9,8 +9,8 @@ interface UsernameRepository {
     suspend fun readUsername(): Username
     
     class Base(
-        private val datastoreManager: DatastoreManager
-    ): UsernameRepository {
+        private val datastoreManager: DatastoreManager.Username
+    ) : UsernameRepository {
         
         private val unspecifiedName = "unspecified"
         
@@ -18,7 +18,7 @@ interface UsernameRepository {
             val nameToSave = name.ifBlank { unspecifiedName }
             datastoreManager.saveUsername(nameToSave)
         }
-    
+        
         override suspend fun readUsername(): Username {
             val name = datastoreManager.readUsername()
             if (name.isBlank()) return Username.Loaded.NeedNameRequest()
