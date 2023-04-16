@@ -12,8 +12,10 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
@@ -29,6 +31,7 @@ import com.zhigaras.fiveletters.presentation.compose.ui.viewmodels.WelcomeViewMo
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun WelcomeScreen(
     viewModel: WelcomeViewModel,
@@ -37,10 +40,16 @@ fun WelcomeScreen(
     val scrollState = rememberScrollState()
     val name by viewModel.usernameFlow.collectAsState()
     val alpha = remember { List(5) { Animatable(0f) } }
+    val keyboardController = LocalSoftwareKeyboardController.current
+    val scope = rememberCoroutineScope()
     
     fun confirmName() {
-        viewModel.saveUsername()
-        navigateToMenu()
+        scope.launch {
+            keyboardController?.hide()
+            delay(300) //TODO avoiding screen shacking during transition to menu screen
+            viewModel.saveUsername()
+            navigateToMenu()
+        }
     }
     
     fun alphaModifier(index: Int) = Modifier.alpha(alpha[index].value)
@@ -120,7 +129,6 @@ fun WelcomeScreen(
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun NameInputTextField(
     textState: String,
@@ -140,15 +148,17 @@ fun NameInputTextField(
             imeAction = ImeAction.Done
         ),
         keyboardActions = KeyboardActions(
-            onDone = { onNameConfirm() } //TODO hideKeyboard?
+            onDone = { onNameConfirm() }
         ),
-        colors = TextFieldDefaults.outlinedTextFieldColors(
-            unfocusedBorderColor = MaterialTheme.colorScheme.secondary,
-            focusedBorderColor = MaterialTheme.colorScheme.secondary,
+        colors = OutlinedTextFieldDefaults.colors(
             focusedTextColor = MaterialTheme.colorScheme.secondary,
-            cursorColor = MaterialTheme.colorScheme.secondary,
             unfocusedTextColor = MaterialTheme.colorScheme.secondary,
-            containerColor = white
+            focusedContainerColor = white,
+            unfocusedContainerColor = white,
+            disabledContainerColor = white,
+            cursorColor = MaterialTheme.colorScheme.secondary,
+            focusedBorderColor = MaterialTheme.colorScheme.secondary,
+            unfocusedBorderColor = MaterialTheme.colorScheme.secondary,
         ),
         placeholder = {
             Text(

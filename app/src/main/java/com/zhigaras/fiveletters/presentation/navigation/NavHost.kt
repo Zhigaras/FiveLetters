@@ -33,9 +33,8 @@ fun FiveLettersNavHost(
     ) {
         composable(
             route = Destination.Splash.route,
-            enterTransition = {
-                fadeIn(animationSpec = tween(1000))
-            }
+            enterTransition = { fadeIn(animationSpec = tween(700)) },
+            exitTransition = { fadeOut(animationSpec = tween(2000)) }
         ) {
             SplashScreen(
                 viewModel = authViewModel,
@@ -47,14 +46,29 @@ fun FiveLettersNavHost(
             route = Destination.Welcome.route,
             enterTransition = {
                 slideInVertically(animationSpec = tween(5)) //TODO check
-            }
+            },
+            exitTransition = { fadeOut(animationSpec = tween(500)) }
         ) {
             WelcomeScreen(
                 viewModel = welcomeViewModel,
                 navigateToMenu = { navController.navigate(Destination.Menu.route) }
             )
         }
-        composable(route = Destination.Menu.route) {
+        composable(
+            route = Destination.Menu.route,
+            enterTransition = { fadeIn(animationSpec = tween(1000)) },
+            popEnterTransition = {
+                slideIntoContainer(
+                    animationSpec = tween(700),
+                    towards = AnimatedContentTransitionScope.SlideDirection.End
+                )
+            },
+            exitTransition = {
+                slideOutOfContainer(
+                    animationSpec = tween(700),
+                    towards = AnimatedContentTransitionScope.SlideDirection.Start
+                )
+            }) {
             MenuScreen(
                 viewModel = menuViewModel,
                 navigateToPlay = {
@@ -62,7 +76,21 @@ fun FiveLettersNavHost(
                     navController.navigate(Destination.Play.route)
                 })
         }
-        composable(route = Destination.Play.route) {
+        composable(
+            route = Destination.Play.route,
+            enterTransition = {
+                slideIntoContainer(
+                    animationSpec = tween(700),
+                    towards = AnimatedContentTransitionScope.SlideDirection.Start
+                )
+            },
+            exitTransition = {
+                slideOutOfContainer(
+                    animationSpec = tween(700),
+                    towards = AnimatedContentTransitionScope.SlideDirection.End
+                )
+            }
+        ) {
             PlayScreen(
                 viewModel = playViewModel,
                 toMenuClick = { navController.popBackStack() },
