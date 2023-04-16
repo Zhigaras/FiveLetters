@@ -51,42 +51,28 @@ fun MenuScreen(
                             .fillMaxSize()
                             .padding(8.dp)
                     ) {
-                        Row(
-                            horizontalArrangement = Arrangement.spacedBy(8.dp),
-                            modifier = Modifier.weight(1f)
-                        ) {
-                            StatCard(
-                                modifier = Modifier
-                                    .weight(1f)
-                                    .fillMaxHeight()
+                        listOf(
+                            listOf(R.string.games_played, R.string.wins).zip(
+                                listOf(userStat.games.toString(), userStat.wins.toString())
+                            ),
+                            listOf(R.string.win_rate, R.string.average_attempts).zip(
+                                listOf(userStat.formattedProgress, userStat.formattedAttempts)
+                            )
+                        ).forEachIndexed { columnIndex, row ->
+                            Row(
+                                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                                modifier = Modifier.weight(1f)
                             ) {
-                                GamesStat(content = userStat.games.toString())
-                            }
-                            StatCard(
-                                modifier = Modifier
-                                    .weight(1f)
-                                    .fillMaxHeight()
-                            ) {
-                                WinsStat(content = userStat.wins.toString())
-                            }
-                        }
-                        Row(
-                            horizontalArrangement = Arrangement.spacedBy(8.dp),
-                            modifier = Modifier.weight(1f)
-                        ) {
-                            StatCard(
-                                modifier = Modifier
-                                    .weight(1f)
-                                    .fillMaxHeight()
-                            ) {
-                                WinRateStat(content = userStat)
-                            }
-                            StatCard(
-                                modifier = Modifier
-                                    .weight(1f)
-                                    .fillMaxHeight()
-                            ) {
-                                AttemptsStat(content = userStat.formattedAttempts)
+                                row.forEachIndexed { rowIndex, item ->
+                                    StatCard(
+                                        modifier = Modifier
+                                            .weight(1f)
+                                            .fillMaxHeight(),
+                                        content = item,
+                                        progressFlag = columnIndex == 1 && rowIndex == 0,
+                                        progress = userStat.progress
+                                    )
+                                }
                             }
                         }
                     }

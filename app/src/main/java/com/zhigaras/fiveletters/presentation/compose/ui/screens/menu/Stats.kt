@@ -12,8 +12,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import com.zhigaras.fiveletters.R
-import com.zhigaras.fiveletters.model.UserStat
 import com.zhigaras.fiveletters.presentation.compose.ui.theme.black
 import com.zhigaras.fiveletters.presentation.compose.ui.theme.white
 
@@ -21,7 +19,9 @@ import com.zhigaras.fiveletters.presentation.compose.ui.theme.white
 @Composable
 fun StatCard(
     modifier: Modifier = Modifier,
-    content: @Composable () -> Unit
+    content: Pair<Int, String>,
+    progressFlag: Boolean,
+    progress: Float
 ) {
     OutlinedCard(
         shape = RoundedCornerShape(20.dp),
@@ -38,60 +38,30 @@ fun StatCard(
                 .fillMaxSize()
                 .padding(4.dp)
         ) {
-            content()
+            StatCardContent(content = content, progressFlag = progressFlag, progress = progress)
         }
     }
 }
 
 @Composable
-fun GamesStat(
+fun StatCardContent(
     modifier: Modifier = Modifier,
-    content: String
-) {
-    Box() {
-        StatHeader(str = R.string.games_played, modifier = modifier.align(Alignment.TopCenter))
-        StatContent(modifier = modifier.align(Alignment.Center), str = content)
-    }
-}
-
-@Composable
-fun WinsStat(
-    modifier: Modifier = Modifier,
-    content: String
-) {
-    Box() {
-        StatHeader(str = R.string.wins, modifier = modifier.align(Alignment.TopCenter))
-        StatContent(modifier = modifier.align(Alignment.Center), str = content)
-    }
-}
-
-@Composable
-fun WinRateStat(
-    modifier: Modifier = Modifier,
-    content: UserStat
+    content: Pair<Int, String>,
+    progressFlag: Boolean,
+    progress: Float
 ) {
     Box {
-        StatHeader(str = R.string.win_rate, modifier = modifier.align(Alignment.TopCenter))
-        StatContent(modifier = modifier.align(Alignment.Center), str = content.formattedProgress)
-        LinearProgressIndicator(
-            progress = content.progress,
-            trackColor = white,
-            color = black,
-            modifier = modifier
-                .align(Alignment.BottomCenter)
-                .padding(horizontal = 16.dp, vertical = 8.dp)
-        )
-    }
-}
-
-@Composable
-fun AttemptsStat(
-    modifier: Modifier = Modifier,
-    content: String
-) {
-    Box() {
-        StatHeader(str = R.string.average_attempts, modifier = modifier.align(Alignment.TopCenter))
-        StatContent(modifier = modifier.align(Alignment.Center), str = content)
+        StatHeader(str = content.first, modifier = modifier.align(Alignment.TopCenter))
+        StatBody(modifier = modifier.align(Alignment.Center), str = content.second)
+        if (progressFlag)
+            LinearProgressIndicator(
+                progress = progress,
+                trackColor = white,
+                color = black,
+                modifier = modifier
+                    .align(Alignment.BottomCenter)
+                    .padding(horizontal = 16.dp, vertical = 8.dp)
+            )
     }
 }
 
@@ -108,7 +78,7 @@ fun StatHeader(
 }
 
 @Composable
-fun StatContent(
+fun StatBody(
     modifier: Modifier = Modifier,
     str: String
 ) {
