@@ -22,4 +22,5 @@
     <string name="wins">Побед</string>
     <string name="win_rate">Прогресс</string>
     <string name="average_attempts">Попыток в среднем</string>
+    <string name="press_back_again">Нажмите еще раз чтобы выйти</string>
 </resources>
