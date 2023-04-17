@@ -5,6 +5,7 @@ import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.navigation.NavHostController
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
@@ -38,8 +39,8 @@ fun FiveLettersNavHost(
         ) {
             SplashScreen(
                 viewModel = authViewModel,
-                navigateToWelcome = { navController.navigate(Destination.Welcome.route) },
-                navigateToMenu = { navController.navigate(Destination.Menu.route) }
+                navigateToWelcome = { navController.navigateWithClearBackStack(Destination.Welcome.route) },
+                navigateToMenu = { navController.navigateWithClearBackStack(Destination.Menu.route) }
             )
         }
         composable(
@@ -51,7 +52,7 @@ fun FiveLettersNavHost(
         ) {
             WelcomeScreen(
                 viewModel = welcomeViewModel,
-                navigateToMenu = { navController.navigate(Destination.Menu.route) }
+                navigateToMenu = { navController.navigateWithClearBackStack(Destination.Menu.route) }
             )
         }
         composable(
@@ -97,5 +98,11 @@ fun FiveLettersNavHost(
                 onNewGameClick = { playViewModel.startNewGame() }
             )
         }
+    }
+}
+
+fun NavHostController.navigateWithClearBackStack(route: String) {
+    navigate(route) {
+        popUpTo(0)
     }
 }
