@@ -103,7 +103,7 @@ fun WelcomeScreen(
             AnimatedContent(
                 targetState = name.isBlank(),
                 transitionSpec = {
-                    fadeIn(animationSpec = tween(800)) with
+                    fadeIn(animationSpec = tween(800)) togetherWith
                             fadeOut(animationSpec = tween(800))
                 }
             ) {
