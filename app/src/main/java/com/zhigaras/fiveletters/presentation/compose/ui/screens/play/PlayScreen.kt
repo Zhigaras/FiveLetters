@@ -36,6 +36,7 @@ fun PlayScreen(
     }
     if (showDialog.value) {
         EndGameDialog(
+            origin = gameState.origin,
             onDismiss = { showDialog.value = false },
             toMenuClick = { showDialog.value = false; toMenuClick() },
             onNewGameClick = onNewGameClick

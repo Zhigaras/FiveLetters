@@ -22,4 +22,5 @@
     <string name="win_rate">Win rate</string>
     <string name="average_attempts">Attempts on average</string>
     <string name="press_back_again">Press \"back\" again to exit</string>
+    <string name="the_word_is">"The word is: %1$s"</string>
 </resources>
