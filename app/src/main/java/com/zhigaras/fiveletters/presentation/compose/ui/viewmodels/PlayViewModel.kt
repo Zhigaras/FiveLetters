@@ -8,7 +8,6 @@ import com.zhigaras.fiveletters.data.MainRepository
 import com.zhigaras.fiveletters.domain.GameStateController
 import com.zhigaras.fiveletters.domain.KeyboardStateController
 import com.zhigaras.fiveletters.model.GameState
-import com.zhigaras.fiveletters.model.Word
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
@@ -20,9 +19,8 @@ class PlayViewModel(
     private val dispatchers: DispatchersModule
 ) : ViewModel(), GameInteract {
     
-    private lateinit var origin: Word
-    
-    private val _gameStateFlow = MutableStateFlow(gameStateController.newGame())
+    private val _gameStateFlow: MutableStateFlow<GameState> =
+        MutableStateFlow(GameState.NotStartedYet())
     val gameStateFlow = _gameStateFlow.asStateFlow()
     
     private val _keyboardFlow = MutableStateFlow(keyboardStateController.getDefaultKeyboard())
@@ -42,9 +40,8 @@ class PlayViewModel(
     
     override fun confirmWord() {
         viewModelScope.launch(dispatchers.io()) {
-            val result = gameStateController.checkGameState(origin.word) { attempts ->
-                mainRepository.updateWord(Word(origin.id, origin.word, true, attempts))
-            }
+            val result =
+                gameStateController.checkGameState { word -> mainRepository.updateWord(word) }
             _gameStateFlow.value = result
             if (result !is GameState.InvalidWord)
                 keyboardStateController.updateKeyboard(gameStateController.getConfirmedRow().row)
@@ -56,15 +53,14 @@ class PlayViewModel(
     
     override fun startNewGame() {
         viewModelScope.launch(dispatchers.io()) {
-            origin = mainRepository.randomWord()
+            val origin = mainRepository.randomWord()
             Log.d("AAA", origin.word)
-            _gameStateFlow.value = gameStateController.newGame()
+            _gameStateFlow.value = gameStateController.newGame(origin)
             _keyboardFlow.value = keyboardStateController.getDefaultKeyboard()
             mainRepository.incrementGamesCounter()
         }
     }
 }
-
 
 interface GameInteract {
     

@@ -46,47 +46,7 @@ fun main() {
     
     val adapter = moshi.adapter(GameState::class.java)
     
-    val gameState = GameState.Progress(listOf(
-        RowState.InvalidWord(listOf(LetterState.InvalidWord('u')))
-    ))
-    val letter = LetterState.Wrong(LetterType.Card(), 'e')
-//    val letterJson = adapter.toJson(letter).also { println(it) }
-//    val deserializedLetter = adapter.fromJson(letterJson).also { println(it?.angle) }
-    
-    val gameJson = adapter.toJson(gameState).also { println(it) }
-    adapter.fromJson(gameJson).let {
-        println(it)
-    println(it?.result)
-    }
-    
-    
 }
-
-abstract class TestState {
-    
-    val test: String = this::class.java.simpleName
-    abstract val label: String
-    abstract val id: Int
-    abstract val kind: String
-    
-    class Start(override val id: Int = 1) : TestState() {
-        override val label: String = "start"
-        override val kind = "slkgjsl"
-        
-    }
-    
-    class End(override val id: Int = 2) : TestState() {
-        override val label: String = "end"
-        override val kind = "asdas"
-        
-    }
-    
-    override fun toString(): String {
-        return "label = $label, id = $id, kind = $kind"
-    }
-}
-
-class Type
 
 
 

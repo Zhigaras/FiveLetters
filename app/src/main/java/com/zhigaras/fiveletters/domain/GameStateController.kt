@@ -9,11 +9,11 @@ interface GameStateController {
     
     fun removeLetter(): GameState
     
-    suspend fun checkGameState(origin: String, saveAttempts: suspend (Int) -> Unit): GameState
+    suspend fun checkGameState(saveAttempts: suspend (Word) -> Unit): GameState
     
     fun getConfirmedRow(): RowState
     
-    fun newGame(): GameState
+    fun newGame(origin: Word): GameState
     
     class Base(
         private val wordCheckable: WordCheckable
@@ -22,6 +22,7 @@ interface GameStateController {
         private lateinit var gameState: GameState
         private var cursorRow = 0
         private var cursorColumn = 0
+        private lateinit var origin: Word
         
         override fun inputLetter(char: Char): GameState {
             if (cursorColumn != Constants.MAX_COLUMN) {
@@ -35,7 +36,7 @@ interface GameStateController {
                         RowState.NotFullRow(currentRow.toList())
                 snapshot[cursorRow] = rowState
                 cursorColumn++
-                gameState = GameState.Progress(snapshot.toList())
+                gameState = GameState.Progress(snapshot.toList(), origin.word)
             }
             return gameState
         }
@@ -53,27 +54,27 @@ interface GameStateController {
                         action = Action.REMOVE
                     )
                 snapshot[cursorRow] = RowState.NotFullRow(currentRow.toList())
-                gameState = GameState.Progress(snapshot.toList())
+                gameState = GameState.Progress(snapshot.toList(), origin.word)
             }
             return gameState
         }
         
-        override suspend fun checkGameState(
-            origin: String,
-            saveAttempts: suspend (Int) -> Unit
-        ): GameState {
+        override suspend fun checkGameState(saveAttempts: suspend (Word) -> Unit): GameState {
             val snapshot = gameState.result.toMutableList()
             snapshot[cursorRow] =
-                wordCheckable.checkWord(snapshot[cursorRow].row.map { it.char }, origin.uppercase())
-            gameState = GameState.Progress(snapshot.toList())
+                wordCheckable.checkWord(
+                    snapshot[cursorRow].row.map { it.char },
+                    origin.word.uppercase()
+                )
+            gameState = GameState.Progress(snapshot.toList(), origin.word)
             if (cursorRow == Constants.MAX_ROWS - 1)
-                gameState = GameState.Failed(snapshot.toList())
+                gameState = GameState.Failed(snapshot.toList(), origin.word)
             if (snapshot.any { it is RowState.Right }) {
-                gameState = GameState.Win(snapshot.toList())
-                saveAttempts(cursorRow + 1)
+                gameState = GameState.Win(snapshot.toList(), origin.word)
+                saveAttempts(origin.copy(solvedByUser = true, attempts = cursorRow + 1))
             }
             if (snapshot[cursorRow] is RowState.InvalidWord)
-                gameState = GameState.InvalidWord(snapshot.toList())
+                gameState = GameState.InvalidWord(snapshot.toList(), origin.word)
             if (gameState !is GameState.InvalidWord) {
                 cursorRow++
                 cursorColumn = 0
@@ -83,8 +84,9 @@ interface GameStateController {
         
         override fun getConfirmedRow(): RowState = gameState.result.last { it.isRowOpened }
         
-        override fun newGame(): GameState {
-            gameState = GameState.Start()
+        override fun newGame(origin: Word): GameState {
+            this.origin = origin
+            gameState = GameState.Start(origin.word)
             cursorRow = 0
             cursorColumn = 0
             return gameState

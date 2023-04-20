@@ -10,7 +10,24 @@ abstract class GameState {
     
     abstract val inProgress: Boolean
     
-    class Start : GameState() {
+    abstract val origin: String
+    
+    class NotStartedYet() : GameState() {
+        override val result: List<RowState> =
+            List(Constants.MAX_ROWS) {
+                RowState.Empty(List(Constants.MAX_COLUMN) {
+                    LetterState.Default(
+                        type = LetterType.Card(),
+                        char = ' '
+                    )
+                })
+            }
+        override val inProgress: Boolean = false
+        override val origin: String = ""
+        
+    }
+    
+    class Start(override val origin: String) : GameState() {
         override val result: List<RowState> =
             List(Constants.MAX_ROWS) {
                 RowState.Empty(List(Constants.MAX_COLUMN) {
@@ -23,20 +40,21 @@ abstract class GameState {
         override val inProgress: Boolean = true
     }
     
-    class Progress(override val result: List<RowState>) : GameState() {
+    class Progress(override val result: List<RowState>, override val origin: String) : GameState() {
         override val inProgress: Boolean = true
     }
     
-    class InvalidWord(override val result: List<RowState>) : GameState() {
+    class InvalidWord(override val result: List<RowState>, override val origin: String) :
+        GameState() {
         override val inProgress: Boolean = true
     }
     
     
-    class Failed(override val result: List<RowState>) : GameState() {
+    class Failed(override val result: List<RowState>, override val origin: String) : GameState() {
         override val inProgress: Boolean = false
     }
     
-    class Win(override val result: List<RowState>) : GameState() {
+    class Win(override val result: List<RowState>, override val origin: String) : GameState() {
         override val inProgress: Boolean = false
     }
     
