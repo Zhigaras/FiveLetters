@@ -23,17 +23,17 @@ interface WordCheckable {
                 var result = emptyList<LetterState>().toMutableList()
                 originCharList.zip(word.map { it }) { o, w ->
                     if (w == o) {
-                        result.add(LetterState.Exact(LetterType.Card, w))
+                        result.add(LetterState.Exact(LetterType.Card(), w))
                     } else if (originCharList.contains(w)) {
-                        result.add(LetterState.Right(LetterType.Card, w))
+                        result.add(LetterState.Right(LetterType.Card(), w))
                     } else {
-                        result.add(LetterState.Wrong(LetterType.Card, w))
+                        result.add(LetterState.Wrong(LetterType.Card(), w))
                     }
                 }
                 result = checkDuplicates(result, origin)
                 return checkRowState(result.toList())
             }
-            return RowState.Append.FullRow.InvalidWord(word.map { LetterState.InvalidWord(it) })
+            return RowState.InvalidWord(word.map { LetterState.InvalidWord(it) })
         }
         
         override fun checkDuplicates(
@@ -49,7 +49,7 @@ interface WordCheckable {
             val updatedWord = emptyList<LetterState>().toMutableList()
             word.forEach {
                 if (it is LetterState.Right && !notExactOriginChars.contains(it.char)) {
-                    updatedWord.add(LetterState.Wrong(LetterType.Card, it.char))
+                    updatedWord.add(LetterState.Wrong(LetterType.Card(), it.char))
                 } else {
                     updatedWord.add(it)
                 }
@@ -59,9 +59,9 @@ interface WordCheckable {
         
         override fun checkRowState(row: List<LetterState>): RowState {
             if (row.all { it is LetterState.Exact }) {
-                return RowState.Opened.Right(row)
+                return RowState.Right(row)
             }
-            return RowState.Opened.Wrong(row)
+            return RowState.Wrong(row)
         }
         
         override suspend fun isWordValid(word: List<LetterState>): Boolean {

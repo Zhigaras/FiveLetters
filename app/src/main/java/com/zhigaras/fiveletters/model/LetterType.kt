@@ -11,13 +11,14 @@ import com.zhigaras.fiveletters.presentation.compose.ui.theme.letterCardInnerPad
 
 abstract class LetterType {
     
+    val label: String = this::class.java.simpleName
     abstract val charSize: TextUnit
     abstract val width: Dp
     abstract val charPadding: Dp
     abstract val cornersRadius: Dp
     abstract val borderWidth: Dp
     
-    object Card : LetterType() {
+    class Card : LetterType() {
         override val charSize: TextUnit = 50.sp
         override val width: Dp = 70.dp
         override val charPadding: Dp = letterCardInnerPadding
@@ -25,11 +26,27 @@ abstract class LetterType {
         override val borderWidth: Dp = 2.dp
     }
     
-    object Key : LetterType() {
+    class Key : LetterType() {
         override val charSize: TextUnit = 20.sp
         override val width: Dp = 0.dp
         override val charPadding: Dp = keyboardButtonInnerPadding
         override val cornersRadius: Dp = keyboardButtonCornerRadius
         override val borderWidth: Dp = 1.dp
+    }
+    
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (other !is LetterType) return false
+        return this::class.java == other::class.java
+    }
+    
+    override fun hashCode(): Int {
+        var result = label.hashCode()
+        result = 31 * result + charSize.hashCode()
+        result = 31 * result + width.hashCode()
+        result = 31 * result + charPadding.hashCode()
+        result = 31 * result + cornersRadius.hashCode()
+        result = 31 * result + borderWidth.hashCode()
+        return result
     }
 }

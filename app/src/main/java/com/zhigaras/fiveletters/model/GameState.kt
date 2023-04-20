@@ -4,40 +4,40 @@ import com.zhigaras.fiveletters.Constants
 
 abstract class GameState {
     
+    val label: String = this::class.java.simpleName
+    
     abstract val result: List<RowState>
     
     abstract val inProgress: Boolean
     
-    abstract class InProgress : GameState() {
-        
+    class Start : GameState() {
+        override val result: List<RowState> =
+            List(Constants.MAX_ROWS) {
+                RowState.Empty(List(Constants.MAX_COLUMN) {
+                    LetterState.Default(
+                        type = LetterType.Card(),
+                        char = ' '
+                    )
+                })
+            }
         override val inProgress: Boolean = true
-        
-        class Start : InProgress() {
-            override val result: List<RowState> =
-                List(Constants.MAX_ROWS) {
-                    RowState.Empty(List(Constants.MAX_COLUMN) {
-                        LetterState.Default(
-                            type = LetterType.Card,
-                            char = ' '
-                        )
-                    })
-                }
-        }
-        
-        class Progress(override val result: List<RowState>) : InProgress()
-        
-        class InvalidWord(override val result: List<RowState>) : InProgress()
-        
     }
     
-    abstract class Ended : GameState() {
-        
+    class Progress(override val result: List<RowState>) : GameState() {
+        override val inProgress: Boolean = true
+    }
+    
+    class InvalidWord(override val result: List<RowState>) : GameState() {
+        override val inProgress: Boolean = true
+    }
+    
+    
+    class Failed(override val result: List<RowState>) : GameState() {
         override val inProgress: Boolean = false
-        
-        class Failed(override val result: List<RowState>) : Ended()
-        
-        class Win(override val result: List<RowState>) : Ended()
-        
+    }
+    
+    class Win(override val result: List<RowState>) : GameState() {
+        override val inProgress: Boolean = false
     }
     
     override fun equals(other: Any?): Boolean {

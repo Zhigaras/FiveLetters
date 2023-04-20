@@ -83,4 +83,11 @@ dependencies {
 
     //Navigation animation
     implementation "com.google.accompanist:accompanist-navigation-animation:0.31.0-alpha"
+
+    //Moshi
+    def moshi_version = "1.14.0"
+    implementation "com.squareup.moshi:moshi-kotlin:$moshi_version"
+    implementation "com.squareup.moshi:moshi-adapters:$moshi_version"
+    implementation "com.squareup.moshi:moshi-kotlin-codegen:$moshi_version"
+
 }

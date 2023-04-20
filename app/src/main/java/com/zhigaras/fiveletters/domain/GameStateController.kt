@@ -30,12 +30,12 @@ interface GameStateController {
                 currentRow[cursorColumn] = LetterState.UserClicked(char)
                 val rowState =
                     if (cursorColumn == Constants.MAX_COLUMN - 1)
-                        RowState.Append.FullRow.UncheckedWord(currentRow.toList())
+                        RowState.UncheckedWord(currentRow.toList())
                     else
-                        RowState.Append.NotFullRow(currentRow.toList())
+                        RowState.NotFullRow(currentRow.toList())
                 snapshot[cursorRow] = rowState
                 cursorColumn++
-                gameState = GameState.InProgress.Progress(snapshot.toList())
+                gameState = GameState.Progress(snapshot.toList())
             }
             return gameState
         }
@@ -47,9 +47,13 @@ interface GameStateController {
                 val currentRow: MutableList<LetterState> =
                     snapshot[cursorRow].row.map { LetterState.UserClicked(it.char) }.toMutableList()
                 currentRow[cursorColumn] =
-                    LetterState.Default(type = LetterType.Card, char = ' ', action = Action.REMOVE)
-                snapshot[cursorRow] = RowState.Remove(currentRow.toList())
-                gameState = GameState.InProgress.Progress(snapshot.toList())
+                    LetterState.Default(
+                        type = LetterType.Card(),
+                        char = ' ',
+                        action = Action.REMOVE
+                    )
+                snapshot[cursorRow] = RowState.NotFullRow(currentRow.toList())
+                gameState = GameState.Progress(snapshot.toList())
             }
             return gameState
         }
@@ -61,26 +65,26 @@ interface GameStateController {
             val snapshot = gameState.result.toMutableList()
             snapshot[cursorRow] =
                 wordCheckable.checkWord(snapshot[cursorRow].row.map { it.char }, origin.uppercase())
-            gameState = GameState.InProgress.Progress(snapshot.toList())
+            gameState = GameState.Progress(snapshot.toList())
             if (cursorRow == Constants.MAX_ROWS - 1)
-                gameState = GameState.Ended.Failed(snapshot.toList())
-            if (snapshot.any { it is RowState.Opened.Right }) {
-                gameState = GameState.Ended.Win(snapshot.toList())
+                gameState = GameState.Failed(snapshot.toList())
+            if (snapshot.any { it is RowState.Right }) {
+                gameState = GameState.Win(snapshot.toList())
                 saveAttempts(cursorRow + 1)
             }
-            if (snapshot[cursorRow] is RowState.Append.FullRow.InvalidWord)
-                gameState = GameState.InProgress.InvalidWord(snapshot.toList())
-            if (gameState !is GameState.InProgress.InvalidWord) {
+            if (snapshot[cursorRow] is RowState.InvalidWord)
+                gameState = GameState.InvalidWord(snapshot.toList())
+            if (gameState !is GameState.InvalidWord) {
                 cursorRow++
                 cursorColumn = 0
             }
             return gameState
         }
         
-        override fun getConfirmedRow(): RowState = gameState.result.last { it is RowState.Opened }
+        override fun getConfirmedRow(): RowState = gameState.result.last { it.isRowOpened }
         
         override fun newGame(): GameState {
-            gameState = GameState.InProgress.Start()
+            gameState = GameState.Start()
             cursorRow = 0
             cursorColumn = 0
             return gameState

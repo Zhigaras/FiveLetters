@@ -4,7 +4,15 @@ import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.IntrinsicSize
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
@@ -22,8 +30,12 @@ import com.zhigaras.fiveletters.R
 import com.zhigaras.fiveletters.model.GameState
 import com.zhigaras.fiveletters.model.Keyboard
 import com.zhigaras.fiveletters.model.LetterState
-import com.zhigaras.fiveletters.model.RowState
-import com.zhigaras.fiveletters.presentation.compose.ui.theme.*
+import com.zhigaras.fiveletters.presentation.compose.ui.theme.black
+import com.zhigaras.fiveletters.presentation.compose.ui.theme.gray
+import com.zhigaras.fiveletters.presentation.compose.ui.theme.keyboardButtonCornerRadius
+import com.zhigaras.fiveletters.presentation.compose.ui.theme.keyboardButtonInnerPadding
+import com.zhigaras.fiveletters.presentation.compose.ui.theme.white
+import com.zhigaras.fiveletters.presentation.compose.ui.theme.yellow
 
 @Composable
 fun Keyboard(
@@ -35,7 +47,7 @@ fun Keyboard(
     onBackspaceClick: () -> Unit
 ) {
     val isConfirmButtonEnabled = remember { mutableStateOf(false) }
-    isConfirmButtonEnabled.value = gameState.result.any { it is RowState.Append.FullRow }
+    isConfirmButtonEnabled.value = gameState.result.any { it.isRowFull }
     
     Column(
         verticalArrangement = Arrangement.spacedBy(4.dp),

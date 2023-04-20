@@ -46,7 +46,7 @@ class PlayViewModel(
                 mainRepository.updateWord(Word(origin.id, origin.word, true, attempts))
             }
             _gameStateFlow.value = result
-            if (result !is GameState.InProgress.InvalidWord)
+            if (result !is GameState.InvalidWord)
                 keyboardStateController.updateKeyboard(gameStateController.getConfirmedRow().row)
                     .let {
                         _keyboardFlow.value = it

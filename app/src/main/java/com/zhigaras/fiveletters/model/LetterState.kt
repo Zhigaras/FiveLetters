@@ -18,6 +18,7 @@ import com.zhigaras.fiveletters.presentation.compose.ui.theme.*
 
 abstract class LetterState {
     
+    val label: String = this::class.java.simpleName
     abstract val type: LetterType
     abstract val borderColor: Color
     abstract val cardColor: Color
@@ -84,10 +85,10 @@ abstract class LetterState {
     
     fun convertCardToKey(): LetterState {
         return when (this) {
-            is Wrong -> Wrong(LetterType.Key, char)
-            is Right -> Right(LetterType.Key, char)
-            is Exact -> Exact(LetterType.Key, char)
-            else -> Default(LetterType.Key, char)
+            is Wrong -> Wrong(LetterType.Key(), char)
+            is Right -> Right(LetterType.Key(), char)
+            is Exact -> Exact(LetterType.Key(), char)
+            else -> Default(LetterType.Key(), char)
         }
     }
     
@@ -108,7 +109,7 @@ abstract class LetterState {
     }
     
     data class UserClicked(override val char: Char) : LetterState() {
-        override val type: LetterType = LetterType.Card
+        override val type: LetterType = LetterType.Card()
         override val borderColor: Color = yellow
         override val cardColor: Color = black
         override val charColor: Color = white
@@ -145,7 +146,7 @@ abstract class LetterState {
     }
     
     data class InvalidWord(override val char: Char) : LetterState() {
-        override val type: LetterType = LetterType.Card
+        override val type: LetterType = LetterType.Card()
         override val borderColor: Color = yellow
         override val cardColor: Color = black
         override val charColor: Color = red

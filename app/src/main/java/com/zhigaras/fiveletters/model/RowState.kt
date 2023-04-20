@@ -3,29 +3,37 @@ package com.zhigaras.fiveletters.model
 abstract class RowState {
     
     abstract val row: List<LetterState>
+    abstract val isRowFull: Boolean
+    abstract val isRowOpened: Boolean
+    val label: String = this::class.java.simpleName
     
-    class Empty(override val row: List<LetterState>) : RowState()
-    
-    abstract class Append() : RowState() {
-        
-        abstract class FullRow() : Append() {
-            
-            class UncheckedWord(override val row: List<LetterState>) : FullRow()
-            
-            class InvalidWord(override val row: List<LetterState>) : FullRow()
-            
-        }
-        
-        class NotFullRow(override val row: List<LetterState>) : Append()
+    class Empty(override val row: List<LetterState>) : RowState() {
+        override val isRowFull: Boolean = false
+        override val isRowOpened: Boolean = false
+    }
+    class UncheckedWord(override val row: List<LetterState>) : RowState(){
+        override val isRowFull: Boolean = true
+        override val isRowOpened: Boolean = false
     }
     
-    class Remove(override val row: List<LetterState>) : RowState()
+    class InvalidWord(override val row: List<LetterState>) : RowState(){
+        override val isRowFull: Boolean = true
+        override val isRowOpened: Boolean = false
+    }
     
-    abstract class Opened() : RowState() {
-        
-        class Wrong(override val row: List<LetterState>) : Opened()
-        
-        class Right(override val row: List<LetterState>) : Opened()
+    class NotFullRow(override val row: List<LetterState>) : RowState(){
+        override val isRowFull: Boolean = false
+        override val isRowOpened: Boolean = false
+    }
+    
+    class Wrong(override val row: List<LetterState>) : RowState(){
+        override val isRowFull: Boolean = true
+        override val isRowOpened: Boolean = true
+    }
+    
+    class Right(override val row: List<LetterState>) : RowState(){
+        override val isRowFull: Boolean = true
+        override val isRowOpened: Boolean = true
     }
     
     override fun equals(other: Any?): Boolean {

@@ -41,8 +41,8 @@ fun PlayScreen(
             onNewGameClick = onNewGameClick
         ) {
             when (gameState) {
-                is GameState.Ended.Failed -> FailDialogContent()
-                is GameState.Ended.Win -> WinDialogContent()
+                is GameState.Failed -> FailDialogContent()
+                is GameState.Win -> WinDialogContent()
             }
         }
     }

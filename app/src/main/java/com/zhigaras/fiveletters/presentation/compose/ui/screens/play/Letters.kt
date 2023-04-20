@@ -41,9 +41,9 @@ fun LetterRow(
     ) {
         letterRow.row.forEach {
             val state = remember(key1 = it.char) { it }
-            when (letterRow) {
-                is RowState.Opened -> FlippableLetter(newLetter = it, oldLetter = state)
-                is RowState.Append.FullRow.InvalidWord -> InvalidWordLetter(letter = it)
+            when {
+                letterRow.isRowOpened -> FlippableLetter(newLetter = it, oldLetter = state)
+                letterRow is RowState.InvalidWord -> InvalidWordLetter(letter = it)
                 else -> BounceLetter(newLetter = it)
             }
         }
