@@ -12,7 +12,7 @@ import kotlinx.coroutines.launch
 class AuthViewModel(
     private val usernameRepository: UsernameRepository,
     private val dispatchers: DispatchersModule
-): ViewModel(), UsernameInteract.Check {
+) : ViewModel(), AuthInteract {
     
     private val _userFlow: MutableStateFlow<Username> = MutableStateFlow(Username.NotLoadedYet())
     val userFlow = _userFlow.asStateFlow()
@@ -23,4 +23,10 @@ class AuthViewModel(
             _userFlow.value = usernameRepository.readUsername()
         }
     }
+}
+
+interface AuthInteract {
+    
+    fun checkUsername()
+    
 }

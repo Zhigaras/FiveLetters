@@ -8,34 +8,11 @@ import androidx.datastore.preferences.core.stringPreferencesKey
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.transform
 
-interface DatastoreManager {
-    
-    interface Username: DatastoreManager {
-        suspend fun saveUsername(name: String)
-        
-        suspend fun readUsername(): String
-        
-    }
-    
-    interface UserStat: DatastoreManager {
-        
-        interface Write: UserStat {
-            
-            suspend fun incrementGamesCounter()
-            
-        }
-        
-        interface Read: UserStat {
-            
-            suspend fun getGamesCount(): Flow<Int>
-            
-        }
-    }
-    
+interface DatastoreManager : UsernameInteract, UserStatInteract.Read, UserStatInteract.Write {
     
     class Base(
         private val datastore: DataStore<Preferences>
-    ) : Username, UserStat.Read, UserStat.Write {
+    ) : DatastoreManager {
         
         private val usernameKey = stringPreferencesKey("username")
         private val gamesCountKey = intPreferencesKey("gamesCount")

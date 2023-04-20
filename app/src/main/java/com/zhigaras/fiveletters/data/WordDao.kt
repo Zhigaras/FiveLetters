@@ -8,13 +8,9 @@ import com.zhigaras.fiveletters.model.Word
 import kotlinx.coroutines.flow.Flow
 
 @Dao
-interface WordDao {
-    
-    @Query("SELECT COUNT(*) FROM words_ru")
-    suspend fun getDictionarySize(): Int
-    
-    @Query("SELECT COUNT(*) FROM words_ru WHERE solvedByUser = 1")
-    fun getSolvedWordsCount(): Flow<Int>
+interface WordDao : MainDao, UserStatDao, TestDao
+
+interface MainDao {
     
     @Query("SELECT * FROM words_ru WHERE solvedByUser = 0 ORDER BY RANDOM() LIMIT 1")
     suspend fun getUnsolvedWord(): Word
@@ -22,11 +18,25 @@ interface WordDao {
     @Query("SELECT EXISTS(SELECT * FROM WORDS_RU WHERE word = :word)")
     suspend fun isWordExist(word: String): Boolean
     
+    @Update
+    suspend fun update(word: Word)
+    
+}
+
+interface UserStatDao {
+    
+    @Query("SELECT COUNT(*) FROM words_ru")
+    suspend fun getDictionarySize(): Int
+    
+    @Query("SELECT COUNT(*) FROM words_ru WHERE solvedByUser = 1")
+    fun getSolvedWordsCount(): Flow<Int>
+    
     @Query("SELECT AVG(attempts) FROM words_ru WHERE solvedByUser = 1")
     fun getAverageAttempt(): Flow<Float?>
     
-    @Update
-    suspend fun update(word: Word)
+}
+
+interface TestDao {
     
     @Insert
     suspend fun insert(word: Word)

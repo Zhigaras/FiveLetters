@@ -9,7 +9,7 @@ interface UsernameRepository {
     suspend fun readUsername(): Username
     
     class Base(
-        private val datastoreManager: DatastoreManager.Username
+        private val datastoreManager: UsernameInteract
     ) : UsernameRepository {
         
         private val unspecifiedName = "unspecified"

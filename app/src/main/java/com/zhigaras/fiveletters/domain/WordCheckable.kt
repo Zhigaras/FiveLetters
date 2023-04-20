@@ -13,12 +13,10 @@ interface WordCheckable {
     
     fun checkRowState(row: List<LetterState>): RowState
     
-    suspend fun isWordValid(word: List<LetterState>): Boolean
-    
     class Base(private val mainRepository: MainRepository) : WordCheckable {
         
         override suspend fun checkWord(word: List<Char>, origin: String): RowState {
-            if (mainRepository.isWordValid(word.map { it.lowercaseChar() }.joinToString(""))) {
+            if (mainRepository.isWordExist(word.map { it.lowercaseChar() }.joinToString(""))) {
                 val originCharList = origin.toList()
                 var result = emptyList<LetterState>().toMutableList()
                 originCharList.zip(word.map { it }) { o, w ->
@@ -62,10 +60,6 @@ interface WordCheckable {
                 return RowState.Right(row)
             }
             return RowState.Wrong(row)
-        }
-        
-        override suspend fun isWordValid(word: List<LetterState>): Boolean {
-            return mainRepository.isWordValid(word.map { it.char }.joinToString(""))
         }
     }
 }

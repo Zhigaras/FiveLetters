@@ -12,17 +12,15 @@ import kotlinx.coroutines.flow.flowOn
 class MenuViewModel(
     private val userStatRepository: UserStatRepository,
     private val dispatchers: DispatchersModule
-) : ViewModel(), MenuScreenInteract {
+) : ViewModel(), MenuInteract {
     
     override fun userStatFlow() = flow {
         val stat = userStatRepository.getUserStatFlow()
         emitAll(stat)
     }.flowOn(dispatchers.io())
-    
-    
 }
 
-interface MenuScreenInteract {
+interface MenuInteract {
     
     fun userStatFlow(): Flow<UserStat>
 }

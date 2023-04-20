@@ -4,14 +4,13 @@ import com.zhigaras.fiveletters.model.UserStat
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 
-interface UserStatRepository : DatastoreManager {
+interface UserStatRepository {
     
     suspend fun getUserStatFlow(): Flow<UserStat>
     
-    
     class Base(
-        private val wordDao: WordDao,
-        private val userStat: DatastoreManager.UserStat.Read
+        private val wordDao: UserStatDao,
+        private val userStat: UserStatInteract.Read
     ) : UserStatRepository {
         
         override suspend fun getUserStatFlow(): Flow<UserStat> {

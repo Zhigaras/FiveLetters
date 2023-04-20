@@ -41,7 +41,7 @@ class PlayViewModel(
     override fun confirmWord() {
         viewModelScope.launch(dispatchers.io()) {
             val result =
-                gameStateController.checkGameState { word -> mainRepository.updateWord(word) }
+                gameStateController.checkGameState { word -> mainRepository.update(word) }
             _gameStateFlow.value = result
             if (result !is GameState.InvalidWord)
                 keyboardStateController.updateKeyboard(gameStateController.getConfirmedRow().row)
@@ -53,7 +53,7 @@ class PlayViewModel(
     
     override fun startNewGame() {
         viewModelScope.launch(dispatchers.io()) {
-            val origin = mainRepository.randomWord()
+            val origin = mainRepository.getUnsolvedWord()
             Log.d("AAA", origin.word)
             _gameStateFlow.value = gameStateController.newGame(origin)
             _keyboardFlow.value = keyboardStateController.getDefaultKeyboard()

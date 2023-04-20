@@ -11,7 +11,7 @@ import kotlinx.coroutines.launch
 class WelcomeViewModel(
     private val usernameRepository: UsernameRepository,
     private val dispatchers: DispatchersModule
-) : ViewModel(), UsernameInteract.Save {
+) : ViewModel(), WelcomeInteract {
     
     private val _usernameFlow = MutableStateFlow("")
     val usernameFlow = _usernameFlow.asStateFlow()
@@ -27,17 +27,9 @@ class WelcomeViewModel(
     }
 }
 
-interface UsernameInteract {
+interface WelcomeInteract {
     
-    interface Save {
+    fun onNameChanged(name: String)
     
-        fun onNameChanged(name: String)
-    
-        fun saveUsername()
-    }
-    
-    interface Check {
-        
-        fun checkUsername()
-    }
+    fun saveUsername()
 }
