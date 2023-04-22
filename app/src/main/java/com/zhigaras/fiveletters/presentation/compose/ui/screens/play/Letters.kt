@@ -9,14 +9,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.unit.dp
-import com.zhigaras.fiveletters.model.GameState
+import com.zhigaras.fiveletters.model.LetterFieldState
 import com.zhigaras.fiveletters.model.LetterState
 import com.zhigaras.fiveletters.model.RowState
 
 @Composable
 fun LetterField(
     modifier: Modifier = Modifier,
-    gameState: GameState
+    letterFieldState: LetterFieldState
 ) {
     Column(
         verticalArrangement = Arrangement.spacedBy(4.dp, Alignment.CenterVertically),
@@ -24,7 +24,7 @@ fun LetterField(
             .fillMaxWidth()
             .padding(8.dp)
     ) {
-        gameState.result.forEach { letterRow ->
+        letterFieldState.result.forEach { letterRow ->
             LetterRow(letterRow = letterRow)
         }
     }

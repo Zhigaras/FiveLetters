@@ -27,7 +27,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.zhigaras.fiveletters.R
-import com.zhigaras.fiveletters.model.GameState
+import com.zhigaras.fiveletters.model.LetterFieldState
 import com.zhigaras.fiveletters.model.Keyboard
 import com.zhigaras.fiveletters.model.LetterState
 import com.zhigaras.fiveletters.presentation.compose.ui.theme.black
@@ -40,14 +40,14 @@ import com.zhigaras.fiveletters.presentation.compose.ui.theme.yellow
 @Composable
 fun Keyboard(
     modifier: Modifier = Modifier,
-    gameState: GameState,
+    letterFieldState: LetterFieldState,
     keyboard: Keyboard,
     onKeyClick: (Char) -> Unit,
     onConfirmClick: () -> Unit,
     onBackspaceClick: () -> Unit
 ) {
     val isConfirmButtonEnabled = remember { mutableStateOf(false) }
-    isConfirmButtonEnabled.value = gameState.result.any { it.isRowFull }
+    isConfirmButtonEnabled.value = letterFieldState.result.any { it.isRowFull }
     
     Column(
         verticalArrangement = Arrangement.spacedBy(4.dp),

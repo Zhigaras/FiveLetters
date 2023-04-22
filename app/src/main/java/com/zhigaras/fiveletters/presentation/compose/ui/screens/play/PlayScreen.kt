@@ -17,7 +17,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.zhigaras.fiveletters.model.GameState
+import com.zhigaras.fiveletters.model.LetterFieldState
 import com.zhigaras.fiveletters.presentation.compose.ui.viewmodels.PlayViewModel
 import kotlinx.coroutines.delay
 
@@ -30,20 +30,20 @@ fun PlayScreen(
     val gameState by viewModel.gameStateFlow.collectAsStateWithLifecycle()
     val keyboard by viewModel.keyboardFlow.collectAsStateWithLifecycle()
     val showDialog = remember { mutableStateOf(false) }
-    LaunchedEffect(key1 = gameState.inProgress) {
+    LaunchedEffect(key1 = gameState.letterFieldState.inProgress) {
         delay(700)
-        showDialog.value = !gameState.inProgress
+        showDialog.value = !gameState.letterFieldState.inProgress
     }
     if (showDialog.value) {
         EndGameDialog(
-            origin = gameState.origin,
+            origin = gameState.origin.word,
             onDismiss = { showDialog.value = false },
             toMenuClick = { showDialog.value = false; toMenuClick() },
             onNewGameClick = onNewGameClick
         ) {
-            when (gameState) {
-                is GameState.Failed -> FailDialogContent()
-                is GameState.Win -> WinDialogContent()
+            when (gameState.letterFieldState) {
+                is LetterFieldState.Failed -> FailDialogContent()
+                is LetterFieldState.Win -> WinDialogContent()
             }
         }
     }
@@ -55,21 +55,21 @@ fun PlayScreen(
             contentAlignment = Alignment.Center,
             modifier = Modifier.weight(1f)
         ) {
-            LetterField(gameState = gameState)
+            LetterField(letterFieldState = gameState.letterFieldState)
         }
         Box(
             modifier = Modifier,
             contentAlignment = Alignment.BottomCenter
         ) {
             AnimatedContent(
-                targetState = gameState.inProgress,
+                targetState = gameState.letterFieldState.inProgress,
                 transitionSpec = {
                     fadeIn(animationSpec = tween(1000)) togetherWith fadeOut(tween(1000))
                 }
             ) { inProgress ->
                 if (inProgress)
                     Keyboard(
-                        gameState = gameState,
+                        letterFieldState = gameState.letterFieldState,
                         keyboard = keyboard,
                         onKeyClick = { viewModel.inputLetter(it) },
                         onConfirmClick = { viewModel.confirmWord() },

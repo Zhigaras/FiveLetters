@@ -3,7 +3,7 @@ package com.zhigaras.fiveletters
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.adapters.PolymorphicJsonAdapterFactory
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
-import com.zhigaras.fiveletters.model.GameState
+import com.zhigaras.fiveletters.model.LetterFieldState
 import com.zhigaras.fiveletters.model.LetterState
 import com.zhigaras.fiveletters.model.LetterType
 import com.zhigaras.fiveletters.model.RowState
@@ -13,12 +13,12 @@ fun main() {
     
     val moshi = Moshi.Builder()
         .add(
-            PolymorphicJsonAdapterFactory.of(GameState::class.java, "label")
-            .withSubtype(GameState.Progress::class.java, GameState.Progress::class.java.simpleName)
-            .withSubtype(GameState.Start::class.java, GameState.Start::class.java.simpleName)
-            .withSubtype(GameState.InvalidWord::class.java, GameState.InvalidWord::class.java.simpleName)
-            .withSubtype(GameState.Win::class.java, GameState.Win::class.java.simpleName)
-            .withSubtype(GameState.Failed::class.java, GameState.Failed::class.java.simpleName)
+            PolymorphicJsonAdapterFactory.of(LetterFieldState::class.java, "label")
+            .withSubtype(LetterFieldState.Progress::class.java, LetterFieldState.Progress::class.java.simpleName)
+            .withSubtype(LetterFieldState.Start::class.java, LetterFieldState.Start::class.java.simpleName)
+            .withSubtype(LetterFieldState.InvalidWord::class.java, LetterFieldState.InvalidWord::class.java.simpleName)
+            .withSubtype(LetterFieldState.Win::class.java, LetterFieldState.Win::class.java.simpleName)
+            .withSubtype(LetterFieldState.Failed::class.java, LetterFieldState.Failed::class.java.simpleName)
         )
         .add(
             PolymorphicJsonAdapterFactory.of(LetterType::class.java, "label")
@@ -44,7 +44,7 @@ fun main() {
         .add(KotlinJsonAdapterFactory())
         .build()
     
-    val adapter = moshi.adapter(GameState::class.java)
+    val adapter = moshi.adapter(LetterFieldState::class.java)
     
 }
 

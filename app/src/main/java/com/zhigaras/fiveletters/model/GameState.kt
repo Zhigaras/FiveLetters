@@ -2,70 +2,13 @@ package com.zhigaras.fiveletters.model
 
 import com.zhigaras.fiveletters.Constants
 
-abstract class GameState {
-    
-    val label: String = this::class.java.simpleName
-    
-    abstract val result: List<RowState>
-    
-    abstract val inProgress: Boolean
-    
-    abstract val origin: String
-    
-    class NotStartedYet() : GameState() {
-        override val result: List<RowState> =
-            List(Constants.MAX_ROWS) {
-                RowState.Empty(List(Constants.MAX_COLUMN) {
-                    LetterState.Default(
-                        type = LetterType.Card(),
-                        char = ' '
-                    )
-                })
-            }
-        override val inProgress: Boolean = false
-        override val origin: String = ""
-        
-    }
-    
-    class Start(override val origin: String) : GameState() {
-        override val result: List<RowState> =
-            List(Constants.MAX_ROWS) {
-                RowState.Empty(List(Constants.MAX_COLUMN) {
-                    LetterState.Default(
-                        type = LetterType.Card(),
-                        char = ' '
-                    )
-                })
-            }
-        override val inProgress: Boolean = true
-    }
-    
-    class Progress(override val result: List<RowState>, override val origin: String) : GameState() {
-        override val inProgress: Boolean = true
-    }
-    
-    class InvalidWord(override val result: List<RowState>, override val origin: String) :
-        GameState() {
-        override val inProgress: Boolean = true
-    }
-    
-    
-    class Failed(override val result: List<RowState>, override val origin: String) : GameState() {
-        override val inProgress: Boolean = false
-    }
-    
-    class Win(override val result: List<RowState>, override val origin: String) : GameState() {
-        override val inProgress: Boolean = false
-    }
-    
-    override fun equals(other: Any?): Boolean {
-        if (this === other) return true
-        if (other !is GameState) return false
-        if (this::class.java != other::class.java) return false
-        return result == other.result
-    }
-    
-    override fun hashCode(): Int {
-        return result.hashCode()
-    }
+data class GameState(
+    val letterFieldState: LetterFieldState,
+    val keyboard: Keyboard,
+    val rowCursor: Int,
+    val columnCursor: Int,
+    val origin: Word
+) {
+    val isRowLast get() = rowCursor == Constants.MAX_ROWS - 1
+    val isColumnLast get() = columnCursor == Constants.MAX_COLUMN - 1
 }
