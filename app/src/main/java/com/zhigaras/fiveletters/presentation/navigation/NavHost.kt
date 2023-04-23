@@ -4,7 +4,9 @@ import androidx.compose.animation.*
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
@@ -24,9 +26,11 @@ fun FiveLettersNavHost(
     authViewModel: AuthViewModel,
     welcomeViewModel: WelcomeViewModel,
     playViewModel: PlayViewModel,
-    menuViewModel: MenuViewModel
+    menuViewModel: MenuViewModel,
+    onFinish: () -> Unit
 ) {
     val navController = rememberAnimatedNavController()
+    val gameState by playViewModel.gameStateFlow.collectAsStateWithLifecycle()
     AnimatedNavHost(
         navController = navController,
         startDestination = Destination.Splash.route,
@@ -72,10 +76,14 @@ fun FiveLettersNavHost(
             }) {
             MenuScreen(
                 viewModel = menuViewModel,
-                navigateToPlay = {
+                isGameInProgress = gameState.letterFieldState.inProgress,
+                newGame = {
                     playViewModel.startNewGame()
                     navController.navigate(Destination.Play.route)
-                })
+                },
+                continueGame = { navController.navigate(Destination.Play.route) },
+                onFinish = onFinish
+            )
         }
         composable(
             route = Destination.Play.route,
@@ -94,6 +102,7 @@ fun FiveLettersNavHost(
         ) {
             PlayScreen(
                 viewModel = playViewModel,
+                gameState = gameState,
                 toMenuClick = { navController.popBackStack() },
                 onNewGameClick = { playViewModel.startNewGame() }
             )

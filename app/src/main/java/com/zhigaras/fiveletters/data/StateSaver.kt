@@ -2,6 +2,7 @@ package com.zhigaras.fiveletters.data
 
 import com.zhigaras.fiveletters.model.GameState
 import com.zhigaras.fiveletters.model.LetterFieldState
+import java.io.IOException
 
 interface StateSaver {
     
@@ -17,21 +18,23 @@ interface StateSaver {
         
     }
     
-    interface Mutable: SaveState, RestoreState
+    interface Mutable : SaveState, RestoreState
     
     class Base(
         private val datastoreManager: DatastoreManager,
-        private val serializer: MoshiSerializer
+        private val serializer: MoshiSerializer,
     ) : Mutable {
         override suspend fun saveState(state: GameState) {
             datastoreManager.saveState(serializer.serialize(state))
         }
         
         override suspend fun restoreState(): GameState? {
-            val json = datastoreManager.restoreState()
-            if (json.isBlank()) return null //TODO
-            return serializer.deserialize(json)
+            val json = datastoreManager.restoreState() ?: return null
+            return try {
+                serializer.deserialize(json)
+            } catch (_:IOException) {
+                null
+            }
         }
     }
-    
 }

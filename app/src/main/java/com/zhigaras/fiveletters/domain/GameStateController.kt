@@ -11,7 +11,8 @@ interface GameStateController {
     
     suspend fun confirmWord(
         gameState: GameState,
-        saveAttempts: suspend (Word) -> Unit
+        saveAttempts: suspend (Word) -> Unit,
+        incrementGamesCounter: suspend () -> Unit
     ): GameState
     
     fun newGame(origin: Word): GameState
@@ -58,7 +59,8 @@ interface GameStateController {
         
         override suspend fun confirmWord(
             gameState: GameState,
-            saveAttempts: suspend (Word) -> Unit
+            saveAttempts: suspend (Word) -> Unit,
+            incrementGamesCounter: suspend () -> Unit
         ): GameState {
             val snapshot = gameState.letterFieldState.result.toMutableList()
             snapshot[gameState.rowCursor] =
@@ -71,14 +73,18 @@ interface GameStateController {
             
             var letterField: LetterFieldState = LetterFieldState.Progress(snapshot.toList())
             
+            if (gameState.isRowLast) {
+                letterField = LetterFieldState.Failed(snapshot.toList())
+                incrementGamesCounter()
+            }
+            
             if (snapshot.any { it is RowState.Right }) {
+                incrementGamesCounter()
                 saveAttempts(
                     gameState.origin.copy(solvedByUser = true, attempts = gameState.rowCursor + 1)
                 )
                 letterField = LetterFieldState.Win(snapshot.toList())
             }
-            if (gameState.isRowLast)
-                letterField = LetterFieldState.Failed(snapshot.toList())
             
             val keyboard =
                 keyboardStateController.updateKeyboard(

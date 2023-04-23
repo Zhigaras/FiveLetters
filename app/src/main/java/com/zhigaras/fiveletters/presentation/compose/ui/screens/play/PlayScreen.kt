@@ -11,12 +11,11 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.zhigaras.fiveletters.model.GameState
 import com.zhigaras.fiveletters.model.LetterFieldState
 import com.zhigaras.fiveletters.presentation.compose.ui.viewmodels.PlayViewModel
 import kotlinx.coroutines.delay
@@ -24,10 +23,10 @@ import kotlinx.coroutines.delay
 @Composable
 fun PlayScreen(
     viewModel: PlayViewModel,
+    gameState: GameState,
     toMenuClick: () -> Unit,
     onNewGameClick: () -> Unit
 ) {
-    val gameState by viewModel.gameStateFlow.collectAsStateWithLifecycle()
     val showDialog = remember { mutableStateOf(false) }
     LaunchedEffect(key1 = gameState.letterFieldState.inProgress) {
         delay(700)

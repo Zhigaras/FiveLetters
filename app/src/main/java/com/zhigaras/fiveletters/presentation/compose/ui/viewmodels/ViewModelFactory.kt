@@ -5,6 +5,9 @@ import androidx.lifecycle.ViewModelProvider
 import com.zhigaras.fiveletters.core.Core
 import com.zhigaras.fiveletters.core.DispatchersModule
 import com.zhigaras.fiveletters.data.Alphabet
+import com.zhigaras.fiveletters.data.DatastoreManager
+import com.zhigaras.fiveletters.data.MoshiSerializer
+import com.zhigaras.fiveletters.data.StateSaver
 import com.zhigaras.fiveletters.domain.GameStateController
 import com.zhigaras.fiveletters.domain.KeyboardStateController
 import com.zhigaras.fiveletters.domain.WordCheckable
@@ -25,7 +28,8 @@ class ViewModelFactory(
                         KeyboardStateController.Base(Alphabet.Ru())
                     ),
                     mainRepository,
-                    DispatchersModule.Base()
+                    DispatchersModule.Base(),
+                    StateSaver.Base(DatastoreManager.Base(core.provideDatastore()), MoshiSerializer.Base()) //TODO datastoreManager
                 )
             
             WelcomeViewModel::class.java -> WelcomeViewModel(userRepository, dispatchers)

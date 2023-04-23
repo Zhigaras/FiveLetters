@@ -13,7 +13,7 @@ interface DatastoreManager : UsernameInteract, UserStatInteract.Mutable {
     
     suspend fun saveState(json: String)
     
-    suspend fun restoreState(): String
+    suspend fun restoreState(): String?
     
     class Base(
         private val datastore: DataStore<Preferences>
@@ -35,8 +35,8 @@ interface DatastoreManager : UsernameInteract, UserStatInteract.Mutable {
             }
         }
     
-        override suspend fun restoreState(): String {
-            return datastore.data.first()[gameStateKey] ?: ""
+        override suspend fun restoreState(): String? {
+            return datastore.data.first()[gameStateKey]
         }
     
         override suspend fun readUsername(): String {

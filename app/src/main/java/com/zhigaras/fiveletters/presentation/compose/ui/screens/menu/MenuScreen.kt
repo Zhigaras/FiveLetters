@@ -11,7 +11,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.zhigaras.fiveletters.MainActivity
 import com.zhigaras.fiveletters.R
 import com.zhigaras.fiveletters.model.UserStat
 import com.zhigaras.fiveletters.presentation.compose.ui.viewmodels.MenuViewModel
@@ -19,17 +18,19 @@ import com.zhigaras.fiveletters.presentation.compose.ui.viewmodels.MenuViewModel
 @Composable
 fun MenuScreen(
     viewModel: MenuViewModel,
-    navigateToPlay: () -> Unit
+    isGameInProgress: Boolean,
+    newGame: () -> Unit,
+    continueGame: () -> Unit,
+    onFinish: () -> Unit
 ) {
     
     // TODO: animated header
     
     val context = LocalContext.current
-    val activity = context as? MainActivity
     val userStat by viewModel.userStatFlow().collectAsStateWithLifecycle(UserStat.Empty())
     var backPressedTime by remember { mutableStateOf(0L) }
     BackHandler(enabled = true) {
-        if (backPressedTime + 2000 > System.currentTimeMillis()) activity?.finish()
+        if (backPressedTime + 2000 > System.currentTimeMillis()) onFinish()
         else Toast.makeText(
             context,
             context.getString(R.string.press_back_again),
@@ -95,13 +96,16 @@ fun MenuScreen(
                 }
             }
         }
-        Box(
-            contentAlignment = Alignment.Center,
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.SpaceAround,
             modifier = Modifier
                 .fillMaxWidth()
                 .weight(10f)
         ) {
-            CommonButton(text = stringResource(R.string.start), onClick = navigateToPlay)
+            if (isGameInProgress)
+                CommonButton(text = "Continue", onClick = continueGame)
+            CommonButton(text = stringResource(R.string.start), onClick = newGame)
         }
     }
 }

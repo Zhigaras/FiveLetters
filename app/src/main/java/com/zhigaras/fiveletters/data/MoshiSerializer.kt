@@ -4,6 +4,7 @@ import com.squareup.moshi.Moshi
 import com.squareup.moshi.adapters.PolymorphicJsonAdapterFactory
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import com.zhigaras.fiveletters.model.GameState
+import com.zhigaras.fiveletters.model.Keyboard
 import com.zhigaras.fiveletters.model.LetterFieldState
 import com.zhigaras.fiveletters.model.LetterState
 import com.zhigaras.fiveletters.model.LetterType
@@ -46,6 +47,9 @@ interface MoshiSerializer {
             .add(PolymorphicJsonAdapterFactory.of(LetterType::class.java, "label")
                 .withSubtype(LetterType.Card::class.java, LetterType.Card::class.java.simpleName)
                 .withSubtype(LetterType.Key::class.java, LetterType.Key::class.java.simpleName)
+            ).add(PolymorphicJsonAdapterFactory.of(Keyboard::class.java, "label")
+                .withSubtype(Keyboard.Default::class.java, Keyboard.Default::class.java.simpleName)
+                .withSubtype(Keyboard.Progress::class.java, Keyboard.Progress::class.java.simpleName)
             )
             .add(PolymorphicJsonAdapterFactory.of(Alphabet::class.java, "label")
                 .withSubtype(Alphabet.Ru::class.java, Alphabet.Ru::class.java.simpleName)
