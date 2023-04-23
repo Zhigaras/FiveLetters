@@ -20,7 +20,7 @@ interface UserStatRepository {
                 userStat.getGamesCount(),
                 wordDao.getAverageAttempt()
             ) { words, games, attempts ->
-                UserStat(
+                UserStat.Base(
                     wins = words,
                     progress = words.toFloat() / dictionarySize,
                     games = games,

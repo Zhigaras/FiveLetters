@@ -27,9 +27,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.zhigaras.fiveletters.R
-import com.zhigaras.fiveletters.model.LetterFieldState
-import com.zhigaras.fiveletters.model.Keyboard
+import com.zhigaras.fiveletters.model.GameState
 import com.zhigaras.fiveletters.model.LetterState
+import com.zhigaras.fiveletters.model.RowState
 import com.zhigaras.fiveletters.presentation.compose.ui.theme.black
 import com.zhigaras.fiveletters.presentation.compose.ui.theme.gray
 import com.zhigaras.fiveletters.presentation.compose.ui.theme.keyboardButtonCornerRadius
@@ -40,14 +40,13 @@ import com.zhigaras.fiveletters.presentation.compose.ui.theme.yellow
 @Composable
 fun Keyboard(
     modifier: Modifier = Modifier,
-    letterFieldState: LetterFieldState,
-    keyboard: Keyboard,
+    gameState: GameState,
     onKeyClick: (Char) -> Unit,
     onConfirmClick: () -> Unit,
     onBackspaceClick: () -> Unit
 ) {
     val isConfirmButtonEnabled = remember { mutableStateOf(false) }
-    isConfirmButtonEnabled.value = letterFieldState.result.any { it.isRowFull }
+    isConfirmButtonEnabled.value = gameState.letterFieldState.result.any { it is RowState.UncheckedWord }
     
     Column(
         verticalArrangement = Arrangement.spacedBy(4.dp),
@@ -55,14 +54,14 @@ fun Keyboard(
             .fillMaxWidth()
             .padding(8.dp)
     ) {
-        keyboard.keys.keys.forEachIndexed { index, row ->
+        gameState.keyboard.keys.forEachIndexed { index, row ->
             Row(
                 horizontalArrangement = Arrangement.spacedBy(4.dp),
                 modifier = modifier
                     .fillMaxWidth()
                     .height(IntrinsicSize.Max)
             ) {
-                if (index == keyboard.keys.keys.lastIndex)
+                if (index == gameState.keyboard.keys.lastIndex)
                     ConfirmWordButton(
                         modifier = Modifier.weight(17f),
                         isEnabled = isConfirmButtonEnabled.value,
@@ -71,7 +70,7 @@ fun Keyboard(
                 row.forEach {
                     it.Key(modifier = Modifier.weight(10f), onKeyClick = onKeyClick)
                 }
-                if (index == keyboard.keys.keys.lastIndex)
+                if (index == gameState.keyboard.keys.lastIndex)
                     BackspaceButton(
                         modifier = Modifier.weight(17f),
                         letter = row.first(),

@@ -4,19 +4,19 @@ abstract class Username {
     
     abstract val name: String
     
-    class NotLoadedYet() : Username() {
+    class NotLoadedYet : Username() {
         override val name = ""
     }
     
-    abstract class Loaded() : Username() {
+    abstract class Loaded : Username() {
         
         class Specified(override val name: String) : Loaded()
         
-        class Unspecified() : Loaded() {
+        class Unspecified : Loaded() {
             override val name = "unspecified"
         }
         
-        class NeedNameRequest() : Loaded() {
+        class NeedNameRequest : Loaded() {
             override val name = ""
         }
     }

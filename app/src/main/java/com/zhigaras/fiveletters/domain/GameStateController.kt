@@ -1,16 +1,15 @@
 package com.zhigaras.fiveletters.domain
 
 import com.zhigaras.fiveletters.Constants
-import com.zhigaras.fiveletters.data.Alphabet
 import com.zhigaras.fiveletters.model.*
 
-interface LetterFieldController {
+interface GameStateController {
     
     fun inputLetter(gameState: GameState, char: Char): GameState
     
     fun removeLetter(gameState: GameState): GameState
     
-    suspend fun checkGameState(
+    suspend fun confirmWord(
         gameState: GameState,
         saveAttempts: suspend (Word) -> Unit
     ): GameState
@@ -20,7 +19,7 @@ interface LetterFieldController {
     class Base(
         private val wordCheckable: WordCheckable,
         private val keyboardStateController: KeyboardStateController
-    ) : LetterFieldController {
+    ) : GameStateController {
         
         override fun inputLetter(gameState: GameState, char: Char): GameState {
             if (gameState.columnCursor != Constants.MAX_COLUMN) {
@@ -49,11 +48,7 @@ interface LetterFieldController {
                     snapshot[gameState.rowCursor].row.map { LetterState.UserClicked(it.char) }
                         .toMutableList()
                 currentRow[columnCursor] =
-                    LetterState.Default(
-                        type = LetterType.Card(),
-                        char = ' ',
-                        action = Action.REMOVE
-                    )
+                    LetterState.Empty(type = LetterType.Card())
                 snapshot[gameState.rowCursor] = RowState.NotFullRow(currentRow.toList())
                 val lettersField = LetterFieldState.Progress(snapshot.toList())
                 return gameState.copy(letterFieldState = lettersField, columnCursor = columnCursor)
@@ -61,7 +56,7 @@ interface LetterFieldController {
             return gameState
         }
         
-        override suspend fun checkGameState(
+        override suspend fun confirmWord(
             gameState: GameState,
             saveAttempts: suspend (Word) -> Unit
         ): GameState {
@@ -102,7 +97,7 @@ interface LetterFieldController {
         override fun newGame(origin: Word): GameState {
             return GameState(
                 letterFieldState = LetterFieldState.Start(),
-                keyboard = Keyboard(KeyboardKeys.Default(Alphabet.Ru())),
+                keyboard = keyboardStateController.getDefaultKeyboard(),
                 columnCursor = 0,
                 rowCursor = 0,
                 origin = origin

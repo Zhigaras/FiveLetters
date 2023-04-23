@@ -13,7 +13,7 @@ class KeyboardStateControllerTest {
     
     @Before
     fun before() {
-        keyboardStateController = KeyboardStateController.Base(Alphabet.Base.En())
+        keyboardStateController = KeyboardStateController.Base(Alphabet.En())
     }
     
     @Test

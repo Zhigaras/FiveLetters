@@ -26,7 +26,7 @@ fun MenuScreen(
     
     val context = LocalContext.current
     val activity = context as? MainActivity
-    val userStat by viewModel.userStatFlow().collectAsStateWithLifecycle(UserStat(0, 0f, 0, 0f))
+    val userStat by viewModel.userStatFlow().collectAsStateWithLifecycle(UserStat.Empty())
     var backPressedTime by remember { mutableStateOf(0L) }
     BackHandler(enabled = true) {
         if (backPressedTime + 2000 > System.currentTimeMillis()) activity?.finish()

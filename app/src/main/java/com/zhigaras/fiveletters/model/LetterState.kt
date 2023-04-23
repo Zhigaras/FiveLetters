@@ -25,7 +25,6 @@ abstract class LetterState {
     abstract val charColor: Color
     abstract val angle: Float
     abstract val char: Char
-    abstract val action: Action
     abstract val grade: Int
     
     @Composable
@@ -96,10 +95,18 @@ abstract class LetterState {
         return oldLetter.grade < grade
     }
     
+    data class Empty(override val type: LetterType) : LetterState() {
+        override val char: Char = ' '
+        override val borderColor: Color = if (type is LetterType.Card) yellow else gray
+        override val cardColor: Color = black
+        override val charColor: Color = white
+        override val angle: Float = 0f
+        override val grade: Int = 0
+    }
+    
     data class Default(
         override val type: LetterType,
         override val char: Char,
-        override val action: Action = Action.INIT
     ) : LetterState() {
         override val borderColor: Color = if (type is LetterType.Card) yellow else gray
         override val cardColor: Color = black
@@ -114,7 +121,6 @@ abstract class LetterState {
         override val cardColor: Color = black
         override val charColor: Color = white
         override val angle: Float = 0f
-        override val action: Action = Action.APPEND
         override val grade: Int = 2
     }
     
@@ -123,7 +129,6 @@ abstract class LetterState {
         override val cardColor: Color = gray
         override val charColor: Color = white
         override val angle: Float = 180f
-        override val action: Action = Action.CONFIRM
         override val grade: Int = 3
     }
     
@@ -132,7 +137,6 @@ abstract class LetterState {
         override val cardColor: Color = white
         override val charColor: Color = black
         override val angle: Float = 180f
-        override val action: Action = Action.CONFIRM
         override val grade: Int = 4
     }
     
@@ -141,7 +145,6 @@ abstract class LetterState {
         override val cardColor: Color = yellow
         override val charColor: Color = black
         override val angle: Float = 180f
-        override val action: Action = Action.CONFIRM
         override val grade: Int = 5
     }
     
@@ -151,7 +154,6 @@ abstract class LetterState {
         override val cardColor: Color = black
         override val charColor: Color = red
         override val angle: Float = 0f
-        override val action: Action = Action.APPEND
         override val grade: Int = 1
     }
 }

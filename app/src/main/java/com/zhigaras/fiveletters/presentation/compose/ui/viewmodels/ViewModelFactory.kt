@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.zhigaras.fiveletters.core.Core
 import com.zhigaras.fiveletters.core.DispatchersModule
 import com.zhigaras.fiveletters.data.Alphabet
-import com.zhigaras.fiveletters.domain.LetterFieldController
+import com.zhigaras.fiveletters.domain.GameStateController
 import com.zhigaras.fiveletters.domain.KeyboardStateController
 import com.zhigaras.fiveletters.domain.WordCheckable
 
@@ -15,24 +15,26 @@ class ViewModelFactory(
     
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         val dispatchers = core.provideDispatchers()
-        val repository = core.provideMainRepository()
+        val mainRepository = core.provideMainRepository()
         val userRepository = core.provideUsernameRepository()
         val viewModel = when (modelClass) {
             PlayViewModel::class.java ->
                 PlayViewModel(
-                    LetterFieldController.Base(
-                        WordCheckable.Base(repository)
-                    ,KeyboardStateController.Base(Alphabet.Ru())
-                    ), KeyboardStateController.Base(Alphabet.Ru()),
-                    repository,
+                    GameStateController.Base(
+                        WordCheckable.Base(mainRepository),
+                        KeyboardStateController.Base(Alphabet.Ru())
+                    ),
+                    mainRepository,
                     DispatchersModule.Base()
                 )
+            
             WelcomeViewModel::class.java -> WelcomeViewModel(userRepository, dispatchers)
             AuthViewModel::class.java -> AuthViewModel(userRepository, dispatchers)
             MenuViewModel::class.java -> MenuViewModel(
                 core.provideUserStatRepository(),
                 dispatchers
             )
+            
             else -> throw IllegalArgumentException("Unknown class name: $modelClass")
         }
         return viewModel as T

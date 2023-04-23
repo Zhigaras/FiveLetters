@@ -14,10 +14,7 @@ abstract class LetterFieldState {
         override val result: List<RowState> =
             List(Constants.MAX_ROWS) {
                 RowState.Empty(List(Constants.MAX_COLUMN) {
-                    LetterState.Default(
-                        type = LetterType.Card(),
-                        char = ' '
-                    )
+                    LetterState.Empty(type = LetterType.Card())
                 })
             }
         override val inProgress: Boolean = false
@@ -28,10 +25,7 @@ abstract class LetterFieldState {
         override val result: List<RowState> =
             List(Constants.MAX_ROWS) {
                 RowState.Empty(List(Constants.MAX_COLUMN) {
-                    LetterState.Default(
-                        type = LetterType.Card(),
-                        char = ' '
-                    )
+                    LetterState.Empty(type = LetterType.Card())
                 })
             }
         override val inProgress: Boolean = true

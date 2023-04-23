@@ -2,7 +2,6 @@ package com.zhigaras.fiveletters.domain
 
 import com.zhigaras.fiveletters.data.Alphabet
 import com.zhigaras.fiveletters.model.Keyboard
-import com.zhigaras.fiveletters.model.KeyboardKeys
 import com.zhigaras.fiveletters.model.LetterState
 
 interface KeyboardStateController {
@@ -19,12 +18,12 @@ interface KeyboardStateController {
             keyboard: Keyboard,
             openedLetters: List<LetterState>
         ): Keyboard {
-            val keys = keyboard.keys.keys.map { row ->
+            val keys = keyboard.keys.map { row ->
                 row.map { letter ->
                     updateKey(openedLetters, letter)
                 }
             }
-            return keyboard.copy(keys = KeyboardKeys.Progress(keys))
+            return Keyboard.Progress(keys)
         }
         
         fun updateKey(openedLetters: List<LetterState>, letter: LetterState): LetterState {
@@ -46,8 +45,7 @@ interface KeyboardStateController {
         }
         
         override fun getDefaultKeyboard(): Keyboard {
-//            keyboard = Keyboard.Base(alphabetInstance)
-            return Keyboard(KeyboardKeys.Default(alphabetInstance))
+            return Keyboard.Default(alphabetInstance)
         }
     }
 }

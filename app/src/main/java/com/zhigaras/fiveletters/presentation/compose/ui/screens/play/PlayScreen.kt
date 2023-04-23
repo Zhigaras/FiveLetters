@@ -68,8 +68,7 @@ fun PlayScreen(
             ) { inProgress ->
                 if (inProgress)
                     Keyboard(
-                        letterFieldState = gameState.letterFieldState,
-                        keyboard = gameState.keyboard,
+                        gameState = gameState,
                         onKeyClick = { viewModel.inputLetter(it) },
                         onConfirmClick = { viewModel.confirmWord() },
                         onBackspaceClick = { viewModel.removeLetter() }
