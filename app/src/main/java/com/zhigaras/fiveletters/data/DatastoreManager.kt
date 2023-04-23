@@ -6,9 +6,14 @@ import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.transform
 
-interface DatastoreManager : UsernameInteract, UserStatInteract.Read, UserStatInteract.Write {
+interface DatastoreManager : UsernameInteract, UserStatInteract.Mutable {
+    
+    suspend fun saveState(json: String)
+    
+    suspend fun restoreState(): String
     
     class Base(
         private val datastore: DataStore<Preferences>
@@ -16,15 +21,26 @@ interface DatastoreManager : UsernameInteract, UserStatInteract.Read, UserStatIn
         
         private val usernameKey = stringPreferencesKey("username")
         private val gamesCountKey = intPreferencesKey("gamesCount")
-        
+        private val gameStateKey = stringPreferencesKey("gameState")
+    
         override suspend fun saveUsername(name: String) {
             datastore.edit { prefs ->
                 prefs[usernameKey] = name
             }
         }
-        
+    
+        override suspend fun saveState(json: String) {
+            datastore.edit { prefs ->
+                prefs[gameStateKey] = json
+            }
+        }
+    
+        override suspend fun restoreState(): String {
+            return datastore.data.first()[gameStateKey] ?: ""
+        }
+    
         override suspend fun readUsername(): String {
-            return datastore.edit {}[usernameKey] ?: ""
+            return datastore.data.first()[usernameKey] ?: ""
         }
         
         override suspend fun incrementGamesCounter() {

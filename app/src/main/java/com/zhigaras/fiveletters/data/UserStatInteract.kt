@@ -15,4 +15,6 @@ interface UserStatInteract {
         suspend fun getGamesCount(): Flow<Int>
         
     }
+    
+    interface Mutable: Read, Write
 }

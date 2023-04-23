@@ -48,15 +48,4 @@ abstract class LetterFieldState {
     class Win(override val result: List<RowState>) : LetterFieldState() {
         override val inProgress: Boolean = false
     }
-    
-    override fun equals(other: Any?): Boolean {
-        if (this === other) return true
-        if (other !is LetterFieldState) return false
-        if (this::class.java != other::class.java) return false
-        return result == other.result
-    }
-    
-    override fun hashCode(): Int {
-        return result.hashCode()
-    }
 }
