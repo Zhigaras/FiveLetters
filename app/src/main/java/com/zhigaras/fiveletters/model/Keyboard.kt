@@ -2,13 +2,15 @@ package com.zhigaras.fiveletters.model
 
 import com.zhigaras.fiveletters.data.Alphabet
 
-abstract class Keyboard {
+data class Keyboard(val keys: KeyboardKeys)
+
+abstract class KeyboardKeys {
     
-    abstract val keys: MutableList<MutableList<LetterState>>
+    abstract val keys: List<List<LetterState>>
     
-    class Base(alphabet: Alphabet) : Keyboard() {
-        
-        override val keys: MutableList<MutableList<LetterState>> =
+    class Default(private val alphabet: Alphabet): KeyboardKeys() {
+    
+        override val keys: List<List<LetterState>> =
             alphabet.getKeyboardAlphabet().map { row ->
                 row.map {
                     LetterState.Default(
@@ -18,4 +20,6 @@ abstract class Keyboard {
                 }.toMutableList<LetterState>()
             }.toMutableList()
     }
+    
+    class Progress(override val keys: List<List<LetterState>>): KeyboardKeys()
 }

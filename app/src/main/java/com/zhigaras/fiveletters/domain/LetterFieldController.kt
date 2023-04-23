@@ -4,7 +4,7 @@ import com.zhigaras.fiveletters.Constants
 import com.zhigaras.fiveletters.data.Alphabet
 import com.zhigaras.fiveletters.model.*
 
-interface GameStateController {
+interface LetterFieldController {
     
     fun inputLetter(gameState: GameState, char: Char): GameState
     
@@ -15,13 +15,12 @@ interface GameStateController {
         saveAttempts: suspend (Word) -> Unit
     ): GameState
     
-    fun getConfirmedRow(gameState: GameState): RowState
-    
     fun newGame(origin: Word): GameState
     
     class Base(
-        private val wordCheckable: WordCheckable
-    ) : GameStateController {
+        private val wordCheckable: WordCheckable,
+        private val keyboardStateController: KeyboardStateController
+    ) : LetterFieldController {
         
         override fun inputLetter(gameState: GameState, char: Char): GameState {
             if (gameState.columnCursor != Constants.MAX_COLUMN) {
@@ -75,29 +74,35 @@ interface GameStateController {
             if (snapshot[gameState.rowCursor] is RowState.InvalidWord)
                 return gameState.copy(letterFieldState = LetterFieldState.InvalidWord(snapshot.toList()))
             
+            var letterField: LetterFieldState = LetterFieldState.Progress(snapshot.toList())
+            
             if (snapshot.any { it is RowState.Right }) {
                 saveAttempts(
                     gameState.origin.copy(solvedByUser = true, attempts = gameState.rowCursor + 1)
                 )
-                return gameState.copy(letterFieldState = LetterFieldState.Win(snapshot.toList()))
+                letterField = LetterFieldState.Win(snapshot.toList())
             }
             if (gameState.isRowLast)
-                return gameState.copy(letterFieldState = LetterFieldState.Failed(snapshot.toList()))
+                letterField = LetterFieldState.Failed(snapshot.toList())
+            
+            val keyboard =
+                keyboardStateController.updateKeyboard(
+                    keyboard = gameState.keyboard,
+                    openedLetters = letterField.result.last { it.isRowOpened }.row
+                )
             
             return gameState.copy(
-                letterFieldState = LetterFieldState.Progress(snapshot.toList()),
+                letterFieldState = letterField,
                 rowCursor = gameState.rowCursor + 1,
-                columnCursor = 0
+                columnCursor = 0,
+                keyboard = keyboard
             )
         }
-        
-        override fun getConfirmedRow(gameState: GameState): RowState =
-            gameState.letterFieldState.result.last { it.isRowOpened }
         
         override fun newGame(origin: Word): GameState {
             return GameState(
                 letterFieldState = LetterFieldState.Start(),
-                keyboard = Keyboard.Base(Alphabet.Base.Ru()),
+                keyboard = Keyboard(KeyboardKeys.Default(Alphabet.Ru())),
                 columnCursor = 0,
                 rowCursor = 0,
                 origin = origin

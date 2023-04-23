@@ -55,14 +55,14 @@ fun Keyboard(
             .fillMaxWidth()
             .padding(8.dp)
     ) {
-        keyboard.keys.forEachIndexed { index, row ->
+        keyboard.keys.keys.forEachIndexed { index, row ->
             Row(
                 horizontalArrangement = Arrangement.spacedBy(4.dp),
                 modifier = modifier
                     .fillMaxWidth()
                     .height(IntrinsicSize.Max)
             ) {
-                if (index == keyboard.keys.lastIndex)
+                if (index == keyboard.keys.keys.lastIndex)
                     ConfirmWordButton(
                         modifier = Modifier.weight(17f),
                         isEnabled = isConfirmButtonEnabled.value,
@@ -71,7 +71,7 @@ fun Keyboard(
                 row.forEach {
                     it.Key(modifier = Modifier.weight(10f), onKeyClick = onKeyClick)
                 }
-                if (index == keyboard.keys.lastIndex)
+                if (index == keyboard.keys.keys.lastIndex)
                     BackspaceButton(
                         modifier = Modifier.weight(17f),
                         letter = row.first(),

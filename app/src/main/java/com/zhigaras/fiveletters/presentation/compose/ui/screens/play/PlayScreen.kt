@@ -28,7 +28,6 @@ fun PlayScreen(
     onNewGameClick: () -> Unit
 ) {
     val gameState by viewModel.gameStateFlow.collectAsStateWithLifecycle()
-    val keyboard by viewModel.keyboardFlow.collectAsStateWithLifecycle()
     val showDialog = remember { mutableStateOf(false) }
     LaunchedEffect(key1 = gameState.letterFieldState.inProgress) {
         delay(700)
@@ -70,7 +69,7 @@ fun PlayScreen(
                 if (inProgress)
                     Keyboard(
                         letterFieldState = gameState.letterFieldState,
-                        keyboard = keyboard,
+                        keyboard = gameState.keyboard,
                         onKeyClick = { viewModel.inputLetter(it) },
                         onConfirmClick = { viewModel.confirmWord() },
                         onBackspaceClick = { viewModel.removeLetter() }

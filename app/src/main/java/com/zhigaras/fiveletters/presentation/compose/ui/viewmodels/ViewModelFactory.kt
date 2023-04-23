@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.zhigaras.fiveletters.core.Core
 import com.zhigaras.fiveletters.core.DispatchersModule
 import com.zhigaras.fiveletters.data.Alphabet
-import com.zhigaras.fiveletters.domain.GameStateController
+import com.zhigaras.fiveletters.domain.LetterFieldController
 import com.zhigaras.fiveletters.domain.KeyboardStateController
 import com.zhigaras.fiveletters.domain.WordCheckable
 
@@ -20,9 +20,10 @@ class ViewModelFactory(
         val viewModel = when (modelClass) {
             PlayViewModel::class.java ->
                 PlayViewModel(
-                    GameStateController.Base(
+                    LetterFieldController.Base(
                         WordCheckable.Base(repository)
-                    ), KeyboardStateController.Base(Alphabet.Base.Ru()),
+                    ,KeyboardStateController.Base(Alphabet.Ru())
+                    ), KeyboardStateController.Base(Alphabet.Ru()),
                     repository,
                     DispatchersModule.Base()
                 )

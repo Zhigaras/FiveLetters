@@ -2,11 +2,12 @@ package com.zhigaras.fiveletters.domain
 
 import com.zhigaras.fiveletters.data.Alphabet
 import com.zhigaras.fiveletters.model.Keyboard
+import com.zhigaras.fiveletters.model.KeyboardKeys
 import com.zhigaras.fiveletters.model.LetterState
 
 interface KeyboardStateController {
     
-    fun updateKeyboard(openedLetters: List<LetterState>): Keyboard
+    fun updateKeyboard(keyboard: Keyboard, openedLetters: List<LetterState>): Keyboard
     
     fun getDefaultKeyboard(): Keyboard
     
@@ -14,19 +15,25 @@ interface KeyboardStateController {
     
     class Base(private val alphabetInstance: Alphabet) : KeyboardStateController {
         
-        private lateinit var keyboard: Keyboard
-        
-        override fun updateKeyboard(openedLetters: List<LetterState>): Keyboard {
-            openedLetters.distinct().forEach { openedLetter ->
-                keyboard.keys.forEachIndexed { rowIndex, keyRow ->
-                    keyRow.forEachIndexed { keyIndex, letter ->
-                        keyboard.keys[rowIndex][keyIndex] =
-                            if (needToUpdateKey(letter, openedLetter))
-                                openedLetter.convertCardToKey() else letter
-                    }
+        override fun updateKeyboard(
+            keyboard: Keyboard,
+            openedLetters: List<LetterState>
+        ): Keyboard {
+            val keys = keyboard.keys.keys.map { row ->
+                row.map { letter ->
+                    updateKey(openedLetters, letter)
                 }
             }
-            return keyboard
+            return keyboard.copy(keys = KeyboardKeys.Progress(keys))
+        }
+        
+        fun updateKey(openedLetters: List<LetterState>, letter: LetterState): LetterState {
+            var updateLetter = letter
+            openedLetters.forEach { openedLetter ->
+                if (needToUpdateKey(letter, openedLetter))
+                    updateLetter = openedLetter.convertCardToKey()
+            }
+            return updateLetter
         }
         
         override fun needToUpdateKey(
@@ -39,8 +46,8 @@ interface KeyboardStateController {
         }
         
         override fun getDefaultKeyboard(): Keyboard {
-            keyboard = Keyboard.Base(alphabetInstance)
-            return keyboard
+//            keyboard = Keyboard.Base(alphabetInstance)
+            return Keyboard(KeyboardKeys.Default(alphabetInstance))
         }
     }
 }
