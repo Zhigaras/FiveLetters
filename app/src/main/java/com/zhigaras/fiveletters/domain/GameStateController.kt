@@ -75,16 +75,16 @@ interface GameStateController {
             
             if (gameState.isRowLast) {
                 letterField = LetterFieldState.Failed(snapshot.toList())
-                incrementGamesCounter()
             }
             
             if (snapshot.any { it is RowState.Right }) {
-                incrementGamesCounter()
                 saveAttempts(
                     gameState.origin.copy(solvedByUser = true, attempts = gameState.rowCursor + 1)
                 )
                 letterField = LetterFieldState.Win(snapshot.toList())
             }
+            
+            if (!letterField.inProgress) incrementGamesCounter()
             
             val keyboard =
                 keyboardStateController.updateKeyboard(

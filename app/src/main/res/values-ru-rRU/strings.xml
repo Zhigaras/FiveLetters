@@ -5,7 +5,7 @@
     <string name="clear_letter">Удалить последнюю букву</string>
     <string name="five_letters">5 Букв</string>
     <string name="welcome">Добро пожаловать</string>
-    <string name="start">Старт</string>
+    <string name="new_game">Новая игра</string>
     <string name="logo">Логотип</string>
     <string name="hi">Привет!</string>
     <string name="hi_name">Привет, %1$s!</string>
@@ -24,4 +24,5 @@
     <string name="average_attempts">Попыток в среднем</string>
     <string name="press_back_again">Нажмите еще раз чтобы выйти</string>
     <string name="the_word_is">"Загаданное слово: %1$s"</string>
+    <string name="continue_game">Продолжить</string>
 </resources>

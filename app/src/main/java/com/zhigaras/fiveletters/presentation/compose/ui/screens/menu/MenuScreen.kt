@@ -96,16 +96,19 @@ fun MenuScreen(
                 }
             }
         }
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.SpaceAround,
+        Box(
+            contentAlignment = Alignment.Center,
             modifier = Modifier
                 .fillMaxWidth()
                 .weight(10f)
         ) {
             if (isGameInProgress)
-                CommonButton(text = "Continue", onClick = continueGame)
-            CommonButton(text = stringResource(R.string.start), onClick = newGame)
+                CommonButton(
+                    modifier = Modifier.align(Alignment.TopCenter),
+                    text = stringResource(R.string.continue_game),
+                    onClick = continueGame
+                )
+            CommonButton(text = stringResource(R.string.new_game), onClick = newGame)
         }
     }
 }

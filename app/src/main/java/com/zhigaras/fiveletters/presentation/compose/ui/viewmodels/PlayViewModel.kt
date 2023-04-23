@@ -64,7 +64,6 @@ class PlayViewModel(
     override fun restoreState() {
         viewModelScope.launch(dispatchers.io()) {
             val restoredState = stateSaver.restoreState()
-            Log.d("AAA restore", restoredState.toString())
             if (restoredState!= null) _gameStateFlow.value = restoredState
             else startNewGame()
         }

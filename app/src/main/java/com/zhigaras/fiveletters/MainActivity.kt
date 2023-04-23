@@ -1,7 +1,6 @@
 package com.zhigaras.fiveletters
 
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
@@ -46,18 +45,11 @@ class MainActivity : ComponentActivity(), ProvideViewModel {
     }
     
     override fun onSaveInstanceState(outState: Bundle) {
-        Log.d("AAA", "onSaveInstanceState")
         playViewModel.saveState()
         super.onSaveInstanceState(outState)
     }
-    
-    override fun onDestroy() {
-        Log.d("AAA", "onDestroy")
-        playViewModel.saveState()
-        super.onDestroy()
-    }
+
     override fun finish() {
-        Log.d("AAA", "onFinish")
         playViewModel.saveState()
         super.finish()
     }

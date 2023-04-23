@@ -4,7 +4,7 @@
     <string name="clear_letter">Clear last letter</string>
     <string name="five_letters">5 Letters</string>
     <string name="welcome">Welcome</string>
-    <string name="start">Start</string>
+    <string name="new_game">New game</string>
     <string name="logo">logo</string>
     <string name="hi">Hi!</string>
     <string name="hi_name">Hi, %1$s!</string>
@@ -23,4 +23,5 @@
     <string name="average_attempts">Attempts on average</string>
     <string name="press_back_again">Press \"back\" again to exit</string>
     <string name="the_word_is">"The word is: %1$s"</string>
+    <string name="continue_game">Continue</string>
 </resources>
