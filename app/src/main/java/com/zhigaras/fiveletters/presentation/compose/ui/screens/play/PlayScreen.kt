@@ -17,6 +17,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import com.zhigaras.fiveletters.model.GameState
 import com.zhigaras.fiveletters.model.LetterFieldState
+import com.zhigaras.fiveletters.model.ProgressState
 import com.zhigaras.fiveletters.presentation.compose.ui.viewmodels.PlayViewModel
 import kotlinx.coroutines.delay
 
@@ -28,9 +29,9 @@ fun PlayScreen(
     onNewGameClick: () -> Unit
 ) {
     val showDialog = remember { mutableStateOf(false) }
-    LaunchedEffect(key1 = gameState.isInProgress) {
+    LaunchedEffect(key1 = gameState.progressState) {
         delay(700)
-        showDialog.value = !gameState.isInProgress
+        showDialog.value = gameState.progressState == ProgressState.ENDED
     }
     if (showDialog.value) {
         EndGameDialog(
@@ -60,12 +61,12 @@ fun PlayScreen(
             contentAlignment = Alignment.BottomCenter
         ) {
             AnimatedContent(
-                targetState = gameState.isInProgress,
+                targetState = gameState.progressState,
                 transitionSpec = {
                     fadeIn(animationSpec = tween(1000)) togetherWith fadeOut(tween(1000))
                 }
-            ) { inProgress ->
-                if (inProgress)
+            ) { progressState ->
+                if (progressState != ProgressState.ENDED)
                     Keyboard(
                         gameState = gameState,
                         onKeyClick = { viewModel.inputLetter(it) },

@@ -84,7 +84,7 @@ interface GameStateController {
                 letterField = LetterFieldState.Win(snapshot.toList())
             }
             
-            if (!letterField.inProgress) incrementGamesCounter()
+            if (letterField.progressState == ProgressState.ENDED) incrementGamesCounter()
             
             val keyboard =
                 keyboardStateController.updateKeyboard(

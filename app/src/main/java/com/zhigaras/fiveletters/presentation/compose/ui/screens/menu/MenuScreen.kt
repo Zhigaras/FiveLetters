@@ -12,13 +12,14 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.zhigaras.fiveletters.R
+import com.zhigaras.fiveletters.model.ProgressState
 import com.zhigaras.fiveletters.model.UserStat
 import com.zhigaras.fiveletters.presentation.compose.ui.viewmodels.MenuViewModel
 
 @Composable
 fun MenuScreen(
     viewModel: MenuViewModel,
-    isGameInProgress: Boolean,
+    progressState: ProgressState,
     newGame: () -> Unit,
     continueGame: () -> Unit,
     onFinish: () -> Unit
@@ -113,7 +114,7 @@ fun MenuScreen(
             CommonButton(
                 text = stringResource(R.string.start),
                 onClick = {
-                    if (isGameInProgress) showDialog.value = true
+                    if (progressState == ProgressState.PROGRESS) showDialog.value = true
                     else newGame()
                 }
             )

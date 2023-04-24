@@ -8,7 +8,7 @@ abstract class LetterFieldState {
     
     abstract val result: List<RowState>
     
-    abstract val inProgress: Boolean
+    abstract val progressState: ProgressState
     
     class Start : LetterFieldState() {
         override val result: List<RowState> =
@@ -17,24 +17,24 @@ abstract class LetterFieldState {
                     LetterState.Empty(type = LetterType.Card())
                 })
             }
-        override val inProgress: Boolean = true
+        override val progressState = ProgressState.JUST_STARTED
     }
     
     class Progress(override val result: List<RowState>) : LetterFieldState() {
-        override val inProgress: Boolean = true
+        override val progressState = ProgressState.PROGRESS
     }
     
     class InvalidWord(override val result: List<RowState>) :
         LetterFieldState() {
-        override val inProgress: Boolean = true
+        override val progressState = ProgressState.PROGRESS
     }
     
     
     class Failed(override val result: List<RowState>) : LetterFieldState() {
-        override val inProgress: Boolean = false
+        override val progressState = ProgressState.ENDED
     }
     
     class Win(override val result: List<RowState>) : LetterFieldState() {
-        override val inProgress: Boolean = false
+        override val progressState = ProgressState.ENDED
     }
 }
