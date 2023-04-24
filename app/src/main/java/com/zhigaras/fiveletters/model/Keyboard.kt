@@ -5,7 +5,6 @@ import com.zhigaras.fiveletters.data.Alphabet
 abstract class Keyboard {
     
     abstract val keys: List<List<LetterState>>
-    val label = this::class.java.simpleName
     
     class Default(private val alphabet: Alphabet): Keyboard() {
     

@@ -18,7 +18,6 @@ import com.zhigaras.fiveletters.presentation.compose.ui.theme.*
 
 abstract class LetterState {
     
-    val label: String = this::class.java.simpleName
     abstract val type: LetterType
     abstract val borderColor: Color
     abstract val cardColor: Color

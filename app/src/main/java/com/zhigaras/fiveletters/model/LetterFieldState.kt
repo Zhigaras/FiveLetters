@@ -4,8 +4,6 @@ import com.zhigaras.fiveletters.Constants
 
 abstract class LetterFieldState {
     
-    val label: String = this::class.java.simpleName
-    
     abstract val result: List<RowState>
     
     abstract val progressState: ProgressState

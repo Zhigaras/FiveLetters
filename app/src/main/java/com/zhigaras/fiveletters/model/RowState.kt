@@ -4,7 +4,6 @@ abstract class RowState {
     
     abstract val row: List<LetterState>
     abstract val isRowOpened: Boolean
-    val label: String = this::class.java.simpleName
     
     data class Empty(override val row: List<LetterState>) : RowState() {
         override val isRowOpened: Boolean = false

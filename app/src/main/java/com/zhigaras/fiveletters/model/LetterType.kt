@@ -11,7 +11,6 @@ import com.zhigaras.fiveletters.presentation.compose.ui.theme.letterCardInnerPad
 
 abstract class LetterType {
     
-    val label: String = this::class.java.simpleName
     abstract val charSize: TextUnit
     abstract val width: Dp
     abstract val charPadding: Dp
