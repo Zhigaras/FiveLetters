@@ -76,7 +76,7 @@ fun FiveLettersNavHost(
             }) {
             MenuScreen(
                 viewModel = menuViewModel,
-                isGameInProgress = gameState.letterFieldState.inProgress,
+                isGameInProgress = gameState.isInProgress,
                 newGame = {
                     playViewModel.startNewGame()
                     navController.navigate(Destination.Play.route)

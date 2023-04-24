@@ -11,4 +11,5 @@ data class GameState(
 ) {
     val isRowLast get() = rowCursor == Constants.MAX_ROWS - 1
     val isColumnLast get() = columnCursor == Constants.MAX_COLUMN - 1
+    val isInProgress get() = letterFieldState.inProgress
 }

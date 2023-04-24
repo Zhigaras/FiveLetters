@@ -10,17 +10,6 @@ abstract class LetterFieldState {
     
     abstract val inProgress: Boolean
     
-    class NotStartedYet : LetterFieldState() {
-        override val result: List<RowState> =
-            List(Constants.MAX_ROWS) {
-                RowState.Empty(List(Constants.MAX_COLUMN) {
-                    LetterState.Empty(type = LetterType.Card())
-                })
-            }
-        override val inProgress: Boolean = false
-        
-    }
-    
     class Start : LetterFieldState() {
         override val result: List<RowState> =
             List(Constants.MAX_ROWS) {

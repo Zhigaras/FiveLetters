@@ -18,9 +18,8 @@ interface MoshiSerializer {
     
     class Base : MoshiSerializer {
     
-        val moshi = Moshi.Builder()
+        private val moshi = Moshi.Builder()
             .add(PolymorphicJsonAdapterFactory.of(LetterFieldState::class.java, "label")
-                .withSubtype(LetterFieldState.NotStartedYet::class.java, LetterFieldState.NotStartedYet::class.java.simpleName)
                 .withSubtype(LetterFieldState.Progress::class.java, LetterFieldState.Progress::class.java.simpleName)
                 .withSubtype(LetterFieldState.Start::class.java, LetterFieldState.Start::class.java.simpleName)
                 .withSubtype(LetterFieldState.InvalidWord::class.java, LetterFieldState.InvalidWord::class.java.simpleName)

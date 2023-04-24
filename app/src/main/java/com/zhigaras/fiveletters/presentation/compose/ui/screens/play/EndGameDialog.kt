@@ -54,7 +54,7 @@ fun EndGameDialog(
                 Text(
                     text = stringResource(R.string.the_word_is, origin),
                     textAlign = TextAlign.Center,
-                    style = MaterialTheme.typography.bodyLarge,
+                    style = MaterialTheme.typography.titleLarge,
                     modifier = modifier
                 )
                 content()

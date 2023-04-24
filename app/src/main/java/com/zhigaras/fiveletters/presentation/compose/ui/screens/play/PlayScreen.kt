@@ -28,9 +28,9 @@ fun PlayScreen(
     onNewGameClick: () -> Unit
 ) {
     val showDialog = remember { mutableStateOf(false) }
-    LaunchedEffect(key1 = gameState.letterFieldState.inProgress) {
+    LaunchedEffect(key1 = gameState.isInProgress) {
         delay(700)
-        showDialog.value = !gameState.letterFieldState.inProgress
+        showDialog.value = !gameState.isInProgress
     }
     if (showDialog.value) {
         EndGameDialog(
@@ -60,7 +60,7 @@ fun PlayScreen(
             contentAlignment = Alignment.BottomCenter
         ) {
             AnimatedContent(
-                targetState = gameState.letterFieldState.inProgress,
+                targetState = gameState.isInProgress,
                 transitionSpec = {
                     fadeIn(animationSpec = tween(1000)) togetherWith fadeOut(tween(1000))
                 }
