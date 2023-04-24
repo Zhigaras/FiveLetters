@@ -29,6 +29,7 @@ fun MenuScreen(
     val context = LocalContext.current
     val userStat by viewModel.userStatFlow().collectAsStateWithLifecycle(UserStat.Empty())
     var backPressedTime by remember { mutableStateOf(0L) }
+    val showDialog = remember { mutableStateOf(false) }
     BackHandler(enabled = true) {
         if (backPressedTime + 2000 > System.currentTimeMillis()) onFinish()
         else Toast.makeText(
@@ -37,6 +38,13 @@ fun MenuScreen(
             Toast.LENGTH_SHORT
         ).show()
         backPressedTime = System.currentTimeMillis()
+    }
+    if (showDialog.value) {
+        ConfirmationDialog(
+            startNewGame = newGame,
+            continueGame = continueGame,
+            onDismiss = { showDialog.value = false }
+        )
     }
     
     Column(modifier = Modifier.fillMaxSize()) {
@@ -102,13 +110,13 @@ fun MenuScreen(
                 .fillMaxWidth()
                 .weight(10f)
         ) {
-            if (isGameInProgress)
-                CommonButton(
-                    modifier = Modifier.align(Alignment.TopCenter),
-                    text = stringResource(R.string.continue_game),
-                    onClick = continueGame
-                )
-            CommonButton(text = stringResource(R.string.new_game), onClick = newGame)
+            CommonButton(
+                text = stringResource(R.string.start),
+                onClick = {
+                    if (isGameInProgress) showDialog.value = true
+                    else newGame()
+                }
+            )
         }
     }
 }

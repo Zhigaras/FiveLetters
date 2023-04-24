@@ -25,4 +25,6 @@
     <string name="press_back_again">Нажмите еще раз чтобы выйти</string>
     <string name="the_word_is">"Загаданное слово: %1$s"</string>
     <string name="continue_game">Продолжить</string>
+    <string name="new_game_confirmation">Вы не закончили последнюю игру. Хотите продолжить?</string>
+    <string name="start">Играть!</string>
 </resources>
