@@ -4,8 +4,9 @@ import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.OutlinedCard
@@ -14,7 +15,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import com.zhigaras.fiveletters.presentation.compose.ui.theme.*
+import com.zhigaras.fiveletters.presentation.compose.ui.theme.black
+import com.zhigaras.fiveletters.presentation.compose.ui.theme.gray
+import com.zhigaras.fiveletters.presentation.compose.ui.theme.red
+import com.zhigaras.fiveletters.presentation.compose.ui.theme.white
+import com.zhigaras.fiveletters.presentation.compose.ui.theme.yellow
 
 abstract class LetterState {
     
@@ -37,15 +42,15 @@ abstract class LetterState {
                 containerColor = cardColor,
                 contentColor = charColor
             ),
-            modifier = modifier.width(type.width)
+            modifier = modifier.fillMaxSize()
         ) {
-            Text(
-                text = char.toString().uppercase(),
-                fontSize = type.charSize,
-                modifier = Modifier
-                    .padding(type.charPadding)
-                    .align(Alignment.CenterHorizontally)
-            )
+            Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                Text(
+                    text = char.toString().uppercase(),
+                    fontSize = type.charSize,
+                    modifier = Modifier
+                )
+            }
         }
     }
     

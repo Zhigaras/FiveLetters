@@ -57,6 +57,7 @@ fun PlayScreen(
             modifier = Modifier
                 .weight(1f)
                 .verticalScroll(rememberScrollState())
+                .fillMaxSize()
         ) {
             LetterField(letterFieldState = gameState.letterFieldState)
         }

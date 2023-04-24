@@ -12,14 +12,12 @@ import com.zhigaras.fiveletters.presentation.compose.ui.theme.letterCardInnerPad
 abstract class LetterType {
     
     abstract val charSize: TextUnit
-    abstract val width: Dp
     abstract val charPadding: Dp
     abstract val cornersRadius: Dp
     abstract val borderWidth: Dp
     
     class Card : LetterType() {
-        override val charSize: TextUnit = 50.sp
-        override val width: Dp = 70.dp
+        override val charSize: TextUnit = 35.sp
         override val charPadding: Dp = letterCardInnerPadding
         override val cornersRadius: Dp = letterCardCornerRadius
         override val borderWidth: Dp = 2.dp
@@ -27,7 +25,6 @@ abstract class LetterType {
     
     class Key : LetterType() {
         override val charSize: TextUnit = 20.sp
-        override val width: Dp = 0.dp
         override val charPadding: Dp = keyboardButtonInnerPadding
         override val cornersRadius: Dp = keyboardButtonCornerRadius
         override val borderWidth: Dp = 1.dp

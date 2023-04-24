@@ -1,7 +1,19 @@
 package com.zhigaras.fiveletters.presentation.compose.ui.screens.play
 
-import androidx.compose.animation.core.*
-import androidx.compose.foundation.layout.*
+import androidx.compose.animation.core.Animatable
+import androidx.compose.animation.core.EaseInOutBounce
+import androidx.compose.animation.core.FastOutSlowInEasing
+import androidx.compose.animation.core.Spring
+import androidx.compose.animation.core.spring
+import androidx.compose.animation.core.tween
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
@@ -21,8 +33,8 @@ fun LetterField(
     Column(
         verticalArrangement = Arrangement.spacedBy(4.dp, Alignment.CenterVertically),
         modifier = modifier
-            .fillMaxWidth()
             .padding(8.dp)
+            .widthIn(max = 400.dp)
     ) {
         letterFieldState.result.forEach { letterRow ->
             LetterRow(letterRow = letterRow)
@@ -41,10 +53,22 @@ fun LetterRow(
     ) {
         letterRow.row.forEach {
             val state = remember(key1 = it.char) { it }
+            val weightModifier = Modifier
+                .weight(1f)
+                .aspectRatio(1f)
             when {
-                letterRow.isRowOpened -> FlippableLetter(newLetter = it, oldLetter = state)
-                letterRow is RowState.InvalidWord -> InvalidWordLetter(letter = it)
-                else -> BounceLetter(newLetter = it)
+                letterRow.isRowOpened -> FlippableLetter(
+                    modifier = weightModifier,
+                    newLetter = it,
+                    oldLetter = state
+                )
+                
+                letterRow is RowState.InvalidWord -> InvalidWordLetter(
+                    modifier = weightModifier,
+                    letter = it
+                )
+                
+                else -> BounceLetter(modifier = weightModifier, newLetter = it)
             }
         }
     }
@@ -61,14 +85,14 @@ fun FlippableLetter(
     LaunchedEffect(key1 = true) {
         flipRotation.animateTo(targetValue = newLetter.angle, animationSpec = animationSpec)
     }
-    Box(modifier = Modifier
+    Box(modifier = modifier
         .graphicsLayer {
             rotationY = flipRotation.value
         }) {
         if (flipRotation.value <= 90f)
             oldLetter.Letter()
         else
-            newLetter.Letter(modifier = modifier.graphicsLayer { rotationY = 180f })
+            newLetter.Letter(modifier = Modifier.graphicsLayer { rotationY = 180f })
     }
 }
 
