@@ -90,4 +90,7 @@ dependencies {
     implementation "com.squareup.moshi:moshi-adapters:$moshi_version"
     implementation "com.squareup.moshi:moshi-kotlin-codegen:$moshi_version"
 
+    //WindowSizeClass
+    implementation("androidx.compose.material3:material3-window-size-class:1.0.1")
+
 }

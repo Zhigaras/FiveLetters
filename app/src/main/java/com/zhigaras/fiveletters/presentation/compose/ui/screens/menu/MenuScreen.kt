@@ -15,11 +15,13 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.zhigaras.fiveletters.R
 import com.zhigaras.fiveletters.model.ProgressState
 import com.zhigaras.fiveletters.model.UserStat
+import com.zhigaras.fiveletters.presentation.compose.ui.screens.OrientationSwapper
 import com.zhigaras.fiveletters.presentation.compose.ui.viewmodels.MenuViewModel
 
 @Composable
 fun MenuScreen(
     viewModel: MenuViewModel,
+    isExpanded: Boolean,
     progressState: ProgressState,
     newGame: () -> Unit,
     continueGame: () -> Unit,
@@ -31,7 +33,7 @@ fun MenuScreen(
     val context = LocalContext.current
     val userStat by viewModel.userStatFlow().collectAsStateWithLifecycle(UserStat.Empty())
     var backPressedTime by remember { mutableStateOf(0L) }
-    val showDialog = remember { mutableStateOf(false) }
+    var showDialog by remember { mutableStateOf(false) }
     BackHandler(enabled = true) {
         if (backPressedTime + 2000 > System.currentTimeMillis()) onFinish()
         else Toast.makeText(
@@ -41,85 +43,111 @@ fun MenuScreen(
         ).show()
         backPressedTime = System.currentTimeMillis()
     }
-    if (showDialog.value) {
+    if (showDialog) {
         ConfirmationDialog(
             startNewGame = newGame,
             continueGame = continueGame,
-            onDismiss = { showDialog.value = false }
+            onDismiss = { showDialog = false }
         )
     }
     
-    Column(modifier = Modifier.fillMaxSize()) {
-        Box(
+    OrientationSwapper(modifier = Modifier.fillMaxSize(), isExpanded = isExpanded, content = listOf(
+        {
+            UserStatistics(
+                modifier = it,
+                userStat = userStat
+            )
+        },
+        {
+            PlayButtonArea(
+                modifier = it,
+                progressState = progressState,
+                toShowDialog = { showDialog = true },
+                onNewGameClick = newGame
+            )
+        }
+    ))
+}
+
+@Composable
+fun UserStatistics(
+    modifier: Modifier = Modifier,
+    userStat: UserStat
+) {
+    Box(
+        modifier = modifier
+    ) {
+        Card(
+            colors = CardDefaults.cardColors(
+                containerColor = MaterialTheme.colorScheme.primary,
+                contentColor = MaterialTheme.colorScheme.onPrimary
+            ),
             modifier = Modifier
-                .fillMaxWidth()
-                .weight(15f)
+                .fillMaxSize()
+                .padding(16.dp)
         ) {
-            Card(
-                colors = CardDefaults.cardColors(
-                    containerColor = MaterialTheme.colorScheme.primary,
-                    contentColor = MaterialTheme.colorScheme.onPrimary
-                ),
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(16.dp)
-            ) {
-                Column(modifier = Modifier.fillMaxSize()) {
-                    Text(
-                        text = stringResource(R.string.five_letters),
-                        style = MaterialTheme.typography.displayLarge,
-                        modifier = Modifier
-                            .align(Alignment.CenterHorizontally)
-                            .padding(16.dp)
-                    )
-                    Column(
-                        verticalArrangement = Arrangement.spacedBy(8.dp),
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .padding(8.dp)
-                    ) {
-                        listOf(
-                            listOf(R.string.games_played, R.string.wins).zip(
-                                listOf(userStat.games.toString(), userStat.wins.toString())
-                            ),
-                            listOf(R.string.win_rate, R.string.average_attempts).zip(
-                                listOf(userStat.formattedProgress, userStat.formattedAttempts)
-                            )
-                        ).forEachIndexed { columnIndex, row ->
-                            Row(
-                                horizontalArrangement = Arrangement.spacedBy(8.dp),
-                                modifier = Modifier.weight(1f)
-                            ) {
-                                row.forEachIndexed { rowIndex, item ->
-                                    StatCard(
-                                        modifier = Modifier
-                                            .weight(1f)
-                                            .fillMaxHeight(),
-                                        content = item,
-                                        progressFlag = columnIndex == 1 && rowIndex == 0,
-                                        progress = userStat.progress
-                                    )
-                                }
+            Column(modifier = Modifier.fillMaxSize()) {
+                Text(
+                    text = stringResource(R.string.five_letters),
+                    style = MaterialTheme.typography.displayLarge,
+                    modifier = Modifier
+                        .align(Alignment.CenterHorizontally)
+                        .padding(16.dp)
+                )
+                Column(
+                    verticalArrangement = Arrangement.spacedBy(8.dp),
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(8.dp)
+                ) {
+                    listOf(
+                        listOf(R.string.games_played, R.string.wins).zip(
+                            listOf(userStat.games.toString(), userStat.wins.toString())
+                        ),
+                        listOf(R.string.win_rate, R.string.average_attempts).zip(
+                            listOf(userStat.formattedProgress, userStat.formattedAttempts)
+                        )
+                    ).forEachIndexed { columnIndex, row ->
+                        Row(
+                            horizontalArrangement = Arrangement.spacedBy(8.dp),
+                            modifier = Modifier.weight(1f)
+                        ) {
+                            row.forEachIndexed { rowIndex, item ->
+                                StatCard(
+                                    modifier = Modifier
+                                        .weight(1f)
+                                        .fillMaxHeight(),
+                                    content = item,
+                                    progressFlag = columnIndex == 1 && rowIndex == 0,
+                                    progress = userStat.progress
+                                )
                             }
                         }
                     }
                 }
             }
         }
-        Box(
-            contentAlignment = Alignment.Center,
-            modifier = Modifier
-                .fillMaxWidth()
-                .weight(10f)
-        ) {
-            CommonButton(
-                text = stringResource(R.string.start),
-                onClick = {
-                    if (progressState == ProgressState.PROGRESS) showDialog.value = true
-                    else newGame()
-                }
-            )
-        }
+    }
+}
+
+@Composable
+fun PlayButtonArea(
+    modifier: Modifier = Modifier,
+    progressState: ProgressState,
+    toShowDialog: () -> Unit,
+    onNewGameClick: () -> Unit
+) {
+    Box(
+        contentAlignment = Alignment.Center,
+        modifier = modifier
+    ) {
+        CommonButton(
+            text = stringResource(R.string.start),
+            onClick = {
+                if (progressState == ProgressState.PROGRESS) toShowDialog()
+                else onNewGameClick()
+            }
+        )
     }
 }
 

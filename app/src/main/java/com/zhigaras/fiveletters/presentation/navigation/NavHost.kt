@@ -3,6 +3,7 @@ package com.zhigaras.fiveletters.presentation.navigation
 import androidx.compose.animation.*
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -23,12 +24,14 @@ import com.zhigaras.fiveletters.presentation.compose.ui.viewmodels.WelcomeViewMo
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun FiveLettersNavHost(
+    windowSizeClass: WindowWidthSizeClass,
     authViewModel: AuthViewModel,
     welcomeViewModel: WelcomeViewModel,
     playViewModel: PlayViewModel,
     menuViewModel: MenuViewModel,
     onFinish: () -> Unit
 ) {
+    val isExpanded = windowSizeClass == WindowWidthSizeClass.Expanded
     val navController = rememberAnimatedNavController()
     val gameState by playViewModel.gameStateFlow.collectAsStateWithLifecycle()
     AnimatedNavHost(
@@ -76,6 +79,7 @@ fun FiveLettersNavHost(
             }) {
             MenuScreen(
                 viewModel = menuViewModel,
+                isExpanded = isExpanded,
                 progressState = gameState.progressState,
                 newGame = {
                     playViewModel.startNewGame()
