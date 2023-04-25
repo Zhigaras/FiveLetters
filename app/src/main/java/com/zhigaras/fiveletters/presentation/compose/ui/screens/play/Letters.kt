@@ -16,7 +16,11 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
@@ -68,7 +72,9 @@ fun LetterRow(
                     letter = it
                 )
                 
-                else -> BounceLetter(modifier = weightModifier, newLetter = it)
+                else -> it.Letter(
+                    modifier = weightModifier
+                )
             }
         }
     }
@@ -80,10 +86,14 @@ fun FlippableLetter(
     newLetter: LetterState,
     oldLetter: LetterState
 ) {
+    var needToRotate by rememberSaveable { mutableStateOf(oldLetter != newLetter) }
     val flipRotation = remember { Animatable(0f) }
     val animationSpec = tween<Float>(2000, easing = FastOutSlowInEasing)
-    LaunchedEffect(key1 = true) {
-        flipRotation.animateTo(targetValue = newLetter.angle, animationSpec = animationSpec)
+    if (needToRotate) {
+        LaunchedEffect(key1 = true) {
+            flipRotation.animateTo(targetValue = newLetter.angle, animationSpec = animationSpec)
+            needToRotate = false
+        }
     }
     Box(modifier = modifier
         .graphicsLayer {
@@ -101,42 +111,29 @@ fun InvalidWordLetter(
     modifier: Modifier = Modifier,
     letter: LetterState
 ) {
-    val drag = remember { Animatable(0f) }
-    LaunchedEffect(key1 = letter.char) {
-        drag.animateTo(targetValue = 50f, animationSpec = tween(600, easing = EaseInOutBounce))
-        drag.animateTo(
-            targetValue = 0f,
-            animationSpec = spring(
-                dampingRatio = Spring.DampingRatioHighBouncy,
-                stiffness = Spring.StiffnessLow
+    var needToRotate by rememberSaveable { mutableStateOf(true) }
+    val rotation = remember { Animatable(0f) }
+    if (needToRotate) {
+        LaunchedEffect(key1 = true) {
+            rotation.animateTo(
+                targetValue = 50f,
+                animationSpec = tween(600, easing = EaseInOutBounce)
             )
-        )
+            rotation.animateTo(
+                targetValue = 0f,
+                animationSpec = spring(
+                    dampingRatio = Spring.DampingRatioHighBouncy,
+                    stiffness = Spring.StiffnessLow
+                )
+            )
+            needToRotate = false
+        }
     }
     Box(modifier = modifier
         .graphicsLayer {
-            rotationY = drag.value
+            rotationY = rotation.value
         }) {
         letter.Letter()
-    }
-}
-
-@Composable
-fun BounceLetter(
-    modifier: Modifier = Modifier,
-    newLetter: LetterState
-) {
-    val rotation = remember { Animatable(0f) }
-    val animationSpec = tween<Float>(150, easing = FastOutSlowInEasing)
-    LaunchedEffect(key1 = newLetter.char) {
-        rotation.animateTo(targetValue = 3f, animationSpec = animationSpec)
-        rotation.animateTo(targetValue = -3f, animationSpec = animationSpec)
-        rotation.animateTo(targetValue = 0f, animationSpec = animationSpec)
-    }
-    Box(modifier = modifier
-        .graphicsLayer {
-            rotationZ = rotation.value
-        }) {
-        newLetter.Letter()
     }
 }
 
