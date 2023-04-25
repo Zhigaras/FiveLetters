@@ -24,6 +24,7 @@ import androidx.compose.ui.unit.dp
 import com.zhigaras.fiveletters.model.LetterFieldState
 import com.zhigaras.fiveletters.model.LetterState
 import com.zhigaras.fiveletters.model.RowState
+import com.zhigaras.fiveletters.presentation.compose.ui.theme.playScreenMaxWidth
 
 @Composable
 fun LetterField(
@@ -34,7 +35,7 @@ fun LetterField(
         verticalArrangement = Arrangement.spacedBy(4.dp, Alignment.CenterVertically),
         modifier = modifier
             .padding(8.dp)
-            .widthIn(max = 400.dp)
+            .widthIn(max = playScreenMaxWidth)
     ) {
         letterFieldState.result.forEach { letterRow ->
             LetterRow(letterRow = letterRow)
