@@ -16,11 +16,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
@@ -60,21 +56,25 @@ fun LetterRow(
             val weightModifier = Modifier
                 .weight(1f)
                 .aspectRatio(1f)
-            when {
-                letterRow.isRowOpened -> FlippableLetter(
-                    modifier = weightModifier,
-                    newLetter = it,
-                    oldLetter = state
-                )
-                
-                letterRow is RowState.InvalidWord -> InvalidWordLetter(
-                    modifier = weightModifier,
-                    letter = it
-                )
-                
-                else -> it.Letter(
-                    modifier = weightModifier
-                )
+            if (state == it) {
+                it.Letter(modifier = weightModifier)
+            } else {
+                when {
+                    letterRow.isRowOpened -> FlippableLetter(
+                        modifier = weightModifier,
+                        newLetter = it,
+                        oldLetter = state
+                    )
+                    
+                    letterRow is RowState.InvalidWord -> InvalidWordLetter(
+                        modifier = weightModifier,
+                        letter = it
+                    )
+                    
+                    else -> it.Letter(
+                        modifier = weightModifier
+                    )
+                }
             }
         }
     }
@@ -86,14 +86,10 @@ fun FlippableLetter(
     newLetter: LetterState,
     oldLetter: LetterState
 ) {
-    var needToRotate by rememberSaveable { mutableStateOf(oldLetter != newLetter) }
     val flipRotation = remember { Animatable(0f) }
     val animationSpec = tween<Float>(2000, easing = FastOutSlowInEasing)
-    if (needToRotate) {
-        LaunchedEffect(key1 = true) {
-            flipRotation.animateTo(targetValue = newLetter.angle, animationSpec = animationSpec)
-            needToRotate = false
-        }
+    LaunchedEffect(key1 = true) {
+        flipRotation.animateTo(targetValue = newLetter.angle, animationSpec = animationSpec)
     }
     Box(modifier = modifier
         .graphicsLayer {
@@ -111,23 +107,19 @@ fun InvalidWordLetter(
     modifier: Modifier = Modifier,
     letter: LetterState
 ) {
-    var needToRotate by rememberSaveable { mutableStateOf(true) }
     val rotation = remember { Animatable(0f) }
-    if (needToRotate) {
-        LaunchedEffect(key1 = true) {
-            rotation.animateTo(
-                targetValue = 50f,
-                animationSpec = tween(600, easing = EaseInOutBounce)
+    LaunchedEffect(key1 = true) {
+        rotation.animateTo(
+            targetValue = 50f,
+            animationSpec = tween(600, easing = EaseInOutBounce)
+        )
+        rotation.animateTo(
+            targetValue = 0f,
+            animationSpec = spring(
+                dampingRatio = Spring.DampingRatioHighBouncy,
+                stiffness = Spring.StiffnessLow
             )
-            rotation.animateTo(
-                targetValue = 0f,
-                animationSpec = spring(
-                    dampingRatio = Spring.DampingRatioHighBouncy,
-                    stiffness = Spring.StiffnessLow
-                )
-            )
-            needToRotate = false
-        }
+        )
     }
     Box(modifier = modifier
         .graphicsLayer {
