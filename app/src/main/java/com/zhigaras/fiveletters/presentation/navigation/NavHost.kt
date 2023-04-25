@@ -1,12 +1,13 @@
 package com.zhigaras.fiveletters.presentation.navigation
 
+import android.content.res.Configuration
 import androidx.compose.animation.*
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import com.google.accompanist.navigation.animation.AnimatedNavHost
@@ -24,14 +25,13 @@ import com.zhigaras.fiveletters.presentation.compose.ui.viewmodels.WelcomeViewMo
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun FiveLettersNavHost(
-    windowSizeClass: WindowWidthSizeClass,
     authViewModel: AuthViewModel,
     welcomeViewModel: WelcomeViewModel,
     playViewModel: PlayViewModel,
     menuViewModel: MenuViewModel,
     onFinish: () -> Unit
 ) {
-    val isExpanded = windowSizeClass == WindowWidthSizeClass.Expanded
+    val isExpanded = LocalConfiguration.current.orientation == Configuration.ORIENTATION_LANDSCAPE
     val navController = rememberAnimatedNavController()
     val gameState by playViewModel.gameStateFlow.collectAsStateWithLifecycle()
     AnimatedNavHost(

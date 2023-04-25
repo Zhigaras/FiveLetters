@@ -6,8 +6,6 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
-import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
-import androidx.compose.material3.windowsizeclass.calculateWindowSizeClass
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelStoreOwner
@@ -22,7 +20,6 @@ class MainActivity : ComponentActivity(), ProvideViewModel {
     
     private lateinit var playViewModel: PlayViewModel
     
-    @OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val authViewModel = provideViewModel(AuthViewModel::class.java, this)
@@ -31,14 +28,12 @@ class MainActivity : ComponentActivity(), ProvideViewModel {
         val menuViewModel = provideViewModel(MenuViewModel::class.java, this)
         
         setContent {
-            val widthSizeClass = calculateWindowSizeClass(this).widthSizeClass
             FiveLettersTheme {
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.secondary
                 ) {
                     FiveLettersNavHost(
-                        windowSizeClass = widthSizeClass,
                         authViewModel = authViewModel,
                         welcomeViewModel = welcomeViewModel,
                         playViewModel = playViewModel,
