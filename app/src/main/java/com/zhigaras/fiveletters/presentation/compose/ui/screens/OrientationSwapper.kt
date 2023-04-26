@@ -14,11 +14,23 @@ fun OrientationSwapper(
 ) {
     if (isExpanded) {
         Row(modifier = modifier) {
-            content.forEach { it.invoke(Modifier.fillMaxSize().weight(1f)) }
+            content.forEachIndexed { index, function ->
+                function.invoke(
+                    Modifier
+                        .fillMaxSize()
+                        .weight((content.size / (index + 1)).toFloat())
+                )
+            }
         }
     } else {
         Column(modifier = modifier) {
-            content.forEach { it.invoke(Modifier.fillMaxSize().weight(1f)) }
+            content.forEachIndexed { index, function ->
+                function.invoke(
+                    Modifier
+                        .fillMaxSize()
+                        .weight((content.size / (index + 1)).toFloat())
+                )
+            }
         }
     }
     
