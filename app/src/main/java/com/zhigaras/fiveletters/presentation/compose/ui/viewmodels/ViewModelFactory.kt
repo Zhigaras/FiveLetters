@@ -10,6 +10,7 @@ import com.zhigaras.fiveletters.data.MoshiSerializer
 import com.zhigaras.fiveletters.data.StateSaver
 import com.zhigaras.fiveletters.domain.GameStateController
 import com.zhigaras.fiveletters.domain.KeyboardStateController
+import com.zhigaras.fiveletters.domain.RowStateController
 import com.zhigaras.fiveletters.domain.WordCheckable
 
 class ViewModelFactory(
@@ -24,7 +25,7 @@ class ViewModelFactory(
             PlayViewModel::class.java ->
                 PlayViewModel(
                     GameStateController.Base(
-                        WordCheckable.Base(mainRepository),
+                        RowStateController.Base(WordCheckable.Base(mainRepository)),
                         KeyboardStateController.Base(Alphabet.Ru())
                     ),
                     mainRepository,

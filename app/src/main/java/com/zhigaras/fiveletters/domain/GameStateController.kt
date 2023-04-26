@@ -18,21 +18,16 @@ interface GameStateController {
     fun newGame(origin: Word): GameState
     
     class Base(
-        private val wordCheckable: WordCheckable,
+        private val rowStateController: RowStateController,
         private val keyboardStateController: KeyboardStateController
     ) : GameStateController {
         
         override fun inputLetter(gameState: GameState, char: Char): GameState {
             if (gameState.columnCursor != Constants.MAX_COLUMN) {
                 val snapshot = gameState.letterFieldState.result.toMutableList()
-                val currentRow = snapshot[gameState.rowCursor].row.toMutableList()
-                currentRow[gameState.columnCursor] = LetterState.UserClicked(char)
-                val rowState =
-                    if (gameState.isColumnLast)
-                        RowState.UncheckedWord(currentRow.toList())
-                    else
-                        RowState.NotFullRow(currentRow.toList())
-                snapshot[gameState.rowCursor] = rowState
+                val currentRow = snapshot[gameState.rowCursor]
+                snapshot[gameState.rowCursor] =
+                    rowStateController.inputLetter(gameState, char, currentRow)
                 return gameState.copy(
                     letterFieldState = LetterFieldState.Progress(snapshot.toList()),
                     columnCursor = gameState.columnCursor + 1
@@ -45,12 +40,9 @@ interface GameStateController {
             if (gameState.columnCursor != 0) {
                 val columnCursor = gameState.columnCursor - 1
                 val snapshot = gameState.letterFieldState.result.toMutableList()
-                val currentRow: MutableList<LetterState> =
-                    snapshot[gameState.rowCursor].row.map { LetterState.UserClicked(it.char) }
-                        .toMutableList()
-                currentRow[columnCursor] =
-                    LetterState.Empty(type = LetterType.Card())
-                snapshot[gameState.rowCursor] = RowState.NotFullRow(currentRow.toList())
+                val currentRow = snapshot[gameState.rowCursor]
+                snapshot[gameState.rowCursor] =
+                    rowStateController.removeLetter(gameState, currentRow, columnCursor)
                 val lettersField = LetterFieldState.Progress(snapshot.toList())
                 return gameState.copy(letterFieldState = lettersField, columnCursor = columnCursor)
             }
@@ -63,11 +55,8 @@ interface GameStateController {
             incrementGamesCounter: suspend () -> Unit
         ): GameState {
             val snapshot = gameState.letterFieldState.result.toMutableList()
-            snapshot[gameState.rowCursor] =
-                wordCheckable.checkWord(
-                    snapshot[gameState.rowCursor].row.map { it.char },
-                    gameState.origin.word.uppercase()
-                )
+            val currentRow = snapshot[gameState.rowCursor]
+            snapshot[gameState.rowCursor] = rowStateController.confirmWord(gameState, currentRow)
             if (snapshot[gameState.rowCursor] is RowState.InvalidWord)
                 return gameState.copy(letterFieldState = LetterFieldState.InvalidWord(snapshot.toList()))
             
