@@ -8,7 +8,6 @@ import com.zhigaras.fiveletters.data.MainRepository
 import com.zhigaras.fiveletters.data.StateSaver
 import com.zhigaras.fiveletters.domain.GameStateController
 import com.zhigaras.fiveletters.model.GameState
-import com.zhigaras.fiveletters.model.Word
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
@@ -21,7 +20,7 @@ class PlayViewModel(
 ) : ViewModel(), GameInteract {
     
     private val _gameStateFlow: MutableStateFlow<GameState> =
-        MutableStateFlow(gameStateController.newGame(Word(1, "слово", false, 0)))
+        MutableStateFlow(gameStateController.newGame())
     val gameStateFlow = _gameStateFlow.asStateFlow()
     
     override fun inputLetter(char: Char) {

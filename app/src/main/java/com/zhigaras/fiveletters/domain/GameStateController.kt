@@ -15,10 +15,10 @@ interface GameStateController {
         incrementGamesCounter: suspend () -> Unit
     ): GameState
     
-    fun newGame(origin: Word): GameState
+    fun newGame(origin: Word = Word(1, "start", false, 0)): GameState
     
     class Base(
-        private val rowStateController: RowStateController,
+        private val rowStateController: RowStateController.Overall,
         private val keyboardStateController: KeyboardStateController
     ) : GameStateController {
         
@@ -56,7 +56,8 @@ interface GameStateController {
         ): GameState {
             val snapshot = gameState.letterFieldState.result.toMutableList()
             val currentRow = snapshot[gameState.rowCursor]
-            snapshot[gameState.rowCursor] = rowStateController.confirmWord(gameState, currentRow)
+            snapshot[gameState.rowCursor] =
+                rowStateController.confirmWord(gameState.origin, currentRow)
             if (snapshot[gameState.rowCursor] is RowState.InvalidWord)
                 return gameState.copy(letterFieldState = LetterFieldState.InvalidWord(snapshot.toList()))
             

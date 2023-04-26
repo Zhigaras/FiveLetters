@@ -20,10 +20,10 @@ interface MainRepository : MainDao, UserStatInteract.Write {
         }
     }
     
-    class Fake(private val valid: Boolean) : MainRepository {
-        override suspend fun getUnsolvedWord() = Word(1, "test", false, 0)
+    class Fake(private val isWordValid: Boolean) : MainRepository {
+        override suspend fun getUnsolvedWord() = Word(1, "песня", false, 0)
         
-        override suspend fun isWordExist(word: String) = valid
+        override suspend fun isWordExist(word: String) = isWordValid
         
         override suspend fun update(word: Word) {}
         

@@ -4,16 +4,27 @@ import com.zhigaras.fiveletters.model.GameState
 import com.zhigaras.fiveletters.model.LetterState
 import com.zhigaras.fiveletters.model.LetterType
 import com.zhigaras.fiveletters.model.RowState
+import com.zhigaras.fiveletters.model.Word
 
 interface RowStateController {
     
-    fun inputLetter(gameState: GameState, char: Char, currentRow: RowState): RowState
+    interface Mutable: RowStateController {
     
-    fun removeLetter(gameState: GameState, currentRow: RowState, columnCursor: Int): RowState
+        fun inputLetter(gameState: GameState, char: Char, currentRow: RowState): RowState
     
-    suspend fun confirmWord(gameState: GameState, currentRow: RowState): RowState
+        fun removeLetter(gameState: GameState, currentRow: RowState, columnCursor: Int): RowState
     
-    class Base(private val wordCheckable: WordCheckable) : RowStateController {
+    }
+    
+    interface Confirm: RowStateController {
+    
+        suspend fun confirmWord(origin: Word, currentRow: RowState): RowState
+    
+    }
+    
+    interface Overall: Mutable, Confirm
+    
+    class Base(private val wordCheckable: WordCheckable) : Overall {
         
         override fun inputLetter(gameState: GameState, char: Char, currentRow: RowState): RowState {
             val row = currentRow.row.toMutableList()
@@ -35,10 +46,10 @@ interface RowStateController {
             return RowState.NotFullRow(row.toList())
         }
         
-        override suspend fun confirmWord(gameState: GameState, currentRow: RowState): RowState {
+        override suspend fun confirmWord(origin: Word, currentRow: RowState): RowState {
             return wordCheckable.checkWord(
                 currentRow.row.map { it.char },
-                gameState.origin.word.uppercase()
+                origin.word.uppercase()
             )
         }
     }
