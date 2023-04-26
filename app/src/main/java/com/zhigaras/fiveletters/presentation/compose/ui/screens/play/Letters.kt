@@ -38,7 +38,8 @@ fun LetterField(
             .widthIn(max = playScreenMaxWidth)
     ) {
         letterFieldState.result.forEach { letterRow ->
-            LetterRow(letterRow = letterRow)
+            val rowState = remember { letterRow }
+            LetterRow(newRow = letterRow, oldRow = rowState)
         }
     }
 }
@@ -46,28 +47,29 @@ fun LetterField(
 @Composable
 fun LetterRow(
     modifier: Modifier = Modifier,
-    letterRow: RowState
+    newRow: RowState,
+    oldRow: RowState
 ) {
     Row(
         horizontalArrangement = Arrangement.spacedBy(4.dp, Alignment.CenterHorizontally),
         modifier = modifier.fillMaxWidth()
     ) {
-        letterRow.row.forEach {
+        newRow.row.forEach {
             val state = remember(key1 = it.char) { it }
             val weightModifier = Modifier
                 .weight(1f)
                 .aspectRatio(1f)
-            if (state == it) {
+            if (newRow == oldRow) {
                 it.Letter(modifier = weightModifier)
             } else {
                 when {
-                    letterRow.isRowOpened -> FlippableLetter(
+                    newRow.isRowOpened -> FlippableLetter(
                         modifier = weightModifier,
                         newLetter = it,
                         oldLetter = state
                     )
                     
-                    letterRow is RowState.InvalidWord -> InvalidWordLetter(
+                    newRow is RowState.InvalidWord -> InvalidWordLetter(
                         modifier = weightModifier,
                         letter = it
                     )
