@@ -1,22 +1,21 @@
 package com.zhigaras.fiveletters.domain
 
-import com.zhigaras.fiveletters.data.MainRepository
 import com.zhigaras.fiveletters.model.LetterState
 import com.zhigaras.fiveletters.model.LetterType
 import com.zhigaras.fiveletters.model.RowState
 
 interface WordCheckable {
     
-    suspend fun checkWord(word: List<Char>, origin: String): RowState
+    fun checkWord(isWordValid: Boolean, word: List<Char>, origin: String): RowState
     
     fun checkDuplicates(word: List<LetterState>, origin: String): List<LetterState>
     
     fun checkRowState(row: List<LetterState>): RowState
     
-    class Base(private val mainRepository: MainRepository) : WordCheckable {
+    class Base : WordCheckable {
         
-        override suspend fun checkWord(word: List<Char>, origin: String): RowState {
-            if (mainRepository.isWordExist(word.map { it.lowercaseChar() }.joinToString(""))) {
+        override fun checkWord(isWordValid: Boolean, word: List<Char>, origin: String): RowState {
+            if (isWordValid) {
                 val originCharList = origin.toList()
                 var result = emptyList<LetterState>().toMutableList()
                 originCharList.zip(word.map { it }) { o, w ->

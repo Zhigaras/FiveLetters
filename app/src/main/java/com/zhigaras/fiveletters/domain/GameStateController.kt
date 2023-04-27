@@ -1,6 +1,7 @@
 package com.zhigaras.fiveletters.domain
 
 import com.zhigaras.fiveletters.Constants
+import com.zhigaras.fiveletters.data.MainRepository
 import com.zhigaras.fiveletters.model.*
 
 interface GameStateController {
@@ -19,7 +20,8 @@ interface GameStateController {
     
     class Base(
         private val rowStateController: RowStateController.Overall,
-        private val keyboardStateController: KeyboardStateController
+        private val keyboardStateController: KeyboardStateController,
+        private val mainRepository: MainRepository
     ) : GameStateController {
         
         override fun inputLetter(gameState: GameState, char: Char): GameState {
@@ -56,8 +58,11 @@ interface GameStateController {
         ): GameState {
             val snapshot = gameState.letterFieldState.result.toMutableList()
             val currentRow = snapshot[gameState.rowCursor]
+            val isWordValid =
+                mainRepository.isWordExist(currentRow.row.map { it.char.lowercaseChar() }
+                    .joinToString(""))
             snapshot[gameState.rowCursor] =
-                rowStateController.confirmWord(gameState.origin, currentRow)
+                rowStateController.confirmWord(isWordValid, gameState.origin, currentRow)
             if (snapshot[gameState.rowCursor] is RowState.InvalidWord)
                 return gameState.copy(letterFieldState = LetterFieldState.InvalidWord(snapshot.toList()))
             

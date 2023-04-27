@@ -8,21 +8,25 @@ import com.zhigaras.fiveletters.model.Word
 
 interface RowStateController {
     
-    interface Mutable: RowStateController {
-    
+    interface Mutable : RowStateController {
+        
         fun inputLetter(gameState: GameState, char: Char, currentRow: RowState): RowState
-    
+        
         fun removeLetter(gameState: GameState, currentRow: RowState, columnCursor: Int): RowState
-    
+        
     }
     
-    interface Confirm: RowStateController {
-    
-        suspend fun confirmWord(origin: Word, currentRow: RowState): RowState
-    
+    interface Confirm : RowStateController {
+        
+        fun confirmWord(
+            isWordValid: Boolean,
+            origin: Word,
+            currentRow: RowState
+        ): RowState
+        
     }
     
-    interface Overall: Mutable, Confirm
+    interface Overall : Mutable, Confirm
     
     class Base(private val wordCheckable: WordCheckable) : Overall {
         
@@ -46,8 +50,13 @@ interface RowStateController {
             return RowState.NotFullRow(row.toList())
         }
         
-        override suspend fun confirmWord(origin: Word, currentRow: RowState): RowState {
+        override fun confirmWord(
+            isWordValid: Boolean,
+            origin: Word,
+            currentRow: RowState
+        ): RowState {
             return wordCheckable.checkWord(
+                isWordValid,
                 currentRow.row.map { it.char },
                 origin.word.uppercase()
             )
