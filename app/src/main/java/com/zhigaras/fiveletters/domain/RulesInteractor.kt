@@ -1,16 +1,12 @@
 package com.zhigaras.fiveletters.domain
 
-import com.zhigaras.fiveletters.Constants
 import com.zhigaras.fiveletters.model.LetterState
-import com.zhigaras.fiveletters.model.LetterType
 import com.zhigaras.fiveletters.model.RowState
 import com.zhigaras.fiveletters.model.Word
 
 interface RulesInteractor {
     
-    fun getInitialRulesRow(): RowState
-    
-    suspend fun getRulesRow(index: Int): RowState
+    fun getRulesRows(): List<RowState>
     
     class Base(
         private val rowStateController: RowStateController.Confirm
@@ -20,20 +16,14 @@ interface RulesInteractor {
         
         private val rulesWords = listOf("блеск", "пенал", "песня")
         
-        private val rulesRowsList = rulesWords.map { word ->
-            RowState.UncheckedWord(word.map { LetterState.UserClicked(it) })
+        private val rulesRowsList: List<RowState> = rulesWords.map { word ->
+            RowState.UncheckedWord(word.map { LetterState.UserClicked(it.uppercaseChar()) })
         }
         
-        override suspend fun getRulesRow(index: Int): RowState {
-            return rowStateController.confirmWord(rulesOrigin, rulesRowsList[index])
+        override fun getRulesRows(): List<RowState> {
+            return rulesRowsList.map {
+                rowStateController.confirmWord(true, rulesOrigin, it)
+            }
         }
-    
-        override fun getInitialRulesRow(): RowState {
-            return RowState.Empty(List(Constants.MAX_COLUMN) {
-                LetterState.Empty(type = LetterType.Card())
-            })
-        }
-    
-    
     }
 }

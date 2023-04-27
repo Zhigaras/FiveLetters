@@ -3,12 +3,16 @@ package com.zhigaras.fiveletters.presentation.compose.ui.screens.menu
 import android.widget.Toast
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Info
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -16,6 +20,7 @@ import com.zhigaras.fiveletters.R
 import com.zhigaras.fiveletters.model.ProgressState
 import com.zhigaras.fiveletters.model.UserStat
 import com.zhigaras.fiveletters.presentation.compose.ui.screens.OrientationSwapper
+import com.zhigaras.fiveletters.presentation.compose.ui.theme.yellow
 import com.zhigaras.fiveletters.presentation.compose.ui.viewmodels.MenuViewModel
 
 @Composable
@@ -33,7 +38,10 @@ fun MenuScreen(
     val context = LocalContext.current
     val userStat by viewModel.userStatFlow().collectAsStateWithLifecycle(UserStat.Empty())
     var backPressedTime by remember { mutableStateOf(0L) }
-    var showDialog by remember { mutableStateOf(false) }
+    var showAlertDialog by rememberSaveable { mutableStateOf(false) }
+    var showRulesDialog by rememberSaveable { mutableStateOf(false) }
+    val rulesRowsList by viewModel.rulesRowFlow.collectAsStateWithLifecycle()
+    
     BackHandler(enabled = true) {
         if (backPressedTime + 2000 > System.currentTimeMillis()) onFinish()
         else Toast.makeText(
@@ -43,12 +51,15 @@ fun MenuScreen(
         ).show()
         backPressedTime = System.currentTimeMillis()
     }
-    if (showDialog) {
+    if (showAlertDialog) {
         ConfirmationDialog(
             startNewGame = newGame,
             continueGame = continueGame,
-            onDismiss = { showDialog = false }
+            onDismiss = { showAlertDialog = false }
         )
+    }
+    if (showRulesDialog) {
+        RulesDialog(rulesRowsList = rulesRowsList, onDismiss = { showRulesDialog = false })
     }
     
     OrientationSwapper(modifier = Modifier.fillMaxSize(), isExpanded = isExpanded, content = listOf(
@@ -62,7 +73,8 @@ fun MenuScreen(
             PlayButtonArea(
                 modifier = it,
                 progressState = progressState,
-                toShowDialog = { showDialog = true },
+                showAlertDialog = { showAlertDialog = true },
+                showRulesDialog = { showRulesDialog = true },
                 onNewGameClick = newGame
             )
         }
@@ -134,7 +146,8 @@ fun UserStatistics(
 fun PlayButtonArea(
     modifier: Modifier = Modifier,
     progressState: ProgressState,
-    toShowDialog: () -> Unit,
+    showAlertDialog: () -> Unit,
+    showRulesDialog: () -> Unit,
     onNewGameClick: () -> Unit
 ) {
     Box(
@@ -143,11 +156,24 @@ fun PlayButtonArea(
     ) {
         CommonButton(
             text = stringResource(R.string.start),
+            textStyle = MaterialTheme.typography.titleLarge,
             onClick = {
-                if (progressState == ProgressState.PROGRESS) toShowDialog()
+                if (progressState == ProgressState.PROGRESS) showAlertDialog()
                 else onNewGameClick()
             }
         )
+        IconButton(
+            modifier = Modifier
+                .align(Alignment.BottomEnd)
+                .padding(16.dp),
+            onClick = { showRulesDialog() }) {
+            Icon(
+                modifier = Modifier.size(40.dp),
+                imageVector = Icons.Default.Info,
+                contentDescription = stringResource(id = R.string.show_rules),
+                tint = yellow
+            )
+        }
     }
 }
 
@@ -155,6 +181,7 @@ fun PlayButtonArea(
 fun CommonButton(
     modifier: Modifier = Modifier,
     text: String,
+    textStyle: TextStyle,
     onClick: () -> Unit
 ) {
     Button(
@@ -168,7 +195,7 @@ fun CommonButton(
     ) {
         Text(
             text = text,
-            style = MaterialTheme.typography.titleLarge,
+            style = textStyle,
             modifier = Modifier.padding(horizontal = 16.dp),
             textAlign = TextAlign.Center
         )

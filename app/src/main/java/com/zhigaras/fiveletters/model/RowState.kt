@@ -5,6 +5,10 @@ abstract class RowState {
     abstract val row: List<LetterState>
     abstract val isRowOpened: Boolean
     
+    fun <T: LetterState>select(clazz: Class<T>): String {
+        return row.filterIsInstance(clazz).map { it.char }.joinToString(", ")
+    }
+    
     data class Empty(override val row: List<LetterState>) : RowState() {
         override val isRowOpened: Boolean = false
     }

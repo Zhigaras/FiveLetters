@@ -48,7 +48,7 @@ fun LetterField(
 fun LetterRow(
     modifier: Modifier = Modifier,
     newRow: RowState,
-    oldRow: RowState
+    oldRow: RowState = newRow
 ) {
     Row(
         horizontalArrangement = Arrangement.spacedBy(4.dp, Alignment.CenterHorizontally),

@@ -36,7 +36,7 @@ fun FiveLettersNavHost(
     val gameState by playViewModel.gameStateFlow.collectAsStateWithLifecycle()
     AnimatedNavHost(
         navController = navController,
-        startDestination = Destination.Splash.route,
+        startDestination = Destination.Menu.route,
         modifier = Modifier.fillMaxSize()
     ) {
         composable(
