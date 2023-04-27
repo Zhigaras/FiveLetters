@@ -77,7 +77,8 @@ fun RulesDialogContent(
             onClick = { onDismiss() }) {
             Icon(
                 imageVector = Icons.Default.Close,
-                contentDescription = stringResource(R.string.close)
+                contentDescription = stringResource(R.string.close),
+                tint = yellow10
             )
         }
     }
