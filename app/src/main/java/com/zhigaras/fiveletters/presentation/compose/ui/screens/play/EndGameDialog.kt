@@ -27,6 +27,7 @@ import kotlinx.coroutines.delay
 
 @Composable
 fun EndGameDialog(
+    scale: Float,
     modifier: Modifier = Modifier,
     origin: String,
     onDismiss: () -> Unit,
@@ -34,21 +35,21 @@ fun EndGameDialog(
     onNewGameClick: () -> Unit,
     content: @Composable () -> Unit
 ) {
-    val scale = remember { Animatable(0f) }
+    val animatedScale = remember { Animatable(scale) }
     LaunchedEffect(key1 = Unit) {
         delay(30)
-        scale.animateTo(1f, animationSpec = tween(1500))
+        animatedScale.animateTo(1f, animationSpec = tween(1500))
     }
     Dialog(
         onDismissRequest = { onDismiss() },
-        properties = DialogProperties(dismissOnBackPress = true, dismissOnClickOutside = true)
+        properties = DialogProperties()
     ) {
         Card(
             colors = CardDefaults.cardColors(
                 containerColor = gray,
                 contentColor = MaterialTheme.colorScheme.onSecondary
             ),
-            modifier = modifier.scale(scale.value)
+            modifier = modifier.scale(animatedScale.value)
         ) {
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
                 Text(

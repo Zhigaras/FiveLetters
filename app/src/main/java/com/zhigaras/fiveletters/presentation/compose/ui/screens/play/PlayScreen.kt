@@ -14,8 +14,10 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import com.zhigaras.fiveletters.model.GameState
@@ -31,23 +33,28 @@ fun PlayScreen(
     toMenuClick: () -> Unit,
     onNewGameClick: () -> Unit
 ) {
-    val showDialog = remember { mutableStateOf(false) }
-    LaunchedEffect(key1 = gameState.progressState) {
-        delay(700)
-        showDialog.value = gameState.progressState == ProgressState.ENDED
-    }
-    if (showDialog.value) {
+    var dialogScaleValue by rememberSaveable { mutableStateOf(0f) }
+    var showDialog by rememberSaveable { mutableStateOf(false) }
+    if (dialogScaleValue != 1f)
+        LaunchedEffect(key1 = gameState.progressState) {
+            delay(700)
+            showDialog = gameState.progressState == ProgressState.ENDED
+        }
+    
+    if (showDialog) {
         EndGameDialog(
             origin = gameState.origin.word,
-            onDismiss = { showDialog.value = false },
-            toMenuClick = { showDialog.value = false; toMenuClick() },
-            onNewGameClick = onNewGameClick
+            scale = dialogScaleValue,
+            onDismiss = { showDialog = false },
+            toMenuClick = { showDialog = false; toMenuClick() },
+            onNewGameClick = { onNewGameClick(); dialogScaleValue = 0f }
         ) {
             when (gameState.letterFieldState) {
                 is LetterFieldState.Failed -> FailDialogContent()
                 is LetterFieldState.Win -> WinDialogContent()
             }
         }
+        dialogScaleValue = 1f
     }
     Column(
         verticalArrangement = Arrangement.Bottom,
@@ -79,7 +86,10 @@ fun PlayScreen(
                         onConfirmClick = { viewModel.confirmWord() },
                         onBackspaceClick = { viewModel.removeLetter() }
                     )
-                else KeyboardStub(onBackClick = toMenuClick, onNewGameClick = onNewGameClick)
+                else KeyboardStub(
+                    onBackClick = toMenuClick,
+                    onNewGameClick = { onNewGameClick(); dialogScaleValue = 0f }
+                )
             }
         }
     }
