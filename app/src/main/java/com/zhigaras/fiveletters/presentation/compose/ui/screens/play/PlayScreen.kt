@@ -20,6 +20,10 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import com.airbnb.lottie.compose.LottieAnimation
+import com.airbnb.lottie.compose.LottieCompositionSpec
+import com.airbnb.lottie.compose.rememberLottieComposition
+import com.zhigaras.fiveletters.R
 import com.zhigaras.fiveletters.model.GameState
 import com.zhigaras.fiveletters.model.LetterFieldState
 import com.zhigaras.fiveletters.model.ProgressState
@@ -34,20 +38,28 @@ fun PlayScreen(
     onNewGameClick: () -> Unit
 ) {
     var dialogScaleValue by rememberSaveable { mutableStateOf(0f) }
-    var showDialog by rememberSaveable { mutableStateOf(false) }
+    var showEndGameDialog by rememberSaveable { mutableStateOf(false) }
+    val lottieComposition by rememberLottieComposition(LottieCompositionSpec.RawRes(R.raw.lottie_mobile))
+    var showCongratulationAnimation by rememberSaveable { mutableStateOf(false) }
     if (dialogScaleValue != 1f)
         LaunchedEffect(key1 = gameState.progressState) {
             delay(700)
-            showDialog = gameState.progressState == ProgressState.ENDED
+            showCongratulationAnimation = gameState.letterFieldState is LetterFieldState.Win
+            delay(400)
+            showEndGameDialog = gameState.progressState == ProgressState.ENDED
         }
     
-    if (showDialog) {
+    if (showEndGameDialog) {
         EndGameDialog(
             origin = gameState.origin.word,
             scale = dialogScaleValue,
-            onDismiss = { showDialog = false },
-            toMenuClick = { showDialog = false; toMenuClick() },
-            onNewGameClick = { onNewGameClick(); dialogScaleValue = 0f }
+            onDismiss = { showEndGameDialog = false },
+            toMenuClick = { showEndGameDialog = false; toMenuClick() },
+            onNewGameClick = {
+                onNewGameClick()
+                dialogScaleValue = 0f
+                showCongratulationAnimation = false
+            }
         ) {
             when (gameState.letterFieldState) {
                 is LetterFieldState.Failed -> FailDialogContent()
@@ -56,6 +68,7 @@ fun PlayScreen(
         }
         dialogScaleValue = 1f
     }
+    
     Column(
         verticalArrangement = Arrangement.Bottom,
         modifier = Modifier.fillMaxSize()
@@ -88,9 +101,16 @@ fun PlayScreen(
                     )
                 else KeyboardStub(
                     onBackClick = toMenuClick,
-                    onNewGameClick = { onNewGameClick(); dialogScaleValue = 0f }
+                    onNewGameClick = {
+                        onNewGameClick()
+                        dialogScaleValue = 0f
+                        showEndGameDialog = false
+                        showCongratulationAnimation = false
+                    }
                 )
             }
         }
     }
+    if (showCongratulationAnimation)
+        LottieAnimation(composition = lottieComposition, iterations = 2)
 }
