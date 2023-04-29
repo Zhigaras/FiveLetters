@@ -29,4 +29,26 @@ abstract class LetterType {
         override val cornersRadius: Dp = keyboardButtonCornerRadius
         override val borderWidth: Dp = 1.dp
     }
+    
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (other !is LetterType) return false
+        
+        if (charSize != other.charSize) return false
+        if (charPadding != other.charPadding) return false
+        if (cornersRadius != other.cornersRadius) return false
+        if (borderWidth != other.borderWidth) return false
+        
+        return true
+    }
+    
+    override fun hashCode(): Int {
+        var result = charSize.hashCode()
+        result = 31 * result + charPadding.hashCode()
+        result = 31 * result + cornersRadius.hashCode()
+        result = 31 * result + borderWidth.hashCode()
+        return result
+    }
+    
+    
 }

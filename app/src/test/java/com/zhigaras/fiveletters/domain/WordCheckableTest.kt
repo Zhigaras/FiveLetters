@@ -1,6 +1,5 @@
 package com.zhigaras.fiveletters.domain
 
-import com.zhigaras.fiveletters.data.MainRepository
 import com.zhigaras.fiveletters.model.LetterState
 import com.zhigaras.fiveletters.model.LetterType
 import com.zhigaras.fiveletters.model.RowState
@@ -12,9 +11,9 @@ class WordCheckableTest {
 
     @Test
     fun `test word checking 1`() = runBlocking {
-        val wordCheckable = WordCheckable.Base(MainRepository.Fake(true))
+        val wordCheckable = WordCheckable.Base()
         val wordToCheck = "ASERT".toList()
-        val actual = wordCheckable.checkWord(wordToCheck, "QWERT")
+        val actual = wordCheckable.checkWord(true, wordToCheck, "QWERT")
         val expected = RowState.Wrong(
             listOf(
                 LetterState.Wrong(LetterType.Card(), 'A'),
@@ -29,9 +28,9 @@ class WordCheckableTest {
 
     @Test
     fun `test word checking 2`() = runBlocking {
-        val wordCheckable = WordCheckable.Base(MainRepository.Fake(true))
+        val wordCheckable = WordCheckable.Base()
         val wordToCheck = "ZXCVB".toList()
-        val actual = wordCheckable.checkWord(wordToCheck, "QWERT")
+        val actual = wordCheckable.checkWord(true, wordToCheck, "QWERT")
         val expected = RowState.Wrong(
             listOf(
                 LetterState.Wrong(LetterType.Card(), 'Z'),
@@ -46,9 +45,9 @@ class WordCheckableTest {
 
     @Test
     fun `test word checking 3`() = runBlocking {
-        val wordCheckable = WordCheckable.Base(MainRepository.Fake(true))
+        val wordCheckable = WordCheckable.Base()
         val wordToCheck = "TREWQ".toList()
-        val actual = wordCheckable.checkWord(wordToCheck, "QWERT")
+        val actual = wordCheckable.checkWord(true, wordToCheck, "QWERT")
         val expected = RowState.Wrong(
             listOf(
                 LetterState.Right(LetterType.Card(), 'T'),
@@ -63,9 +62,9 @@ class WordCheckableTest {
 
     @Test
     fun `test word checking 4`() = runBlocking {
-        val wordCheckable = WordCheckable.Base(MainRepository.Fake(true))
+        val wordCheckable = WordCheckable.Base()
         val wordToCheck = "WERTQ".toList()
-        val actual = wordCheckable.checkWord(wordToCheck, "QWERT")
+        val actual = wordCheckable.checkWord(true, wordToCheck, "QWERT")
         val expected = RowState.Wrong(
             listOf(
                 LetterState.Right(LetterType.Card(), 'W'),
@@ -80,9 +79,9 @@ class WordCheckableTest {
 
     @Test
     fun `test word checking 5`() = runBlocking {
-        val wordCheckable = WordCheckable.Base(MainRepository.Fake(true))
+        val wordCheckable = WordCheckable.Base()
         val wordToCheck = "QQWTT".toList()
-        val actual = wordCheckable.checkWord(wordToCheck, "QWERT")
+        val actual = wordCheckable.checkWord(true, wordToCheck, "QWERT")
         val expected = RowState.Wrong(
             listOf(
                 LetterState.Exact(LetterType.Card(), 'Q'),
@@ -97,9 +96,9 @@ class WordCheckableTest {
 
     @Test
     fun `test word checking 6`() = runBlocking {
-        val wordCheckable = WordCheckable.Base(MainRepository.Fake(true))
+        val wordCheckable = WordCheckable.Base()
         val wordToCheck = "QQWTQ".toList()
-        val actual = wordCheckable.checkWord(wordToCheck, "QWQWQ")
+        val actual = wordCheckable.checkWord(true, wordToCheck, "QWQWQ")
         val expected = RowState.Wrong(
             listOf(
                 LetterState.Exact(LetterType.Card(), 'Q'),
@@ -114,9 +113,9 @@ class WordCheckableTest {
 
     @Test
     fun `test word checking 7`() = runBlocking {
-        val wordCheckable = WordCheckable.Base(MainRepository.Fake(true))
+        val wordCheckable = WordCheckable.Base()
         val wordToCheck = "QWDQC".toList()
-        val actual = wordCheckable.checkWord(wordToCheck, "QQQQQ")
+        val actual = wordCheckable.checkWord(true, wordToCheck, "QQQQQ")
         val expected = RowState.Wrong(
             listOf(
                 LetterState.Exact(LetterType.Card(), 'Q'),
@@ -131,9 +130,9 @@ class WordCheckableTest {
 
     @Test
     fun `test word checking 8`() = runBlocking {
-        val wordCheckable = WordCheckable.Base(MainRepository.Fake(true))
+        val wordCheckable = WordCheckable.Base()
         val wordToCheck = "ОЛОВО".toList()
-        val actual = wordCheckable.checkWord(wordToCheck, "СЛОВО")
+        val actual = wordCheckable.checkWord(true,wordToCheck, "СЛОВО")
         val expected = RowState.Wrong(
             listOf(
                 LetterState.Wrong(LetterType.Card(), 'О'),
@@ -148,9 +147,9 @@ class WordCheckableTest {
 
     @Test
     fun `test word checking 9`() = runBlocking {
-        val wordCheckable = WordCheckable.Base(MainRepository.Fake(true))
+        val wordCheckable = WordCheckable.Base()
         val wordToCheck = "ОПЛОТ".toList()
-        val actual = wordCheckable.checkWord(wordToCheck, "СЛОВО")
+        val actual = wordCheckable.checkWord(true, wordToCheck, "СЛОВО")
         val expected = RowState.Wrong(
             listOf(
                 LetterState.Right(LetterType.Card(), 'О'),
@@ -165,9 +164,9 @@ class WordCheckableTest {
 
     @Test
     fun `test word checking 10`() = runBlocking {
-        val wordCheckable = WordCheckable.Base(MainRepository.Fake(true))
+        val wordCheckable = WordCheckable.Base()
         val wordToCheck = "ОКОВА".toList()
-        val actual = wordCheckable.checkWord(wordToCheck, "СЛОВО")
+        val actual = wordCheckable.checkWord(true, wordToCheck, "СЛОВО")
         val expected = RowState.Wrong(
             listOf(
                 LetterState.Right(LetterType.Card(), 'О'),
@@ -182,12 +181,12 @@ class WordCheckableTest {
 
     @Test
     fun `test word checking 11`() = runBlocking {
-        val wordCheckable = WordCheckable.Base(MainRepository.Fake(false))
-        val wordToCheck = "ОКОВА".toList()
-        val actual = wordCheckable.checkWord(wordToCheck, "СЛОВО")
+        val wordCheckable = WordCheckable.Base()
+        val wordToCheck = "АКОВА".toList()
+        val actual = wordCheckable.checkWord(false, wordToCheck, "СЛОВО")
         val expected = RowState.InvalidWord(
             listOf(
-                LetterState.InvalidWord('О'),
+                LetterState.InvalidWord('А'),
                 LetterState.InvalidWord('К'),
                 LetterState.InvalidWord('О'),
                 LetterState.InvalidWord('В'),
@@ -199,9 +198,9 @@ class WordCheckableTest {
 
     @Test
     fun `test word checking 12`() = runBlocking {
-        val wordCheckable = WordCheckable.Base(MainRepository.Fake(true))
+        val wordCheckable = WordCheckable.Base()
         val wordToCheck = "QQQQQ".toList()
-        val actual = wordCheckable.checkWord(wordToCheck, "QWERT")
+        val actual = wordCheckable.checkWord(true, wordToCheck, "QWERT")
         val expected = RowState.Wrong(
             listOf(
                 LetterState.Exact(LetterType.Card(), 'Q'),
@@ -216,9 +215,9 @@ class WordCheckableTest {
 
     @Test
     fun `test word checking 13`() = runBlocking {
-        val wordCheckable = WordCheckable.Base(MainRepository.Fake(true))
+        val wordCheckable = WordCheckable.Base()
         val wordToCheck = "СОПЛО".toList()
-        val actual = wordCheckable.checkWord(wordToCheck, "СЛОВО")
+        val actual = wordCheckable.checkWord(true, wordToCheck, "СЛОВО")
         val expected = RowState.Wrong(
             listOf(
                 LetterState.Exact(LetterType.Card(), 'С'),
@@ -233,9 +232,9 @@ class WordCheckableTest {
 
     @Test
     fun `test word checking 14`() = runBlocking {
-        val wordCheckable = WordCheckable.Base(MainRepository.Fake(true))
+        val wordCheckable = WordCheckable.Base()
         val wordToCheck = "СОСЛО".toList()
-        val actual = wordCheckable.checkWord(wordToCheck, "СЛОВО")
+        val actual = wordCheckable.checkWord(true, wordToCheck, "СЛОВО")
         val expected = RowState.Wrong(
             listOf(
                 LetterState.Exact(LetterType.Card(), 'С'),
