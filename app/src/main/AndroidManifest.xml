@@ -12,6 +12,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.FiveLetters"
         tools:targetApi="31">
+        <meta-data
+            android:name="com.google.android.gms.ads.APPLICATION_ID"
+            android:value="ca-app-pub-1332033107151527~9102158261"/>
         <activity
             android:name=".MainActivity"
             android:exported="true"

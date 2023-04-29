@@ -73,6 +73,7 @@ fun PlayScreen(
         verticalArrangement = Arrangement.Bottom,
         modifier = Modifier.fillMaxSize()
     ) {
+        AdBanner(modifier = Modifier.fillMaxWidth(), isTest = true)
         Box(
             contentAlignment = Alignment.Center,
             modifier = Modifier
