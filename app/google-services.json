@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "470265061278",
+    "project_id": "fiveletters-a24e6",
+    "storage_bucket": "fiveletters-a24e6.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:470265061278:android:24cf7bd78e1841f0ce808f",
+        "android_client_info": {
+          "package_name": "com.zhigaras.fiveletters"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "470265061278-obop8mbghkmmneetm4mjqq10qct2gkgp.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDXPZ90Fy64lRAEyn_TJN9kc6dNQ7ifABs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "470265061278-obop8mbghkmmneetm4mjqq10qct2gkgp.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
