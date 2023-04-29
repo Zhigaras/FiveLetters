@@ -7,13 +7,6 @@
     <string name="welcome">Добро пожаловать</string>
     <string name="new_game">Новая игра</string>
     <string name="logo">Логотип</string>
-    <string name="hi">Привет!</string>
-    <string name="hi_name">Привет, %1$s!</string>
-    <string name="name_request">А как тебя зовут?</string>
-    <string name="welcome_button_text">Приятно познакомиться)</string>
-    <string name="game_name">Это игра \"5 Букв\".</string>
-    <string name="welcome_hint">Имя</string>
-    <string name="skip_name_input">Остаться анонимным</string>
     <string name="to_menu">В меню</string>
     <string name="new_word">Новое слово</string>
     <string name="win_text">Вы выиграли!</string>

@@ -39,12 +39,11 @@ interface Core : ProvideRepository {
         override fun provideMainRepository(): MainRepository =
             MainRepository.Base(databaseModule.provideDatabase().getWordDao(), datastoreManager)
         
-        override fun provideUsernameRepository(): UsernameRepository =
-            UsernameRepository.Base(datastoreManager)
-        
         override fun provideUserStatRepository(): UserStatRepository =
             UserStatRepository.Base(provideDatabase().getWordDao(), datastoreManager)
         
+        override fun provideStateSaver(): StateSaver.Mutable =
+            StateSaver.Base(datastoreManager, MoshiSerializer.Base())
     }
 }
 
@@ -52,7 +51,7 @@ interface ProvideRepository {
     
     fun provideMainRepository(): MainRepository
     
-    fun provideUsernameRepository(): UsernameRepository
-    
     fun provideUserStatRepository(): UserStatRepository
+    
+    fun provideStateSaver(): StateSaver.Mutable
 }

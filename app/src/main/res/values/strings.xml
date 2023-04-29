@@ -6,13 +6,6 @@
     <string name="welcome">Welcome</string>
     <string name="new_game">New game</string>
     <string name="logo">logo</string>
-    <string name="hi">Hi!</string>
-    <string name="hi_name">Hi, %1$s!</string>
-    <string name="name_request">What is your name?</string>
-    <string name="welcome_button_text">Nice to meet you)</string>
-    <string name="game_name">It is \"5 Letters\" game.</string>
-    <string name="welcome_hint">Your name</string>
-    <string name="skip_name_input">Keep anonymity</string>
     <string name="to_menu">To menu</string>
     <string name="new_word">New word</string>
     <string name="win_text">Congratulations!</string>

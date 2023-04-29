@@ -16,17 +16,13 @@ import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 import com.zhigaras.fiveletters.presentation.compose.ui.screens.menu.MenuScreen
 import com.zhigaras.fiveletters.presentation.compose.ui.screens.play.PlayScreen
 import com.zhigaras.fiveletters.presentation.compose.ui.screens.splash.SplashScreen
-import com.zhigaras.fiveletters.presentation.compose.ui.screens.welcome.WelcomeScreen
-import com.zhigaras.fiveletters.presentation.compose.ui.viewmodels.AuthViewModel
 import com.zhigaras.fiveletters.presentation.compose.ui.viewmodels.MenuViewModel
 import com.zhigaras.fiveletters.presentation.compose.ui.viewmodels.PlayViewModel
-import com.zhigaras.fiveletters.presentation.compose.ui.viewmodels.WelcomeViewModel
 
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun FiveLettersNavHost(
-    authViewModel: AuthViewModel,
-    welcomeViewModel: WelcomeViewModel,
+    needToShowSplash: Boolean,
     playViewModel: PlayViewModel,
     menuViewModel: MenuViewModel,
     onFinish: () -> Unit
@@ -36,35 +32,20 @@ fun FiveLettersNavHost(
     val gameState by playViewModel.gameStateFlow.collectAsStateWithLifecycle()
     AnimatedNavHost(
         navController = navController,
-        startDestination = Destination.Menu.route,
+        startDestination = if (needToShowSplash) Destination.Splash.route else Destination.Menu.route,
         modifier = Modifier.fillMaxSize()
     ) {
         composable(
             route = Destination.Splash.route,
-            enterTransition = { fadeIn(animationSpec = tween(700)) },
-            exitTransition = { fadeOut(animationSpec = tween(2000)) }
+            exitTransition = { fadeOut(animationSpec = tween(700)) }
         ) {
             SplashScreen(
-                viewModel = authViewModel,
-                navigateToWelcome = { navController.navigateWithClearBackStack(Destination.Welcome.route) },
-                navigateToMenu = { navController.navigateWithClearBackStack(Destination.Menu.route) }
-            )
-        }
-        composable(
-            route = Destination.Welcome.route,
-            enterTransition = {
-                slideInVertically(animationSpec = tween(5)) //TODO check
-            },
-            exitTransition = { fadeOut(animationSpec = tween(500)) }
-        ) {
-            WelcomeScreen(
-                viewModel = welcomeViewModel,
                 navigateToMenu = { navController.navigateWithClearBackStack(Destination.Menu.route) }
             )
         }
         composable(
             route = Destination.Menu.route,
-            enterTransition = { fadeIn(animationSpec = tween(1000)) },
+            enterTransition = { fadeIn(animationSpec = tween(700)) },
             popEnterTransition = {
                 slideIntoContainer(
                     animationSpec = tween(700),
