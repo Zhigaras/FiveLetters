@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.transform
 
-interface DatastoreManager : UsernameInteract, UserStatInteract.Mutable {
+interface DatastoreManager : UserStatInteract.Mutable {
     
     suspend fun saveState(json: String)
     
@@ -19,28 +19,17 @@ interface DatastoreManager : UsernameInteract, UserStatInteract.Mutable {
         private val datastore: DataStore<Preferences>
     ) : DatastoreManager {
         
-        private val usernameKey = stringPreferencesKey("username")
         private val gamesCountKey = intPreferencesKey("gamesCount")
         private val gameStateKey = stringPreferencesKey("gameState")
-    
-        override suspend fun saveUsername(name: String) {
-            datastore.edit { prefs ->
-                prefs[usernameKey] = name
-            }
-        }
-    
+        
         override suspend fun saveState(json: String) {
             datastore.edit { prefs ->
                 prefs[gameStateKey] = json
             }
         }
-    
+        
         override suspend fun restoreState(): String? {
             return datastore.data.first()[gameStateKey]
-        }
-    
-        override suspend fun readUsername(): String {
-            return datastore.data.first()[usernameKey] ?: ""
         }
         
         override suspend fun incrementGamesCounter() {

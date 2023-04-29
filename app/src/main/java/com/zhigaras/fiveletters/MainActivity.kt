@@ -7,14 +7,14 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelStoreOwner
 import com.zhigaras.fiveletters.presentation.compose.ui.theme.FiveLettersTheme
-import com.zhigaras.fiveletters.presentation.compose.ui.viewmodels.AuthViewModel
 import com.zhigaras.fiveletters.presentation.compose.ui.viewmodels.MenuViewModel
 import com.zhigaras.fiveletters.presentation.compose.ui.viewmodels.PlayViewModel
-import com.zhigaras.fiveletters.presentation.compose.ui.viewmodels.WelcomeViewModel
 import com.zhigaras.fiveletters.presentation.navigation.FiveLettersNavHost
+import com.zhigaras.fiveletters.presentation.navigation.SplashScreenAnimator
 
 class MainActivity : ComponentActivity(), ProvideViewModel {
     
@@ -22,8 +22,11 @@ class MainActivity : ComponentActivity(), ProvideViewModel {
     
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val authViewModel = provideViewModel(AuthViewModel::class.java, this)
-        val welcomeViewModel = provideViewModel(WelcomeViewModel::class.java, this)
+        
+        installSplashScreen().setOnExitAnimationListener {
+            SplashScreenAnimator().animate(it)
+        }
+        
         playViewModel = provideViewModel(PlayViewModel::class.java, this)
         val menuViewModel = provideViewModel(MenuViewModel::class.java, this)
         
@@ -34,8 +37,6 @@ class MainActivity : ComponentActivity(), ProvideViewModel {
                     color = MaterialTheme.colorScheme.secondary
                 ) {
                     FiveLettersNavHost(
-                        authViewModel = authViewModel,
-                        welcomeViewModel = welcomeViewModel,
                         playViewModel = playViewModel,
                         menuViewModel = menuViewModel,
                         onFinish = { this.finish() }
@@ -49,7 +50,7 @@ class MainActivity : ComponentActivity(), ProvideViewModel {
         playViewModel.saveState()
         super.onSaveInstanceState(outState)
     }
-
+    
     override fun finish() {
         playViewModel.saveState()
         super.finish()

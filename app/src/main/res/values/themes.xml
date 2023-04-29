@@ -4,4 +4,19 @@
     <style name="Theme.FiveLetters" parent="android:Theme.Material.Light.NoActionBar">
         <item name="android:forceDarkAllowed">false</item> <!-- TODO check on API 28 and lower -->
     </style>
+
+    <style name="Theme.Splash.Starting" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenBackground">
+            @color/black
+        </item>
+        <item name="windowSplashScreenAnimatedIcon">
+            @drawable/logo_layer
+        </item>
+        <item name="windowSplashScreenAnimationDuration">
+            1000
+        </item>
+        <item name="postSplashScreenTheme">
+            @style/Theme.FiveLetters
+        </item>
+    </style>
 </resources>
