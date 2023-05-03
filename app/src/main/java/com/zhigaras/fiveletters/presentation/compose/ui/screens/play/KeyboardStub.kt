@@ -21,7 +21,9 @@ fun KeyboardStub(
     onNewGameClick: () -> Unit
 ) {
     Column(
-        modifier = modifier.widthIn(max = playScreenMaxWidth),
+        modifier = modifier
+            .padding(horizontal = 8.dp)
+            .widthIn(max = playScreenMaxWidth),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         CommonButton(
