@@ -62,8 +62,8 @@ fun PlayScreen(
             }
         ) {
             when (gameState.letterFieldState) {
-                is LetterFieldState.Failed -> FailDialogContent()
-                is LetterFieldState.Win -> WinDialogContent()
+                is LetterFieldState.Failed -> FailDialogContent(it)
+                is LetterFieldState.Win -> WinDialogContent(it)
             }
         }
         dialogScaleValue = 1f

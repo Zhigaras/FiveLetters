@@ -38,7 +38,7 @@ class WordDaoTest {
     @Test
     fun getDictionarySize_test() = runBlocking {
         for (i in 1..testDatabaseSize) {
-            wordDao.insert(Word(i, "test$i", false, 0))
+            wordDao.insert(Word(i, "test$i", false, 0, ""))
         }
         assertEquals(testDatabaseSize, wordDao.getDictionarySize())
     }
@@ -46,7 +46,7 @@ class WordDaoTest {
     @Test
     fun isWordExist1_test() = runBlocking {
         for (i in 1..testDatabaseSize) {
-            wordDao.insert(Word(i, "test$i", false, 0))
+            wordDao.insert(Word(i, "test$i", false, 0,""))
         }
         assert(wordDao.isWordExist("test2"))
     }
@@ -54,7 +54,7 @@ class WordDaoTest {
     @Test
     fun isWordExist2_test() = runBlocking {
         for (i in 1..testDatabaseSize) {
-            wordDao.insert(Word(i, "test$i", false, 0))
+            wordDao.insert(Word(i, "test$i", false, 0,""))
         }
         assert(!wordDao.isWordExist("testWord 10"))
     }
@@ -62,9 +62,9 @@ class WordDaoTest {
     @Test
     fun update_test1() = runBlocking {
         for (i in 1..testDatabaseSize) {
-            wordDao.insert(Word(i, "test$i", false, 0))
+            wordDao.insert(Word(i, "test$i", false, 0,""))
         }
-        wordDao.update(Word(1, "test1", true, 1))
+        wordDao.update(Word(1, "test1", true, 1,""))
         val actual = wordDao.findWord("test1")
         assertEquals(actual.solvedByUser, true)
     }
@@ -72,8 +72,8 @@ class WordDaoTest {
     @Test
     fun getSolvedWordsCount_test1() = runBlocking {
         for (i in 1..testDatabaseSize) {
-            wordDao.insert(Word(i, "test$i", false, 0))
-            wordDao.insert(Word(i + testDatabaseSize, "test${i + testDatabaseSize}", true, 3))
+            wordDao.insert(Word(i, "test$i", false, 0, ""))
+            wordDao.insert(Word(i + testDatabaseSize, "test${i + testDatabaseSize}", true, 3, ""))
         }
         assertEquals(testDatabaseSize, wordDao.getSolvedWordsCount().first())
     }
@@ -81,8 +81,8 @@ class WordDaoTest {
     @Test
     fun getAverageAttempts_test1() = runBlocking {
         for (i in 1..testDatabaseSize) {
-            wordDao.insert(Word(i, "test$i", false, 0))
-            wordDao.insert(Word(i + testDatabaseSize, "test${i + testDatabaseSize}", true, 3))
+            wordDao.insert(Word(i, "test$i", false, 0, ""))
+            wordDao.insert(Word(i + testDatabaseSize, "test${i + testDatabaseSize}", true, 3, ""))
         }
         val actual = wordDao.getAverageAttempt().first()
         val expected = 3f
@@ -92,8 +92,8 @@ class WordDaoTest {
     @Test
     fun getAverageAttempts_test2() = runBlocking {
         for (i in 1..testDatabaseSize) {
-            wordDao.insert(Word(i, "test$i", false, 0))
-            wordDao.insert(Word(i + testDatabaseSize, "test${i + testDatabaseSize}", true, i))
+            wordDao.insert(Word(i, "test$i", false, 0, ""))
+            wordDao.insert(Word(i + testDatabaseSize, "test${i + testDatabaseSize}", true, i, ""))
         }
         val actual = wordDao.getAverageAttempt().first()
         val expected = 3f
@@ -103,13 +103,13 @@ class WordDaoTest {
     @Test
     fun getAverageAttempts_test3() = runBlocking {
         for (i in 1..testDatabaseSize) {
-            wordDao.insert(Word(i, "test$i", false, 0))
+            wordDao.insert(Word(i, "test$i", false, 0, ""))
         }
-        wordDao.insert(Word(6, "test6", true, 2))
-        wordDao.insert(Word(7, "test7", true, 5))
-        wordDao.insert(Word(8, "test8", true, 4))
-        wordDao.insert(Word(9, "test9", true, 5))
-        wordDao.insert(Word(10, "test10", true, 3))
+        wordDao.insert(Word(6, "test6", true, 2, ""))
+        wordDao.insert(Word(7, "test7", true, 5, ""))
+        wordDao.insert(Word(8, "test8", true, 4, ""))
+        wordDao.insert(Word(9, "test9", true, 5, ""))
+        wordDao.insert(Word(10, "test10", true, 3, ""))
         
         val actual = wordDao.getAverageAttempt().first()
         val expected = 3.8f
@@ -119,7 +119,7 @@ class WordDaoTest {
     @Test
     fun getAverageAttempts_test4() = runBlocking {
         for (i in 1..testDatabaseSize) {
-            wordDao.insert(Word(i, "test$i", false, 0))
+            wordDao.insert(Word(i, "test$i", false, 0, ""))
         }
         val actual = wordDao.getAverageAttempt().first()
         val expected = null

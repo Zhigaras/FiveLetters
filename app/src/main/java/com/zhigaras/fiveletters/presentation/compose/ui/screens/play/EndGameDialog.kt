@@ -19,10 +19,11 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
-import androidx.compose.ui.window.DialogProperties
 import com.zhigaras.fiveletters.R
 import com.zhigaras.fiveletters.presentation.compose.ui.screens.menu.CommonButton
 import com.zhigaras.fiveletters.presentation.compose.ui.theme.gray
+import com.zhigaras.fiveletters.presentation.compose.ui.theme.white
+import com.zhigaras.fiveletters.presentation.compose.ui.theme.yellow
 import kotlinx.coroutines.delay
 
 @Composable
@@ -33,7 +34,7 @@ fun EndGameDialog(
     onDismiss: () -> Unit,
     toMenuClick: () -> Unit,
     onNewGameClick: () -> Unit,
-    content: @Composable () -> Unit
+    content: @Composable (Modifier) -> Unit
 ) {
     val animatedScale = remember { Animatable(scale) }
     LaunchedEffect(key1 = Unit) {
@@ -41,24 +42,30 @@ fun EndGameDialog(
         animatedScale.animateTo(1f, animationSpec = tween(1500))
     }
     Dialog(
-        onDismissRequest = { onDismiss() },
-        properties = DialogProperties()
+        onDismissRequest = { onDismiss() }
     ) {
         Card(
             colors = CardDefaults.cardColors(
                 containerColor = gray,
-                contentColor = MaterialTheme.colorScheme.onSecondary
+                contentColor = white
             ),
             modifier = modifier.scale(animatedScale.value)
         ) {
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
                 Text(
-                    text = stringResource(R.string.the_word_is, origin),
+                    text = stringResource(R.string.the_word_is),
                     textAlign = TextAlign.Center,
                     style = MaterialTheme.typography.titleLarge,
-                    modifier = modifier
+                    modifier = modifier.padding(top = 16.dp)
                 )
-                content()
+                Text(
+                    text = origin.uppercase(),
+                    textAlign = TextAlign.Center,
+                    style = MaterialTheme.typography.displayMedium,
+                    modifier = modifier,
+                    color = yellow
+                )
+                content(Modifier.padding(bottom = 16.dp))
                 CommonButton(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -87,7 +94,7 @@ fun WinDialogContent(
     Text(
         text = stringResource(R.string.win_text),
         textAlign = TextAlign.Center,
-        style = MaterialTheme.typography.displaySmall,
+        style = MaterialTheme.typography.titleLarge,
         modifier = modifier
     )
 }
@@ -99,7 +106,7 @@ fun FailDialogContent(
     Text(
         text = stringResource(R.string.fail_text),
         textAlign = TextAlign.Center,
-        style = MaterialTheme.typography.displaySmall,
+        style = MaterialTheme.typography.titleLarge,
         modifier = modifier
     )
 }

@@ -14,6 +14,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.zhigaras.fiveletters.presentation.compose.ui.theme.black
 import com.zhigaras.fiveletters.presentation.compose.ui.theme.white
+import com.zhigaras.fiveletters.presentation.compose.ui.theme.yellow
 
 
 @Composable
@@ -26,10 +27,10 @@ fun StatCard(
     OutlinedCard(
         shape = RoundedCornerShape(20.dp),
         colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.primary,
-            contentColor = MaterialTheme.colorScheme.onPrimary
+            containerColor = yellow,
+            contentColor = black
         ),
-        border = BorderStroke(2.dp, MaterialTheme.colorScheme.onPrimary),
+        border = BorderStroke(2.dp, black),
         modifier = modifier,
         elevation = CardDefaults.cardElevation(defaultElevation = 10.dp)
     ) {

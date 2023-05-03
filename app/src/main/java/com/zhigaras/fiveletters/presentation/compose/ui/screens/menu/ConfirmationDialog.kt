@@ -17,6 +17,7 @@ import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import com.zhigaras.fiveletters.R
 import com.zhigaras.fiveletters.presentation.compose.ui.theme.gray
+import com.zhigaras.fiveletters.presentation.compose.ui.theme.white
 
 @Composable
 fun ConfirmationDialog(
@@ -32,7 +33,7 @@ fun ConfirmationDialog(
         Card(
             colors = CardDefaults.cardColors(
                 containerColor = gray,
-                contentColor = MaterialTheme.colorScheme.onSecondary
+                contentColor = white
             ),
         ) {
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
@@ -40,7 +41,7 @@ fun ConfirmationDialog(
                     text = stringResource(R.string.new_game_confirmation),
                     textAlign = TextAlign.Center,
                     style = MaterialTheme.typography.titleLarge,
-                    modifier = modifier
+                    modifier = modifier.padding(16.dp)
                 )
                 CommonButton(
                     modifier = Modifier

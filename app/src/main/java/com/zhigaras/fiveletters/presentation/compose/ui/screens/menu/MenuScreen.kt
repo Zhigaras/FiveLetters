@@ -20,6 +20,7 @@ import com.zhigaras.fiveletters.R
 import com.zhigaras.fiveletters.model.ProgressState
 import com.zhigaras.fiveletters.model.UserStat
 import com.zhigaras.fiveletters.presentation.compose.ui.screens.OrientationSwapper
+import com.zhigaras.fiveletters.presentation.compose.ui.theme.black
 import com.zhigaras.fiveletters.presentation.compose.ui.theme.yellow
 import com.zhigaras.fiveletters.presentation.compose.ui.viewmodels.MenuViewModel
 
@@ -91,8 +92,8 @@ fun UserStatistics(
     ) {
         Card(
             colors = CardDefaults.cardColors(
-                containerColor = MaterialTheme.colorScheme.primary,
-                contentColor = MaterialTheme.colorScheme.onPrimary
+                containerColor = yellow,
+                contentColor = black
             ),
             modifier = Modifier
                 .fillMaxSize()
@@ -188,8 +189,8 @@ fun CommonButton(
         onClick = { onClick() },
         shape = ShapeDefaults.Medium,
         colors = ButtonDefaults.buttonColors(
-            containerColor = MaterialTheme.colorScheme.primary,
-            contentColor = MaterialTheme.colorScheme.onPrimary
+            containerColor = yellow,
+            contentColor = black
         ),
         modifier = modifier
     ) {
