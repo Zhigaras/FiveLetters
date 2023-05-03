@@ -34,8 +34,6 @@ fun MenuScreen(
     onFinish: () -> Unit
 ) {
     
-    // TODO: animated header
-    
     val context = LocalContext.current
     val userStat by viewModel.userStatFlow().collectAsStateWithLifecycle(UserStat.Empty())
     var backPressedTime by remember { mutableStateOf(0L) }
@@ -67,7 +65,8 @@ fun MenuScreen(
         {
             UserStatistics(
                 modifier = it,
-                userStat = userStat
+                userStat = userStat,
+                isExpanded = isExpanded
             )
         },
         {
@@ -85,7 +84,8 @@ fun MenuScreen(
 @Composable
 fun UserStatistics(
     modifier: Modifier = Modifier,
-    userStat: UserStat
+    userStat: UserStat,
+    isExpanded: Boolean
 ) {
     Box(
         modifier = modifier
@@ -100,13 +100,14 @@ fun UserStatistics(
                 .padding(16.dp)
         ) {
             Column(modifier = Modifier.fillMaxSize()) {
-                Text(
-                    text = stringResource(R.string.five_letters),
-                    style = MaterialTheme.typography.displayLarge,
-                    modifier = Modifier
-                        .align(Alignment.CenterHorizontally)
-                        .padding(16.dp)
-                )
+                if (!isExpanded)
+                    Text(
+                        text = stringResource(R.string.five_letters),
+                        style = MaterialTheme.typography.displayLarge,
+                        modifier = Modifier
+                            .align(Alignment.CenterHorizontally)
+                            .padding(16.dp)
+                    )
                 Column(
                     verticalArrangement = Arrangement.spacedBy(8.dp),
                     modifier = Modifier
@@ -117,7 +118,7 @@ fun UserStatistics(
                         listOf(R.string.games_played, R.string.wins).zip(
                             listOf(userStat.games.toString(), userStat.wins.toString())
                         ),
-                        listOf(R.string.win_rate, R.string.average_attempts).zip(
+                        listOf(R.string.progress, R.string.average_attempts).zip(
                             listOf(userStat.formattedProgress, userStat.formattedAttempts)
                         )
                     ).forEachIndexed { columnIndex, row ->

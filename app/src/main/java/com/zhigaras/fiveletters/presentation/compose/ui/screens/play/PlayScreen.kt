@@ -23,6 +23,7 @@ import androidx.compose.ui.Modifier
 import com.airbnb.lottie.compose.LottieAnimation
 import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.rememberLottieComposition
+import com.zhigaras.fiveletters.BuildConfig
 import com.zhigaras.fiveletters.R
 import com.zhigaras.fiveletters.model.GameState
 import com.zhigaras.fiveletters.model.LetterFieldState
@@ -73,7 +74,7 @@ fun PlayScreen(
         verticalArrangement = Arrangement.Bottom,
         modifier = Modifier.fillMaxSize()
     ) {
-        AdBanner(modifier = Modifier.fillMaxWidth(), isTest = true)
+        AdBanner(modifier = Modifier.fillMaxWidth(), isTest = BuildConfig.DEBUG)
         Box(
             contentAlignment = Alignment.Center,
             modifier = Modifier
