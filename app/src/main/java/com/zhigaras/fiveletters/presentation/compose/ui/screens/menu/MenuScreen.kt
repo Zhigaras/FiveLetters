@@ -190,13 +190,13 @@ fun CommonButton(
         shape = ShapeDefaults.Medium,
         colors = ButtonDefaults.buttonColors(
             containerColor = yellow,
-            contentColor = black
+//            contentColor = black
         ),
         modifier = modifier
     ) {
         Text(
             text = text,
-            style = textStyle,
+            style = textStyle.copy(color = black),
             modifier = Modifier.padding(horizontal = 16.dp),
             textAlign = TextAlign.Center
         )
