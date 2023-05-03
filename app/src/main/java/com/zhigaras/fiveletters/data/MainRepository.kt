@@ -21,7 +21,7 @@ interface MainRepository : MainDao, UserStatInteract.Write {
     }
     
     class Fake(private val isWordValid: Boolean) : MainRepository {
-        override suspend fun getUnsolvedWord() = Word(1, "песня", false, 0)
+        override suspend fun getUnsolvedWord() = Word.mock
         
         override suspend fun isWordExist(word: String) = isWordValid
         

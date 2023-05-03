@@ -9,5 +9,11 @@ data class Word(
     val id: Int,
     val word: String,
     val solvedByUser: Boolean,
-    val attempts: Int
-)
+    val attempts: Int,
+    val description: String
+) {
+    companion object {
+        val mock = Word(1, "start", false, 0, "")
+        val rulesMock = Word(1, "песня", false, 0, "")
+    }
+}

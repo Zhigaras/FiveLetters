@@ -12,7 +12,7 @@ interface RulesInteractor {
         private val rowStateController: RowStateController.Confirm
     ) : RulesInteractor {
         
-        private val rulesOrigin = Word(1, "песня", false, 0)
+        private val rulesOrigin = Word.rulesMock
         
         private val rulesWords = listOf("блеск", "пенал", "песня")
         

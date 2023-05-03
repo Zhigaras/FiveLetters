@@ -16,7 +16,7 @@ interface GameStateController {
         incrementGamesCounter: suspend () -> Unit
     ): GameState
     
-    fun newGame(origin: Word = Word(1, "start", false, 0)): GameState
+    fun newGame(origin: Word = Word.mock): GameState
     
     class Base(
         private val rowStateController: RowStateController.Overall,

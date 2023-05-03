@@ -11,7 +11,6 @@ import com.zhigaras.fiveletters.presentation.compose.ui.viewmodels.ViewModelFact
 
 class App : Application(), ProvideViewModel {
     
-    private lateinit var core: Core
     private lateinit var viewModelFactory: ViewModelFactory
     
     override fun onCreate() {
@@ -21,7 +20,7 @@ class App : Application(), ProvideViewModel {
     
         val provideInstance = ProvideInstance.Release(this)
         
-        core = Core.Base(this, provideInstance)
+        val core = Core.Base(this, provideInstance)
         
         viewModelFactory = ViewModelFactory(core)
     }
