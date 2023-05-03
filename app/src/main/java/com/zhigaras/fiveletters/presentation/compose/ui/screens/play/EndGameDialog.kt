@@ -47,7 +47,7 @@ fun EndGameDialog(
         Card(
             colors = CardDefaults.cardColors(
                 containerColor = gray,
-                contentColor = white
+//                contentColor = white
             ),
             modifier = modifier.scale(animatedScale.value)
         ) {
@@ -55,15 +55,14 @@ fun EndGameDialog(
                 Text(
                     text = stringResource(R.string.the_word_is),
                     textAlign = TextAlign.Center,
-                    style = MaterialTheme.typography.titleLarge,
+                    style = MaterialTheme.typography.titleLarge.copy(color = white),
                     modifier = modifier.padding(top = 16.dp)
                 )
                 Text(
                     text = origin.uppercase(),
                     textAlign = TextAlign.Center,
-                    style = MaterialTheme.typography.displayMedium,
-                    modifier = modifier,
-                    color = yellow
+                    style = MaterialTheme.typography.displayMedium.copy(color = yellow),
+                    modifier = modifier
                 )
                 content(Modifier.padding(bottom = 16.dp))
                 CommonButton(
@@ -94,7 +93,7 @@ fun WinDialogContent(
     Text(
         text = stringResource(R.string.win_text),
         textAlign = TextAlign.Center,
-        style = MaterialTheme.typography.titleLarge,
+        style = MaterialTheme.typography.titleLarge.copy(color = white),
         modifier = modifier
     )
 }
@@ -106,7 +105,7 @@ fun FailDialogContent(
     Text(
         text = stringResource(R.string.fail_text),
         textAlign = TextAlign.Center,
-        style = MaterialTheme.typography.titleLarge,
+        style = MaterialTheme.typography.titleLarge.copy(color = white),
         modifier = modifier
     )
 }
