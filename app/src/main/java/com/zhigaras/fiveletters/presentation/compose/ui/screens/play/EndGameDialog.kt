@@ -1,7 +1,5 @@
 package com.zhigaras.fiveletters.presentation.compose.ui.screens.play
 
-import androidx.compose.animation.core.Animatable
-import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -10,8 +8,6 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
@@ -19,37 +15,32 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
+import androidx.compose.ui.window.DialogProperties
 import com.zhigaras.fiveletters.R
 import com.zhigaras.fiveletters.presentation.compose.ui.screens.menu.CommonButton
 import com.zhigaras.fiveletters.presentation.compose.ui.theme.gray
 import com.zhigaras.fiveletters.presentation.compose.ui.theme.white
 import com.zhigaras.fiveletters.presentation.compose.ui.theme.yellow
-import kotlinx.coroutines.delay
 
 @Composable
 fun EndGameDialog(
-    scale: Float,
     modifier: Modifier = Modifier,
+    scale: Float = 1f,
     origin: String,
     onDismiss: () -> Unit,
     toMenuClick: () -> Unit,
     onNewGameClick: () -> Unit,
     content: @Composable (Modifier) -> Unit
 ) {
-    val animatedScale = remember { Animatable(scale) }
-    LaunchedEffect(key1 = Unit) {
-        delay(30)
-        animatedScale.animateTo(1f, animationSpec = tween(1500))
-    }
     Dialog(
-        onDismissRequest = { onDismiss() }
+        onDismissRequest = { onDismiss() },
+        properties = DialogProperties(dismissOnBackPress = true, dismissOnClickOutside = true)
     ) {
         Card(
             colors = CardDefaults.cardColors(
                 containerColor = gray,
-//                contentColor = white
             ),
-            modifier = modifier.scale(animatedScale.value)
+            modifier = modifier.scale(scale)
         ) {
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
                 Text(

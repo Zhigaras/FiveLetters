@@ -1,6 +1,7 @@
 package com.zhigaras.fiveletters.presentation.compose.ui.screens.play
 
 import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -38,8 +39,11 @@ fun PlayScreen(
     toMenuClick: () -> Unit,
     onNewGameClick: () -> Unit
 ) {
-    var dialogScaleValue by rememberSaveable { mutableStateOf(0f) }
     var showEndGameDialog by rememberSaveable { mutableStateOf(false) }
+    val dialogScaleValue by animateFloatAsState(
+        targetValue = if (showEndGameDialog) 1f else 0f,
+        animationSpec = tween(1500)
+    )
     val lottieComposition by rememberLottieComposition(LottieCompositionSpec.RawRes(R.raw.lottie_mobile))
     var showCongratulationAnimation by rememberSaveable { mutableStateOf(false) }
     if (dialogScaleValue != 1f)
@@ -58,7 +62,6 @@ fun PlayScreen(
             toMenuClick = { showEndGameDialog = false; toMenuClick() },
             onNewGameClick = {
                 onNewGameClick()
-                dialogScaleValue = 0f
                 showCongratulationAnimation = false
             }
         ) {
@@ -67,7 +70,6 @@ fun PlayScreen(
                 is LetterFieldState.Win -> WinDialogContent(it)
             }
         }
-        dialogScaleValue = 1f
     }
     
     Column(
@@ -105,7 +107,6 @@ fun PlayScreen(
                     onBackClick = toMenuClick,
                     onNewGameClick = {
                         onNewGameClick()
-                        dialogScaleValue = 0f
                         showEndGameDialog = false
                         showCongratulationAnimation = false
                     }
