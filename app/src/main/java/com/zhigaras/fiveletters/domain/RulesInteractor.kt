@@ -14,15 +14,19 @@ interface RulesInteractor {
         
         private val rulesOrigin = Word.rulesMock
         
-        private val rulesWords = listOf("блеск", "пенал", "песня")
+        private val rulesWords = listOf("блеск", "пенал", "песня", "пенся")
         
         private val rulesRowsList: List<RowState> = rulesWords.map { word ->
             RowState.UncheckedWord(word.map { LetterState.UserClicked(it.uppercaseChar()) })
         }
         
         override fun getRulesRows(): List<RowState> {
-            return rulesRowsList.map {
-                rowStateController.confirmWord(true, rulesOrigin, it)
+            return rulesRowsList.mapIndexed { index, rowState ->
+                rowStateController.confirmWord(
+                    index != rulesRowsList.lastIndex,
+                    rulesOrigin,
+                    rowState
+                )
             }
         }
     }

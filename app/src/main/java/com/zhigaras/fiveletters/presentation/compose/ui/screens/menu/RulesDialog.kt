@@ -107,17 +107,22 @@ fun RulesContent(
         modifier = Modifier.padding(vertical = 16.dp),
         text = stringResource(id = R.string.rules3, exactLetters)
     )
+    LetterRow(newRow = rulesRowsList[3])
+    Text(
+        modifier = Modifier.padding(vertical = 16.dp),
+        text = stringResource(id = R.string.rules4)
+    )
     LetterRow(newRow = rulesRowsList[2])
     Text(
         modifier = Modifier.padding(top = 16.dp),
-        text = stringResource(id = R.string.rules4)
+        text = stringResource(id = R.string.rules5)
     )
     RulesSpacer(
         Modifier
             .fillMaxWidth()
             .padding(vertical = 16.dp)
     )
-    Text(text = stringResource(id = R.string.rules5))
+    Text(text = stringResource(id = R.string.rules6))
 }
 
 @Composable

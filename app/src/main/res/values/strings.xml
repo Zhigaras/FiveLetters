@@ -24,8 +24,9 @@ In order to guess it, enter words of 5 letters into the field, and we will give 
         So, you entered a word, and the letters in it changed color.</string>
     <string name="rules2">The letters %1$s are gray, the hidden word does not contain them.\nThe letters %2$s are white, they are in the hidden word, but are in other places.</string>
     <string name="rules3">The letters %1$s are yellow, they are in the hidden word and in the right place.</string>
-    <string name="rules4">If all the letters are yellow, then you have guessed the word. A total of 6 attempts are given.</string>
-    <string name="rules5">Some words may seem complex or fictional. In the next update, we will add the ability to find out the meaning of the hidden word.</string>
+    <string name="rules4">If all the letters are red - most likely the word does not meet one of the requirements:\n - common noun\n - in the singular.</string>
+    <string name="rules5">If all the letters are yellow, then you have guessed the word. A total of 6 attempts are given.</string>
+    <string name="rules6">Some words may seem complex or fictional. In the next update, we will add the ability to find out the meaning of the hidden word.</string>
     <string name="close">Close</string>
     <string name="show_rules">Show rules</string>
     <string name="ad_mob_banner_id" translatable="false">ca-app-pub-1332033107151527/3031627834</string>
