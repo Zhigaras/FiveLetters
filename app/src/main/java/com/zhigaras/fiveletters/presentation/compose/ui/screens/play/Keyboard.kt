@@ -46,7 +46,8 @@ fun Keyboard(
     onBackspaceClick: () -> Unit
 ) {
     val isConfirmButtonEnabled = remember { mutableStateOf(false) }
-    isConfirmButtonEnabled.value = gameState.letterFieldState.result.any { it is RowState.UncheckedWord }
+    isConfirmButtonEnabled.value =
+        gameState.letterFieldState.result.any { it is RowState.UncheckedWord }
     
     Column(
         verticalArrangement = Arrangement.spacedBy(4.dp),

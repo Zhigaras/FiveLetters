@@ -6,8 +6,8 @@ abstract class Keyboard {
     
     abstract val keys: List<List<LetterState>>
     
-    class Default(private val alphabet: Alphabet): Keyboard() {
-    
+    class Default(private val alphabet: Alphabet) : Keyboard() {
+        
         override val keys: List<List<LetterState>> =
             alphabet.getKeyboardAlphabet().map { row ->
                 row.map {
@@ -19,5 +19,5 @@ abstract class Keyboard {
             }.toMutableList()
     }
     
-    class Progress(override val keys: List<List<LetterState>>): Keyboard()
+    class Progress(override val keys: List<List<LetterState>>) : Keyboard()
 }

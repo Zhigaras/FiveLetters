@@ -21,13 +21,13 @@ interface DatastoreManager : UserStatInteract.Mutable {
         
         private val gamesCountKey = intPreferencesKey("gamesCount")
         private val gameStateKey = stringPreferencesKey("gameState")
-    
+        
         override suspend fun saveState(json: String) {
             datastore.edit { prefs ->
                 prefs[gameStateKey] = json
             }
         }
-    
+        
         override suspend fun restoreState(): String? {
             return datastore.data.first()[gameStateKey]
         }

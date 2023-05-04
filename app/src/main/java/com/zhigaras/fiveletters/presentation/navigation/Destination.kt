@@ -15,5 +15,4 @@ abstract class Destination {
     object Play : Destination() {
         override val route = "playScreen"
     }
-    
 }

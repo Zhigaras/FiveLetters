@@ -190,8 +190,7 @@ fun CommonButton(
         onClick = { onClick() },
         shape = ShapeDefaults.Medium,
         colors = ButtonDefaults.buttonColors(
-            containerColor = yellow,
-//            contentColor = black
+            containerColor = yellow
         ),
         modifier = modifier
     ) {

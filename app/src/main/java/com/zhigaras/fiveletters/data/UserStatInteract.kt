@@ -16,5 +16,5 @@ interface UserStatInteract {
         
     }
     
-    interface Mutable: Read, Write
+    interface Mutable : Read, Write
 }
