@@ -7,6 +7,14 @@ plugins {
 }
 
 android {
+    signingConfigs {
+        release {
+        storeFile file('D:\\github\\KEYSTORE\\zhigaras_keystore.jks')
+            storePassword 'zhigaras'
+            keyAlias 'zhigaras'
+            keyPassword 'zhigaras'
+        }
+    }
     namespace 'com.zhigaras.fiveletters'
     compileSdk 33
 
@@ -21,6 +29,7 @@ android {
         vectorDrawables {
             useSupportLibrary true
         }
+        signingConfig signingConfigs.debug
     }
 
     buildTypes {
@@ -28,6 +37,10 @@ android {
             minifyEnabled true
             shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
+        }
+        debug {
+            signingConfig signingConfigs.debug
         }
     }
     compileOptions {
