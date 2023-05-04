@@ -1,7 +1,6 @@
 package com.zhigaras.fiveletters.data
 
 import com.zhigaras.fiveletters.model.GameState
-import java.io.IOException
 
 interface StateSaver {
     
@@ -31,7 +30,7 @@ interface StateSaver {
             val json = datastoreManager.restoreState() ?: return null
             return try {
                 serializer.deserialize(json)
-            } catch (_: IOException) {
+            } catch (_: Throwable) {
                 null
             }
         }
