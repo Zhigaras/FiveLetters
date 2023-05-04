@@ -49,7 +49,7 @@ class PlayViewModel(
     override fun startNewGame() {
         viewModelScope.launch(dispatchers.io()) {
             val origin = mainRepository.getUnsolvedWord()
-            Log.d("AAA", origin.word)
+            Log.d("AAA", origin.word) // TODO: remove
             _gameStateFlow.value = gameStateController.newGame(origin)
         }
     }
@@ -63,7 +63,7 @@ class PlayViewModel(
     override fun restoreState() {
         viewModelScope.launch(dispatchers.io()) {
             val restoredState = stateSaver.restoreState()
-            if (restoredState!= null) _gameStateFlow.value = restoredState
+            if (restoredState != null) _gameStateFlow.value = restoredState
             else startNewGame()
         }
     }
