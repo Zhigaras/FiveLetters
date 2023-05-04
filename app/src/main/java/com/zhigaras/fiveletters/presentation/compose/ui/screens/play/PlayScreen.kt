@@ -40,19 +40,23 @@ fun PlayScreen(
     onNewGameClick: () -> Unit
 ) {
     var showEndGameDialog by rememberSaveable { mutableStateOf(false) }
+    var wasDialogShown by rememberSaveable { mutableStateOf(false) }
     val dialogScaleValue by animateFloatAsState(
         targetValue = if (showEndGameDialog) 1f else 0f,
         animationSpec = tween(1500)
     )
     val lottieComposition by rememberLottieComposition(LottieCompositionSpec.RawRes(R.raw.lottie_mobile))
     var showCongratulationAnimation by rememberSaveable { mutableStateOf(false) }
-    if (dialogScaleValue != 1f)
-        LaunchedEffect(key1 = gameState.progressState) {
-            delay(700)
-            showCongratulationAnimation = gameState.letterFieldState is LetterFieldState.Win
+    LaunchedEffect(key1 = gameState.progressState) {
+        delay(700)
+        showCongratulationAnimation =
+            gameState.letterFieldState is LetterFieldState.Win && !wasDialogShown
+        if (!wasDialogShown) {
             delay(400)
             showEndGameDialog = gameState.progressState == ProgressState.ENDED
+            wasDialogShown = showEndGameDialog
         }
+    }
     
     if (showEndGameDialog) {
         EndGameDialog(
@@ -63,6 +67,7 @@ fun PlayScreen(
             onNewGameClick = {
                 onNewGameClick()
                 showCongratulationAnimation = false
+                wasDialogShown = false
             }
         ) {
             when (gameState.letterFieldState) {
@@ -109,6 +114,7 @@ fun PlayScreen(
                         onNewGameClick()
                         showEndGameDialog = false
                         showCongratulationAnimation = false
+                        wasDialogShown = false
                     }
                 )
             }
