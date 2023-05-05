@@ -5,7 +5,7 @@ import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
-import androidx.compose.animation.with
+import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -98,7 +98,7 @@ fun PlayScreen(
             AnimatedContent(
                 targetState = gameState.progressState,
                 transitionSpec = {
-                    fadeIn(animationSpec = tween(1000)) with fadeOut(tween(1000))
+                    fadeIn(animationSpec = tween(1000)) togetherWith fadeOut(tween(1000))
                 }
             ) { progressState ->
                 if (progressState != ProgressState.ENDED)

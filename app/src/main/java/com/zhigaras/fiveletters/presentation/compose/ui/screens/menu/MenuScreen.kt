@@ -2,12 +2,31 @@ package com.zhigaras.fiveletters.presentation.compose.ui.screens.menu
 
 import android.widget.Toast
 import androidx.activity.compose.BackHandler
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Info
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.ShapeDefaults
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -156,9 +175,10 @@ fun PlayButtonArea(
         contentAlignment = Alignment.Center,
         modifier = modifier
     ) {
-        CommonButton(
+        SingleClickButton(
             text = stringResource(R.string.start),
             textStyle = MaterialTheme.typography.titleLarge,
+            clickDisabledPeriod = 800L,
             onClick = {
                 if (progressState == ProgressState.PROGRESS) showAlertDialog()
                 else onNewGameClick()
@@ -201,4 +221,27 @@ fun CommonButton(
             textAlign = TextAlign.Center
         )
     }
+}
+
+@Composable
+fun SingleClickButton(
+    modifier: Modifier = Modifier,
+    text: String,
+    textStyle: TextStyle,
+    clickDisabledPeriod: Long = 1000L,
+    onClick: () -> Unit
+) {
+    var lastClickTime by remember { mutableStateOf(0L) }
+    
+    CommonButton(
+        modifier = modifier,
+        text = text,
+        textStyle = textStyle,
+        onClick = {
+            if (lastClickTime + clickDisabledPeriod < System.currentTimeMillis()) {
+                onClick()
+                lastClickTime = System.currentTimeMillis()
+            }
+        }
+    )
 }
