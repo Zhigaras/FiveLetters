@@ -1,14 +1,22 @@
 package com.zhigaras.fiveletters.data
 
+import com.squareup.moshi.JsonAdapter
+import com.squareup.moshi.JsonAdapter.Factory
+import com.squareup.moshi.JsonReader
+import com.squareup.moshi.JsonWriter
 import com.squareup.moshi.Moshi
+import com.squareup.moshi.Types
+import com.squareup.moshi.adapter
 import com.squareup.moshi.adapters.PolymorphicJsonAdapterFactory
-import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
+import com.zhigaras.fiveletters.model.Alphabet
 import com.zhigaras.fiveletters.model.GameState
 import com.zhigaras.fiveletters.model.Keyboard
 import com.zhigaras.fiveletters.model.LetterFieldState
 import com.zhigaras.fiveletters.model.LetterState
 import com.zhigaras.fiveletters.model.LetterType
 import com.zhigaras.fiveletters.model.RowState
+import java.io.IOException
+import java.lang.reflect.Type
 
 interface MoshiSerializer {
     
@@ -53,15 +61,81 @@ interface MoshiSerializer {
             .add(PolymorphicJsonAdapterFactory.of(Alphabet::class.java, "label")
                 .withSubtype(Alphabet.Ru::class.java, Alphabet.Ru::class.java.simpleName)
                 .withSubtype(Alphabet.En::class.java, Alphabet.En::class.java.simpleName))
-            .add(KotlinJsonAdapterFactory())
+            .add(MoshiArrayListJsonAdapter.FACTORY)
             .build()
-        
-        private val adapter = moshi.adapter(GameState::class.java)
+    
+        @OptIn(ExperimentalStdlibApi::class)
+        private val adapter = moshi.adapter<GameState>()
         
         override fun serialize(gameState: GameState): String = adapter.toJson(gameState)
         
         override fun deserialize(json: String): GameState? {
             return adapter.fromJson(json)
+        }
+    }
+}
+
+abstract class MoshiArrayListJsonAdapter<C : MutableCollection<T>?, T> private constructor(
+    private val elementAdapter: JsonAdapter<T>
+) :
+    JsonAdapter<C>() {
+    abstract fun newCollection(): C
+    
+    @Throws(IOException::class)
+    override fun fromJson(reader: JsonReader): C {
+        val result = newCollection()
+        reader.beginArray()
+        while (reader.hasNext()) {
+            result?.add(elementAdapter.fromJson(reader)!!)
+        }
+        reader.endArray()
+        return result
+    }
+    
+    @Throws(IOException::class)
+    override fun toJson(writer: JsonWriter, value: C?) {
+        writer.beginArray()
+        for (element in value!!) {
+            elementAdapter.toJson(writer, element)
+        }
+        writer.endArray()
+    }
+    
+    override fun toString(): String {
+        return "$elementAdapter.collection()"
+    }
+    
+    companion object {
+        val FACTORY = Factory { type, annotations, moshi ->
+            val rawType = Types.getRawType(type)
+            if (annotations.isNotEmpty()) return@Factory null
+            if (rawType == ArrayList::class.java) {
+                return@Factory newArrayListAdapter<Any>(
+                    type,
+                    moshi
+                ).nullSafe()
+            }
+            null
+        }
+        
+        private fun <T> newArrayListAdapter(
+            type: Type,
+            moshi: Moshi
+        ): JsonAdapter<MutableCollection<T>> {
+            val elementType =
+                Types.collectionElementType(
+                    type,
+                    MutableCollection::class.java
+                )
+            
+            val elementAdapter: JsonAdapter<T> = moshi.adapter(elementType)
+            
+            return object :
+                MoshiArrayListJsonAdapter<MutableCollection<T>, T>(elementAdapter) {
+                override fun newCollection(): MutableCollection<T> {
+                    return ArrayList()
+                }
+            }
         }
     }
 }

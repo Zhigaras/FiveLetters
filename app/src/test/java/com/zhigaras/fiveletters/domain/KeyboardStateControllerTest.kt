@@ -1,6 +1,6 @@
 package com.zhigaras.fiveletters.domain
 
-import com.zhigaras.fiveletters.data.Alphabet
+import com.zhigaras.fiveletters.model.Alphabet
 import com.zhigaras.fiveletters.model.LetterState
 import com.zhigaras.fiveletters.model.LetterType
 import org.junit.Assert.assertEquals

@@ -15,6 +15,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import com.squareup.moshi.JsonClass
 import com.zhigaras.fiveletters.presentation.compose.ui.theme.black
 import com.zhigaras.fiveletters.presentation.compose.ui.theme.gray
 import com.zhigaras.fiveletters.presentation.compose.ui.theme.red
@@ -99,6 +100,7 @@ abstract class LetterState {
         return oldLetter.grade < grade
     }
     
+    @JsonClass(generateAdapter = true)
     data class Empty(override val type: LetterType) : LetterState() {
         override val char: Char = ' '
         override val borderColor: Color = if (type is LetterType.Card) yellow else gray
@@ -108,6 +110,7 @@ abstract class LetterState {
         override val grade: Int = 0
     }
     
+    @JsonClass(generateAdapter = true)
     data class Default(
         override val type: LetterType,
         override val char: Char,
@@ -119,6 +122,7 @@ abstract class LetterState {
         override val grade: Int = 0
     }
     
+    @JsonClass(generateAdapter = true)
     data class UserClicked(override val char: Char) : LetterState() {
         override val type: LetterType = LetterType.Card()
         override val borderColor: Color = yellow
@@ -128,6 +132,7 @@ abstract class LetterState {
         override val grade: Int = 2
     }
     
+    @JsonClass(generateAdapter = true)
     data class Wrong(override val type: LetterType, override val char: Char) : LetterState() {
         override val borderColor: Color = gray
         override val cardColor: Color = gray
@@ -136,6 +141,7 @@ abstract class LetterState {
         override val grade: Int = 3
     }
     
+    @JsonClass(generateAdapter = true)
     data class Right(override val type: LetterType, override val char: Char) : LetterState() {
         override val borderColor: Color = white
         override val cardColor: Color = white
@@ -144,6 +150,7 @@ abstract class LetterState {
         override val grade: Int = 4
     }
     
+    @JsonClass(generateAdapter = true)
     data class Exact(override val type: LetterType, override val char: Char) : LetterState() {
         override val borderColor: Color = yellow
         override val cardColor: Color = yellow
@@ -152,6 +159,7 @@ abstract class LetterState {
         override val grade: Int = 5
     }
     
+    @JsonClass(generateAdapter = true)
     data class InvalidWord(override val char: Char) : LetterState() {
         override val type: LetterType = LetterType.Card()
         override val borderColor: Color = yellow

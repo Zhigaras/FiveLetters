@@ -2,7 +2,9 @@ package com.zhigaras.fiveletters.model
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.squareup.moshi.JsonClass
 
+@JsonClass(generateAdapter = true)
 @Entity(tableName = "words_ru")
 data class Word(
     @PrimaryKey(autoGenerate = true)

@@ -1,12 +1,13 @@
 package com.zhigaras.fiveletters.model
 
-import com.zhigaras.fiveletters.data.Alphabet
+import com.squareup.moshi.JsonClass
 
 abstract class Keyboard {
     
     abstract val keys: List<List<LetterState>>
     
-    class Default(private val alphabet: Alphabet) : Keyboard() {
+    @JsonClass(generateAdapter = true)
+    class Default(val alphabet: Alphabet) : Keyboard() {
         
         override val keys: List<List<LetterState>> =
             alphabet.getKeyboardAlphabet().map { row ->
@@ -19,5 +20,6 @@ abstract class Keyboard {
             }.toMutableList()
     }
     
+    @JsonClass(generateAdapter = true)
     class Progress(override val keys: List<List<LetterState>>) : Keyboard()
 }

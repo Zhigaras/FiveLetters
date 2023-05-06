@@ -3,7 +3,7 @@ package com.zhigaras.fiveletters.presentation.compose.ui.viewmodels
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.zhigaras.fiveletters.core.Core
-import com.zhigaras.fiveletters.data.Alphabet
+import com.zhigaras.fiveletters.model.Alphabet
 import com.zhigaras.fiveletters.domain.GameStateController
 import com.zhigaras.fiveletters.domain.KeyboardStateController
 import com.zhigaras.fiveletters.domain.RowStateController

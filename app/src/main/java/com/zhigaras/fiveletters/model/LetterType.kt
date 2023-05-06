@@ -4,6 +4,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.squareup.moshi.JsonClass
 import com.zhigaras.fiveletters.presentation.compose.ui.theme.keyboardButtonCornerRadius
 import com.zhigaras.fiveletters.presentation.compose.ui.theme.keyboardButtonInnerPadding
 import com.zhigaras.fiveletters.presentation.compose.ui.theme.letterCardCornerRadius
@@ -16,6 +17,7 @@ abstract class LetterType {
     abstract val cornersRadius: Dp
     abstract val borderWidth: Dp
     
+    @JsonClass(generateAdapter = true)
     class Card : LetterType() {
         override val charSize: TextUnit = 35.sp
         override val charPadding: Dp = letterCardInnerPadding
@@ -23,6 +25,7 @@ abstract class LetterType {
         override val borderWidth: Dp = 2.dp
     }
     
+    @JsonClass(generateAdapter = true)
     class Key : LetterType() {
         override val charSize: TextUnit = 20.sp
         override val charPadding: Dp = keyboardButtonInnerPadding

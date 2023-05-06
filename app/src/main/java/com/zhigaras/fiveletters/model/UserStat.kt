@@ -1,5 +1,7 @@
 package com.zhigaras.fiveletters.model
 
+import com.squareup.moshi.JsonClass
+
 abstract class UserStat {
     
     abstract val wins: Int
@@ -10,6 +12,7 @@ abstract class UserStat {
     val formattedProgress get() = String.format("%.1f", (progress * 100)) + "%"
     val formattedAttempts get() = String.format("%.1f", averageAttempts)
     
+    @JsonClass(generateAdapter = true)
     data class Base(
         override val wins: Int,
         override val progress: Float,
@@ -17,6 +20,7 @@ abstract class UserStat {
         override val averageAttempts: Float
     ) : UserStat()
     
+    @JsonClass(generateAdapter = true)
     class Empty : UserStat() {
         override val wins: Int = 0
         override val progress: Float = 0f

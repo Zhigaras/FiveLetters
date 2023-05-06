@@ -1,7 +1,9 @@
 package com.zhigaras.fiveletters.model
 
+import com.squareup.moshi.JsonClass
 import com.zhigaras.fiveletters.Constants
 
+@JsonClass(generateAdapter = true)
 data class GameState(
     val letterFieldState: LetterFieldState,
     val keyboard: Keyboard,
