@@ -28,4 +28,7 @@
     <string name="rules6">Некоторые слова могут показаться сложными или несуществующими. В ближайшем обновлении мы добавим возможность узнать значение загаданного слова.</string>
     <string name="close">Закрыть</string>
     <string name="show_rules">Правила игры</string>
+    <string name="sign_in">Войти</string>
+    <string name="sign_up">Зарегистрироваться</string>
+    <string name="password">Пароль</string>
 </resources>

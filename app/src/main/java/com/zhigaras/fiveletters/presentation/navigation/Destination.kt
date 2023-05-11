@@ -8,6 +8,10 @@ abstract class Destination {
         override val route = "splashScreen"
     }
     
+    object Auth : Destination() {
+        override val route = "auth"
+    }
+    
     object Menu : Destination() {
         override val route = "menuScreen"
     }

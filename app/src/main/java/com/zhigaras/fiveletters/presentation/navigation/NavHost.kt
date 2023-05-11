@@ -13,9 +13,11 @@ import androidx.navigation.NavHostController
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
+import com.zhigaras.fiveletters.presentation.compose.ui.screens.auth.AuthScreen
 import com.zhigaras.fiveletters.presentation.compose.ui.screens.menu.MenuScreen
 import com.zhigaras.fiveletters.presentation.compose.ui.screens.play.PlayScreen
 import com.zhigaras.fiveletters.presentation.compose.ui.screens.splash.SplashScreen
+import com.zhigaras.fiveletters.presentation.compose.ui.viewmodels.AuthViewModel
 import com.zhigaras.fiveletters.presentation.compose.ui.viewmodels.MenuViewModel
 import com.zhigaras.fiveletters.presentation.compose.ui.viewmodels.PlayViewModel
 
@@ -25,6 +27,7 @@ fun FiveLettersNavHost(
     needToShowSplash: Boolean,
     playViewModel: PlayViewModel,
     menuViewModel: MenuViewModel,
+    authViewModel: AuthViewModel,
     onFinish: () -> Unit
 ) {
     val isExpanded = LocalConfiguration.current.orientation == Configuration.ORIENTATION_LANDSCAPE
@@ -32,9 +35,14 @@ fun FiveLettersNavHost(
     val gameState by playViewModel.gameStateFlow.collectAsStateWithLifecycle()
     AnimatedNavHost(
         navController = navController,
-        startDestination = if (needToShowSplash) Destination.Splash.route else Destination.Menu.route,
+//        startDestination = if (needToShowSplash) Destination.Splash.route else Destination.Menu.route,
+        startDestination = Destination.Auth.route,
         modifier = Modifier.fillMaxSize()
     ) {
+        composable(route = Destination.Auth.route) {
+            AuthScreen(viewModel = authViewModel)
+        }
+        
         composable(
             route = Destination.Splash.route,
             exitTransition = { fadeOut(animationSpec = tween(700)) }

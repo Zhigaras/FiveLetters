@@ -38,6 +38,8 @@ class ViewModelFactory(
                 RulesInteractor.Base(rowStateController)
             )
             
+            AuthViewModel::class.java -> AuthViewModel()
+            
             else -> throw IllegalArgumentException("Unknown class name: $modelClass")
         }
         return viewModel as T
