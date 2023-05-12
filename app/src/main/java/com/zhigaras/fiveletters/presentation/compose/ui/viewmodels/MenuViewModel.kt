@@ -1,6 +1,7 @@
 package com.zhigaras.fiveletters.presentation.compose.ui.viewmodels
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.zhigaras.fiveletters.core.DispatchersModule
 import com.zhigaras.fiveletters.data.UserStatRepository
 import com.zhigaras.fiveletters.domain.RulesInteractor
@@ -11,6 +12,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.emitAll
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.launch
 
 class MenuViewModel(
     private val userStatRepository: UserStatRepository,
@@ -26,10 +28,18 @@ class MenuViewModel(
         emitAll(stat)
     }.flowOn(dispatchers.io())
     
+    override fun setRulesWasShown() {
+        viewModelScope.launch {
+            userStatRepository.setRulesWasShown()
+        }
+    }
+    
 }
 
 interface MenuInteract {
     
     fun userStatFlow(): Flow<UserStat>
+    
+    fun setRulesWasShown()
     
 }

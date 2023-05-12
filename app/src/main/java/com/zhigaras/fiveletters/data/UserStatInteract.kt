@@ -14,7 +14,15 @@ interface UserStatInteract {
         
         suspend fun getGamesCount(): Flow<Int>
         
+        suspend fun wasRulesShown(): Flow<Boolean>
+        
     }
     
-    interface Mutable : Read, Write
+    interface RulesIndicationControl {
+        
+        suspend fun setRulesWasShown()
+        
+    }
+    
+    interface Mutable : Read, Write, RulesIndicationControl
 }
