@@ -1,107 +1,50 @@
 package com.zhigaras.fiveletters.presentation.compose.ui.screens.auth
 
-import androidx.activity.compose.BackHandler
-import androidx.compose.animation.AnimatedContent
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.widthIn
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.ShapeDefaults
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.zhigaras.fiveletters.R
 import com.zhigaras.fiveletters.presentation.compose.ui.screens.menu.CommonButton
+import com.zhigaras.fiveletters.presentation.compose.ui.theme.black
 import com.zhigaras.fiveletters.presentation.compose.ui.theme.playScreenMaxWidth
 import com.zhigaras.fiveletters.presentation.compose.ui.theme.white
-import com.zhigaras.fiveletters.presentation.compose.ui.viewmodels.AuthViewModel
+import com.zhigaras.fiveletters.presentation.compose.ui.theme.yellow
 
 @Composable
-fun AuthScreen(
-    viewModel: AuthViewModel,
-    onFinish: () -> Unit
-) {
-    val emailState by viewModel.emailFlow.collectAsStateWithLifecycle()
-    val passwordState by viewModel.passwordFlow.collectAsStateWithLifecycle()
-    var authPage by rememberSaveable { mutableStateOf(AuthPage.START) }
-    
-    BackHandler(enabled = true) {
-        if (authPage == AuthPage.START) onFinish()
-        else authPage = AuthPage.START
-    }
-    
-    Box(contentAlignment = Alignment.Center) {
-        AnimatedContent(targetState = authPage) {
-            when (it) {
-                AuthPage.START -> AuthStart(
-                    onSignInClick = { authPage = AuthPage.SIGN_IN },
-                    onSignUpClick = { authPage = AuthPage.SIGN_UP }
-                )
-                
-                AuthPage.SIGN_IN -> AuthSignIn(
-                    emailState = emailState,
-                    passwordState = passwordState,
-                    onEmailChanged = { viewModel.onNameChanged(it) },
-                    onPasswordChanged = { viewModel.onPasswordChanged(it) },
-                    onButtonClick = {}
-                )
-                
-                AuthPage.SIGN_UP -> AuthSignUp()
-            }
-        }
-    }
-}
-
-@Composable
-fun AuthStart(
-    onSignInClick: () -> Unit,
-    onSignUpClick: () -> Unit
-) {
-    Column(
-        modifier = Modifier
-            .padding(horizontal = 8.dp)
-            .fillMaxHeight()
-            .widthIn(max = playScreenMaxWidth),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Bottom
-    ) {
-        CommonButton(
-            modifier = Modifier.fillMaxWidth(),
-            text = stringResource(id = R.string.sign_in),
-            textStyle = MaterialTheme.typography.titleLarge,
-            onClick = { onSignInClick() }
-        )
-        CommonButton(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(vertical = 16.dp),
-            text = stringResource(id = R.string.sign_up),
-            textStyle = MaterialTheme.typography.titleLarge,
-            onClick = { onSignUpClick() }
-        )
-    }
-}
-
-@Composable
-fun AuthSignIn(
+fun AuthSignInUpPage(
+    authPage: AuthPage,
     emailState: String,
     passwordState: String,
     onEmailChanged: (String) -> Unit,
@@ -110,14 +53,15 @@ fun AuthSignIn(
 ) {
     Column(
         modifier = Modifier
-            .padding(horizontal = 8.dp)
             .fillMaxHeight()
-            .widthIn(max = playScreenMaxWidth),
-        verticalArrangement = Arrangement.Bottom,
+            .widthIn(max = playScreenMaxWidth)
+            .verticalScroll(rememberScrollState()),
+        verticalArrangement = Arrangement.spacedBy(16.dp, Alignment.Bottom),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
+        val maxWidthModifier = Modifier.fillMaxWidth()
         InputTextField(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = maxWidthModifier,
             textState = emailState,
             hint = stringResource(R.string.email_hint),
             keyboardOptions = KeyboardOptions(
@@ -127,7 +71,7 @@ fun AuthSignIn(
             onTextChange = { onEmailChanged(it) }
         )
         InputTextField(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = maxWidthModifier,
             textState = passwordState,
             hint = stringResource(R.string.password),
             keyboardOptions = KeyboardOptions(
@@ -136,21 +80,30 @@ fun AuthSignIn(
             ),
             onTextChange = { onPasswordChanged(it) }
         )
+        if (authPage == AuthPage.SIGN_IN)
+            Box(
+                modifier = maxWidthModifier,
+                contentAlignment = Alignment.CenterEnd
+            ) {
+                TextButton(onClick = { /*TODO*/ }) {
+                    Text(
+                        text = stringResource(R.string.forgot_password),
+                        textDecoration = TextDecoration.Underline
+                    )
+                }
+            }
         CommonButton(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(bottom = 16.dp),
-            text = stringResource(id = R.string.sign_in),
+            modifier = maxWidthModifier,
+            text = stringResource(
+                id = if (authPage == AuthPage.SIGN_IN) R.string.sign_in else R.string.sign_up
+            ),
             textStyle = MaterialTheme.typography.titleLarge,
             onClick = { onButtonClick() }
         )
-    }
-}
-
-@Composable
-fun AuthSignUp() {
-    Column() {
-    
+        if (authPage == AuthPage.SIGN_UP) {
+            RegisterDivider()
+            RegisterWithGoogleButton(modifier = maxWidthModifier)
+        }
     }
 }
 
@@ -165,7 +118,7 @@ fun InputTextField(
 ) {
     val textFieldTextStyle = MaterialTheme.typography.titleLarge
     OutlinedTextField(
-        modifier = modifier.padding(bottom = 16.dp),
+        modifier = modifier,
         value = textState,
         onValueChange = { onTextChange(it) },
         textStyle = textFieldTextStyle,
@@ -190,4 +143,60 @@ fun InputTextField(
             )
         }
     )
+}
+
+@Composable
+fun RegisterDivider(
+    modifier: Modifier = Modifier
+) {
+    Row(
+        modifier = modifier,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        RegisterDividerSpacer(modifier.weight(1f))
+        Text(
+            text = stringResource(R.string.or),
+            style = MaterialTheme.typography.titleSmall
+        )
+        RegisterDividerSpacer(modifier.weight(1f))
+    }
+}
+
+@Composable
+fun RegisterDividerSpacer(
+    modifier: Modifier = Modifier
+) {
+    Spacer(
+        modifier = modifier
+            .height(2.dp)
+            .padding(horizontal = 8.dp)
+            .background(color = white)
+    )
+}
+
+@Composable
+fun RegisterWithGoogleButton(
+    modifier: Modifier = Modifier,
+    onClick: () -> Unit = {} //TODO
+) {
+    Button(
+        onClick = { onClick() },
+        shape = ShapeDefaults.Medium,
+        colors = ButtonDefaults.buttonColors(
+            containerColor = yellow
+        ),
+        modifier = modifier
+    ) {
+        Image(
+            modifier = Modifier.size(30.dp),
+            painter = painterResource(id = R.drawable.google_icon),
+            contentDescription = null
+        )
+        Text(
+            text = stringResource(R.string.continue_with_google),
+            style = MaterialTheme.typography.titleLarge.copy(color = black),
+            modifier = Modifier.padding(horizontal = 16.dp),
+            textAlign = TextAlign.Center
+        )
+    }
 }
