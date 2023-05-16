@@ -6,10 +6,10 @@ Compete with friends and family and see who can find the most words with less at
 
 Whether you're a casual player or a word-searching pro, Five Letters has something for everyone. Download now and start your word-finding adventure today!
 
-Made with:
-Jetpack Compose,
-Room
-Firebase
-AdMob
+Made with:<br />
+Jetpack Compose<br />
+Room<br />
+Firebase<br />
+AdMob<br />
 
 <img src="img/screenshot1.jpg" width="216" height="468"/> <img src="img/screenshot2.jpg" width="216" height="468"/> <img src="img/screenshot3.jpg" width="216" height="468"/> <img src="img/screenshot4.jpg" width="216" height="468"/> <img src="img/screenshot5.jpg" width="216" height="468"/>
