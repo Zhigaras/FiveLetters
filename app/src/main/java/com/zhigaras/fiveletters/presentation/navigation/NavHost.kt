@@ -40,7 +40,10 @@ fun FiveLettersNavHost(
         modifier = Modifier.fillMaxSize()
     ) {
         composable(route = Destination.Auth.route) {
-            AuthScreen(viewModel = authViewModel)
+            AuthScreen(
+                viewModel = authViewModel,
+                onFinish = onFinish
+            )
         }
         
         composable(
