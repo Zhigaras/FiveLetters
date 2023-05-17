@@ -1,4 +1,4 @@
-package com.zhigaras.fiveletters.model
+package com.zhigaras.fiveletters.model.auth
 
 data class AuthState(
     val email: String,
@@ -6,7 +6,7 @@ data class AuthState(
     val status: AuthProcessStatus
 ) {
     companion object {
-        val EMPTY = AuthState(
+        val empty = AuthState(
             email = "",
             password = "",
             status = AuthProcessStatus.Empty

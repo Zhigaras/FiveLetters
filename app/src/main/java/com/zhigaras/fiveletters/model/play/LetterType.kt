@@ -1,4 +1,4 @@
-package com.zhigaras.fiveletters.model
+package com.zhigaras.fiveletters.model.play
 
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.TextUnit

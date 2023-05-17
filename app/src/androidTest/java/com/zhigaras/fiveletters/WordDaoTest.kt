@@ -5,7 +5,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.zhigaras.fiveletters.core.DatabaseModule
 import com.zhigaras.fiveletters.data.WordDao
 import com.zhigaras.fiveletters.data.WordDatabase
-import com.zhigaras.fiveletters.model.Word
+import com.zhigaras.fiveletters.model.play.Word
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
 import org.junit.After

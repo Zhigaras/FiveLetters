@@ -27,9 +27,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.zhigaras.fiveletters.R
-import com.zhigaras.fiveletters.model.GameState
-import com.zhigaras.fiveletters.model.LetterState
-import com.zhigaras.fiveletters.model.RowState
+import com.zhigaras.fiveletters.model.play.GameState
+import com.zhigaras.fiveletters.model.play.LetterState
+import com.zhigaras.fiveletters.model.play.RowState
 import com.zhigaras.fiveletters.presentation.compose.ui.theme.black
 import com.zhigaras.fiveletters.presentation.compose.ui.theme.gray
 import com.zhigaras.fiveletters.presentation.compose.ui.theme.keyboardButtonCornerRadius

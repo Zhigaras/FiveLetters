@@ -1,8 +1,12 @@
-package com.zhigaras.fiveletters.domain
+package com.zhigaras.fiveletters.domain.play
 
 import com.zhigaras.fiveletters.Constants
 import com.zhigaras.fiveletters.data.MainRepository
-import com.zhigaras.fiveletters.model.*
+import com.zhigaras.fiveletters.model.play.GameState
+import com.zhigaras.fiveletters.model.play.LetterFieldState
+import com.zhigaras.fiveletters.model.play.ProgressState
+import com.zhigaras.fiveletters.model.play.RowState
+import com.zhigaras.fiveletters.model.play.Word
 
 interface GameStateController {
     

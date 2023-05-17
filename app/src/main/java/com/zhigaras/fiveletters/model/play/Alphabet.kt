@@ -1,4 +1,4 @@
-package com.zhigaras.fiveletters.model
+package com.zhigaras.fiveletters.model.play
 
 import com.squareup.moshi.JsonClass
 

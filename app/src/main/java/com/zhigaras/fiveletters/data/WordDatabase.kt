@@ -2,7 +2,7 @@ package com.zhigaras.fiveletters.data
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
-import com.zhigaras.fiveletters.model.Word
+import com.zhigaras.fiveletters.model.play.Word
 
 @Database(
     entities = [Word::class],

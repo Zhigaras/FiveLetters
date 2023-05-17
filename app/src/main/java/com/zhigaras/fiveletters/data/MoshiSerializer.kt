@@ -8,13 +8,13 @@ import com.squareup.moshi.Moshi
 import com.squareup.moshi.Types
 import com.squareup.moshi.adapter
 import com.squareup.moshi.adapters.PolymorphicJsonAdapterFactory
-import com.zhigaras.fiveletters.model.Alphabet
-import com.zhigaras.fiveletters.model.GameState
-import com.zhigaras.fiveletters.model.Keyboard
-import com.zhigaras.fiveletters.model.LetterFieldState
-import com.zhigaras.fiveletters.model.LetterState
-import com.zhigaras.fiveletters.model.LetterType
-import com.zhigaras.fiveletters.model.RowState
+import com.zhigaras.fiveletters.model.play.Alphabet
+import com.zhigaras.fiveletters.model.play.GameState
+import com.zhigaras.fiveletters.model.play.Keyboard
+import com.zhigaras.fiveletters.model.play.LetterFieldState
+import com.zhigaras.fiveletters.model.play.LetterState
+import com.zhigaras.fiveletters.model.play.LetterType
+import com.zhigaras.fiveletters.model.play.RowState
 import java.io.IOException
 import java.lang.reflect.Type
 

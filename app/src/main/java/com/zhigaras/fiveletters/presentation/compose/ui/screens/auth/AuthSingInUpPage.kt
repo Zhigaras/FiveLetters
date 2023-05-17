@@ -36,8 +36,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import com.zhigaras.fiveletters.R
-import com.zhigaras.fiveletters.model.AuthProcessStatus
-import com.zhigaras.fiveletters.model.AuthState
+import com.zhigaras.fiveletters.model.auth.AuthProcessStatus
+import com.zhigaras.fiveletters.model.auth.AuthState
 import com.zhigaras.fiveletters.presentation.compose.ui.screens.menu.CommonButton
 import com.zhigaras.fiveletters.presentation.compose.ui.theme.black
 import com.zhigaras.fiveletters.presentation.compose.ui.theme.playScreenMaxWidth

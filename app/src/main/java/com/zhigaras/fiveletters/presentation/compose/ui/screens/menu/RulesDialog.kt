@@ -26,8 +26,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import com.zhigaras.fiveletters.R
-import com.zhigaras.fiveletters.model.LetterState
-import com.zhigaras.fiveletters.model.RowState
+import com.zhigaras.fiveletters.model.play.LetterState
+import com.zhigaras.fiveletters.model.play.RowState
 import com.zhigaras.fiveletters.presentation.compose.ui.screens.play.LetterRow
 import com.zhigaras.fiveletters.presentation.compose.ui.theme.gray100
 import com.zhigaras.fiveletters.presentation.compose.ui.theme.yellow10

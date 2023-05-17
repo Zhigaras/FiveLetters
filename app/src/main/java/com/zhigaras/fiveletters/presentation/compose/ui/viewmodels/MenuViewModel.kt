@@ -3,8 +3,8 @@ package com.zhigaras.fiveletters.presentation.compose.ui.viewmodels
 import androidx.lifecycle.ViewModel
 import com.zhigaras.fiveletters.core.DispatchersModule
 import com.zhigaras.fiveletters.data.UserStatRepository
-import com.zhigaras.fiveletters.domain.RulesInteractor
-import com.zhigaras.fiveletters.model.UserStat
+import com.zhigaras.fiveletters.domain.menu.RulesInteractor
+import com.zhigaras.fiveletters.model.menu.UserStat
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow

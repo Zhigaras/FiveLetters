@@ -36,8 +36,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.zhigaras.fiveletters.R
-import com.zhigaras.fiveletters.model.ProgressState
-import com.zhigaras.fiveletters.model.UserStat
+import com.zhigaras.fiveletters.model.play.ProgressState
+import com.zhigaras.fiveletters.model.menu.UserStat
 import com.zhigaras.fiveletters.presentation.compose.ui.screens.OrientationSwapper
 import com.zhigaras.fiveletters.presentation.compose.ui.theme.black
 import com.zhigaras.fiveletters.presentation.compose.ui.theme.gray

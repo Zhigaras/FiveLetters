@@ -1,4 +1,4 @@
-package com.zhigaras.fiveletters.model
+package com.zhigaras.fiveletters.model.play
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey

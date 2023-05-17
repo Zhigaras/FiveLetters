@@ -1,6 +1,6 @@
 package com.zhigaras.fiveletters.data
 
-import com.zhigaras.fiveletters.model.Word
+import com.zhigaras.fiveletters.model.play.Word
 
 interface MainRepository : MainDao, UserStatInteract.Write {
     

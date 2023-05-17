@@ -1,8 +1,8 @@
-package com.zhigaras.fiveletters.domain
+package com.zhigaras.fiveletters.domain.play
 
-import com.zhigaras.fiveletters.model.Alphabet
-import com.zhigaras.fiveletters.model.Keyboard
-import com.zhigaras.fiveletters.model.LetterState
+import com.zhigaras.fiveletters.model.play.Alphabet
+import com.zhigaras.fiveletters.model.play.Keyboard
+import com.zhigaras.fiveletters.model.play.LetterState
 
 interface KeyboardStateController {
     

@@ -3,13 +3,13 @@ package com.zhigaras.fiveletters.presentation.compose.ui.viewmodels
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.zhigaras.fiveletters.core.Core
-import com.zhigaras.fiveletters.domain.AuthStateController
-import com.zhigaras.fiveletters.model.Alphabet
-import com.zhigaras.fiveletters.domain.GameStateController
-import com.zhigaras.fiveletters.domain.KeyboardStateController
-import com.zhigaras.fiveletters.domain.RowStateController
-import com.zhigaras.fiveletters.domain.RulesInteractor
-import com.zhigaras.fiveletters.domain.WordCheckable
+import com.zhigaras.fiveletters.domain.auth.AuthStateController
+import com.zhigaras.fiveletters.model.play.Alphabet
+import com.zhigaras.fiveletters.domain.play.GameStateController
+import com.zhigaras.fiveletters.domain.play.KeyboardStateController
+import com.zhigaras.fiveletters.domain.play.RowStateController
+import com.zhigaras.fiveletters.domain.menu.RulesInteractor
+import com.zhigaras.fiveletters.domain.play.WordCheckable
 
 class ViewModelFactory(
     private val core: Core

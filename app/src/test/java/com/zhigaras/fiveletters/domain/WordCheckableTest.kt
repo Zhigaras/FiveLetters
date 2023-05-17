@@ -1,8 +1,9 @@
 package com.zhigaras.fiveletters.domain
 
-import com.zhigaras.fiveletters.model.LetterState
-import com.zhigaras.fiveletters.model.LetterType
-import com.zhigaras.fiveletters.model.RowState
+import com.zhigaras.fiveletters.domain.play.WordCheckable
+import com.zhigaras.fiveletters.model.play.LetterState
+import com.zhigaras.fiveletters.model.play.LetterType
+import com.zhigaras.fiveletters.model.play.RowState
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert.assertEquals
 import org.junit.Test

@@ -1,6 +1,6 @@
 package com.zhigaras.fiveletters.data
 
-import com.zhigaras.fiveletters.model.UserStat
+import com.zhigaras.fiveletters.model.menu.UserStat
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 

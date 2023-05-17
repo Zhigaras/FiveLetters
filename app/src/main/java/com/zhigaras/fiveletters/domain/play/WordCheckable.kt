@@ -1,8 +1,8 @@
-package com.zhigaras.fiveletters.domain
+package com.zhigaras.fiveletters.domain.play
 
-import com.zhigaras.fiveletters.model.LetterState
-import com.zhigaras.fiveletters.model.LetterType
-import com.zhigaras.fiveletters.model.RowState
+import com.zhigaras.fiveletters.model.play.LetterState
+import com.zhigaras.fiveletters.model.play.LetterType
+import com.zhigaras.fiveletters.model.play.RowState
 
 interface WordCheckable {
     

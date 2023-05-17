@@ -1,8 +1,9 @@
-package com.zhigaras.fiveletters.domain
+package com.zhigaras.fiveletters.domain.menu
 
-import com.zhigaras.fiveletters.model.LetterState
-import com.zhigaras.fiveletters.model.RowState
-import com.zhigaras.fiveletters.model.Word
+import com.zhigaras.fiveletters.domain.play.RowStateController
+import com.zhigaras.fiveletters.model.play.LetterState
+import com.zhigaras.fiveletters.model.play.RowState
+import com.zhigaras.fiveletters.model.play.Word
 
 interface RulesInteractor {
     

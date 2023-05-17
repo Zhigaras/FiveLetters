@@ -4,7 +4,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Update
-import com.zhigaras.fiveletters.model.Word
+import com.zhigaras.fiveletters.model.play.Word
 import kotlinx.coroutines.flow.Flow
 
 @Dao

@@ -1,8 +1,9 @@
 package com.zhigaras.fiveletters.domain
 
-import com.zhigaras.fiveletters.model.Alphabet
-import com.zhigaras.fiveletters.model.LetterState
-import com.zhigaras.fiveletters.model.LetterType
+import com.zhigaras.fiveletters.domain.play.KeyboardStateController
+import com.zhigaras.fiveletters.model.play.Alphabet
+import com.zhigaras.fiveletters.model.play.LetterState
+import com.zhigaras.fiveletters.model.play.LetterType
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test

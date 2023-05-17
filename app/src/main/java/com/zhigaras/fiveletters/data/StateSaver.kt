@@ -1,6 +1,6 @@
 package com.zhigaras.fiveletters.data
 
-import com.zhigaras.fiveletters.model.GameState
+import com.zhigaras.fiveletters.model.play.GameState
 
 interface StateSaver {
     

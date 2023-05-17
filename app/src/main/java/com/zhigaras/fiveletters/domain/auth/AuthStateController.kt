@@ -1,7 +1,7 @@
-package com.zhigaras.fiveletters.domain
+package com.zhigaras.fiveletters.domain.auth
 
-import com.zhigaras.fiveletters.model.AuthProcessStatus
-import com.zhigaras.fiveletters.model.AuthState
+import com.zhigaras.fiveletters.model.auth.AuthProcessStatus
+import com.zhigaras.fiveletters.model.auth.AuthState
 
 interface AuthStateController {
     

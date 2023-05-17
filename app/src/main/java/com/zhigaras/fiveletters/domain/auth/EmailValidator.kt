@@ -1,4 +1,4 @@
-package com.zhigaras.fiveletters.domain
+package com.zhigaras.fiveletters.domain.auth
 
 import android.util.Patterns
 

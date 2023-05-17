@@ -21,9 +21,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.unit.dp
-import com.zhigaras.fiveletters.model.LetterFieldState
-import com.zhigaras.fiveletters.model.LetterState
-import com.zhigaras.fiveletters.model.RowState
+import com.zhigaras.fiveletters.model.play.LetterFieldState
+import com.zhigaras.fiveletters.model.play.LetterState
+import com.zhigaras.fiveletters.model.play.RowState
 import com.zhigaras.fiveletters.presentation.compose.ui.theme.playScreenMaxWidth
 
 @Composable

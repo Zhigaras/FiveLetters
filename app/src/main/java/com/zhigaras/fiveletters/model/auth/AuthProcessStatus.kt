@@ -1,4 +1,4 @@
-package com.zhigaras.fiveletters.model
+package com.zhigaras.fiveletters.model.auth
 
 sealed class AuthProcessStatus {
     

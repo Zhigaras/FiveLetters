@@ -1,8 +1,8 @@
 package com.zhigaras.fiveletters.presentation.compose.ui.viewmodels
 
 import androidx.lifecycle.ViewModel
-import com.zhigaras.fiveletters.domain.AuthStateController
-import com.zhigaras.fiveletters.model.AuthState
+import com.zhigaras.fiveletters.domain.auth.AuthStateController
+import com.zhigaras.fiveletters.model.auth.AuthState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 
@@ -10,7 +10,7 @@ class AuthViewModel(
     private val authStateController: AuthStateController
 ): ViewModel(), AuthInteract {
     
-    private val _authStateFlow = MutableStateFlow(AuthState.EMPTY)
+    private val _authStateFlow = MutableStateFlow(AuthState.empty)
     val authStateFlow = _authStateFlow.asStateFlow()
     
     override fun onEmailChanged(email: String) {

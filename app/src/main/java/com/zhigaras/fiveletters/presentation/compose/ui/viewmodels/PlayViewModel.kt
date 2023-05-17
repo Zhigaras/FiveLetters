@@ -5,8 +5,8 @@ import androidx.lifecycle.viewModelScope
 import com.zhigaras.fiveletters.core.DispatchersModule
 import com.zhigaras.fiveletters.data.MainRepository
 import com.zhigaras.fiveletters.data.StateSaver
-import com.zhigaras.fiveletters.domain.GameStateController
-import com.zhigaras.fiveletters.model.GameState
+import com.zhigaras.fiveletters.domain.play.GameStateController
+import com.zhigaras.fiveletters.model.play.GameState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch

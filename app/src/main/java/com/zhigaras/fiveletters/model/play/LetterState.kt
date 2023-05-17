@@ -1,4 +1,4 @@
-package com.zhigaras.fiveletters.model
+package com.zhigaras.fiveletters.model.play
 
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.tween
