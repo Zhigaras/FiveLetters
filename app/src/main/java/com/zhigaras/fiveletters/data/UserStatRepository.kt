@@ -4,13 +4,13 @@ import com.zhigaras.fiveletters.model.UserStat
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 
-interface UserStatRepository {
+interface UserStatRepository : UserStatInteract.RulesIndicationControl {
     
     suspend fun getUserStatFlow(): Flow<UserStat>
     
     class Base(
         private val wordDao: UserStatDao,
-        private val userStat: UserStatInteract.Read
+        private val userStat: UserStatInteract.Mutable
     ) : UserStatRepository {
         
         override suspend fun getUserStatFlow(): Flow<UserStat> {
@@ -18,15 +18,21 @@ interface UserStatRepository {
             return combine(
                 wordDao.getSolvedWordsCount(),
                 userStat.getGamesCount(),
-                wordDao.getAverageAttempt()
-            ) { words, games, attempts ->
+                wordDao.getAverageAttempt(),
+                userStat.wasRulesShown()
+            ) { words, games, attempts, wasRulesShown ->
                 UserStat.Base(
                     wins = words,
                     progress = words.toFloat() / dictionarySize,
                     games = games,
-                    averageAttempts = attempts ?: 0f
+                    averageAttempts = attempts ?: 0f,
+                    wasRulesShown = wasRulesShown
                 )
             }
+        }
+        
+        override suspend fun setRulesWasShown() {
+            userStat.setRulesWasShown()
         }
     }
 }

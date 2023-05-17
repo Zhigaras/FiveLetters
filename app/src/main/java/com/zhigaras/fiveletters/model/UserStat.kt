@@ -8,6 +8,7 @@ abstract class UserStat {
     abstract val progress: Float
     abstract val games: Int
     abstract val averageAttempts: Float
+    abstract val wasRulesShown: Boolean
     
     val formattedProgress get() = String.format("%.1f", (progress * 100)) + "%"
     val formattedAttempts get() = String.format("%.1f", averageAttempts)
@@ -17,7 +18,8 @@ abstract class UserStat {
         override val wins: Int,
         override val progress: Float,
         override val games: Int,
-        override val averageAttempts: Float
+        override val averageAttempts: Float,
+        override val wasRulesShown: Boolean
     ) : UserStat()
     
     @JsonClass(generateAdapter = true)
@@ -26,5 +28,6 @@ abstract class UserStat {
         override val progress: Float = 0f
         override val games: Int = 0
         override val averageAttempts: Float = 0f
+        override val wasRulesShown: Boolean = false
     }
 }

@@ -2,6 +2,7 @@ package com.zhigaras.fiveletters.data
 
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
@@ -9,7 +10,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.transform
 
-interface DatastoreManager : UserStatInteract.Mutable {
+interface DatastoreManager : UserStatInteract.Mutable, UserStatInteract.RulesIndicationControl {
     
     suspend fun saveState(json: String)
     
@@ -21,6 +22,7 @@ interface DatastoreManager : UserStatInteract.Mutable {
         
         private val gamesCountKey = intPreferencesKey("gamesCount")
         private val gameStateKey = stringPreferencesKey("gameState")
+        private val rulesWasShownKey = booleanPreferencesKey("rulesWasShown")
         
         override suspend fun saveState(json: String) {
             datastore.edit { prefs ->
@@ -44,6 +46,18 @@ interface DatastoreManager : UserStatInteract.Mutable {
             val counter = it[gamesCountKey]
             if (counter == null) emit(0)
             else emit(counter)
+        }
+        
+        override suspend fun setRulesWasShown() {
+            datastore.edit { prefs ->
+                prefs[rulesWasShownKey] = true
+            }
+        }
+        
+        override suspend fun wasRulesShown(): Flow<Boolean> {
+            return datastore.data.transform {
+                emit(it[rulesWasShownKey] == true)
+            }
         }
         
         companion object {

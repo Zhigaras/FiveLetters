@@ -2,6 +2,10 @@ package com.zhigaras.fiveletters.presentation.compose.ui.screens.menu
 
 import android.widget.Toast
 import androidx.activity.compose.BackHandler
+import androidx.compose.animation.core.animateFloat
+import androidx.compose.animation.core.infiniteRepeatable
+import androidx.compose.animation.core.rememberInfiniteTransition
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -10,6 +14,7 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material3.Button
@@ -20,6 +25,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ShapeDefaults
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -29,6 +35,8 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.draw.scale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
@@ -92,9 +100,11 @@ fun MenuScreen(
             PlayButtonArea(
                 modifier = it,
                 progressState = progressState,
+                userStat = userStat,
                 showAlertDialog = { showAlertDialog = true },
                 showRulesDialog = { showRulesDialog = true },
-                onNewGameClick = newGame
+                onNewGameClick = newGame,
+                setRulesShown = { viewModel.setRulesWasShown() }
             )
         }
     ))
@@ -167,9 +177,11 @@ fun UserStatistics(
 fun PlayButtonArea(
     modifier: Modifier = Modifier,
     progressState: ProgressState,
+    userStat: UserStat,
     showAlertDialog: () -> Unit,
     showRulesDialog: () -> Unit,
-    onNewGameClick: () -> Unit
+    onNewGameClick: () -> Unit,
+    setRulesShown: () -> Unit
 ) {
     Box(
         contentAlignment = Alignment.Center,
@@ -184,19 +196,74 @@ fun PlayButtonArea(
                 else onNewGameClick()
             }
         )
-        IconButton(
+        Box(
             modifier = Modifier
                 .align(Alignment.BottomEnd)
-                .padding(16.dp),
-            onClick = { showRulesDialog() }) {
-            Icon(
-                modifier = Modifier.size(40.dp),
-                imageVector = Icons.Default.Info,
-                contentDescription = stringResource(id = R.string.show_rules),
-                tint = yellow
-            )
+                .size(120.dp),
+            contentAlignment = Alignment.Center
+        ) {
+            if (userStat.wasRulesShown) {
+                RulesButton(
+                    onClick = showRulesDialog
+                )
+            } else {
+                PulsatingRulesButton(
+                    onClick = {
+                        showRulesDialog()
+                        setRulesShown()
+                    }
+                )
+            }
         }
     }
+}
+
+@Composable
+fun RulesButton(
+    modifier: Modifier = Modifier,
+    onClick: () -> Unit
+) {
+    IconButton(
+        modifier = modifier,
+        onClick = { onClick() }) {
+        Icon(
+            modifier = Modifier.size(40.dp),
+            imageVector = Icons.Default.Info,
+            contentDescription = stringResource(id = R.string.show_rules),
+            tint = yellow
+        )
+    }
+}
+
+@Composable
+fun PulsatingRulesButton(
+    modifier: Modifier = Modifier,
+    onClick: () -> Unit
+) {
+    val transition = rememberInfiniteTransition()
+    val scale by transition.animateFloat(
+        initialValue = 0f,
+        targetValue = 1f,
+        animationSpec = infiniteRepeatable(
+            tween(2000)
+        )
+    )
+    val alpha by transition.animateFloat(
+        initialValue = 0.7f,
+        targetValue = 0f,
+        animationSpec = infiniteRepeatable(
+            tween(2000)
+        )
+    )
+    Surface(
+        modifier = Modifier
+            .fillMaxSize()
+            .scale(scale)
+            .alpha(alpha),
+        shape = CircleShape,
+        color = yellow
+    ) {}
+    RulesButton(onClick = { onClick() })
 }
 
 @Composable
