@@ -40,6 +40,7 @@ import com.zhigaras.fiveletters.model.ProgressState
 import com.zhigaras.fiveletters.model.UserStat
 import com.zhigaras.fiveletters.presentation.compose.ui.screens.OrientationSwapper
 import com.zhigaras.fiveletters.presentation.compose.ui.theme.black
+import com.zhigaras.fiveletters.presentation.compose.ui.theme.gray
 import com.zhigaras.fiveletters.presentation.compose.ui.theme.yellow
 import com.zhigaras.fiveletters.presentation.compose.ui.viewmodels.MenuViewModel
 
@@ -204,15 +205,18 @@ fun CommonButton(
     modifier: Modifier = Modifier,
     text: String,
     textStyle: TextStyle,
+    enabled: Boolean = true,
     onClick: () -> Unit
 ) {
     Button(
+        modifier = modifier,
         onClick = { onClick() },
         shape = ShapeDefaults.Medium,
+        enabled = enabled,
         colors = ButtonDefaults.buttonColors(
-            containerColor = yellow
-        ),
-        modifier = modifier
+            containerColor = yellow,
+            disabledContainerColor = gray
+        )
     ) {
         Text(
             text = text,

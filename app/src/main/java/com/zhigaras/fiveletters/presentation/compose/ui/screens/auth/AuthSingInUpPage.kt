@@ -36,6 +36,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import com.zhigaras.fiveletters.R
+import com.zhigaras.fiveletters.model.AuthProcessStatus
+import com.zhigaras.fiveletters.model.AuthState
 import com.zhigaras.fiveletters.presentation.compose.ui.screens.menu.CommonButton
 import com.zhigaras.fiveletters.presentation.compose.ui.theme.black
 import com.zhigaras.fiveletters.presentation.compose.ui.theme.playScreenMaxWidth
@@ -45,8 +47,7 @@ import com.zhigaras.fiveletters.presentation.compose.ui.theme.yellow
 @Composable
 fun AuthSignInUpPage(
     authPage: AuthPage,
-    emailState: String,
-    passwordState: String,
+    authState: AuthState,
     onEmailChanged: (String) -> Unit,
     onPasswordChanged: (String) -> Unit,
     onButtonClick: () -> Unit
@@ -62,7 +63,7 @@ fun AuthSignInUpPage(
         val maxWidthModifier = Modifier.fillMaxWidth()
         InputTextField(
             modifier = maxWidthModifier,
-            textState = emailState,
+            textState = authState.email,
             hint = stringResource(R.string.email_hint),
             keyboardOptions = KeyboardOptions(
                 keyboardType = KeyboardType.Email,
@@ -72,7 +73,7 @@ fun AuthSignInUpPage(
         )
         InputTextField(
             modifier = maxWidthModifier,
-            textState = passwordState,
+            textState = authState.password,
             hint = stringResource(R.string.password),
             keyboardOptions = KeyboardOptions(
                 keyboardType = KeyboardType.Password,
@@ -98,6 +99,7 @@ fun AuthSignInUpPage(
                 id = if (authPage == AuthPage.SIGN_IN) R.string.sign_in else R.string.sign_up
             ),
             textStyle = MaterialTheme.typography.titleLarge,
+            enabled = authState.status == AuthProcessStatus.Complete,
             onClick = { onButtonClick() }
         )
         if (authPage == AuthPage.SIGN_UP) {

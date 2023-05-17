@@ -20,8 +20,7 @@ fun AuthScreen(
     viewModel: AuthViewModel,
     onFinish: () -> Unit
 ) {
-    val emailState by viewModel.emailFlow.collectAsStateWithLifecycle()
-    val passwordState by viewModel.passwordFlow.collectAsStateWithLifecycle()
+    val authState by viewModel.authStateFlow.collectAsStateWithLifecycle()
     var authPage by rememberSaveable { mutableStateOf(AuthPage.START) }
     
     BackHandler(enabled = true) {
@@ -42,9 +41,8 @@ fun AuthScreen(
                 
                 else -> AuthSignInUpPage(
                     authPage = it,
-                    emailState = emailState,
-                    passwordState = passwordState,
-                    onEmailChanged = { viewModel.onNameChanged(it) },
+                    authState = authState,
+                    onEmailChanged = { viewModel.onEmailChanged(it) },
                     onPasswordChanged = { viewModel.onPasswordChanged(it) },
                     onButtonClick = {}
                 )
