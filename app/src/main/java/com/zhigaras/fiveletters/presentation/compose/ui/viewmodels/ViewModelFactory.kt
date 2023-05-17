@@ -3,7 +3,6 @@ package com.zhigaras.fiveletters.presentation.compose.ui.viewmodels
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.zhigaras.fiveletters.core.Core
-import com.zhigaras.fiveletters.domain.auth.AuthStateController
 import com.zhigaras.fiveletters.model.play.Alphabet
 import com.zhigaras.fiveletters.domain.play.GameStateController
 import com.zhigaras.fiveletters.domain.play.KeyboardStateController
@@ -39,7 +38,7 @@ class ViewModelFactory(
                 RulesInteractor.Base(rowStateController)
             )
             
-            AuthViewModel::class.java -> AuthViewModel(AuthStateController.Base())
+            AuthViewModel::class.java -> AuthViewModel()
             
             else -> throw IllegalArgumentException("Unknown class name: $modelClass")
         }

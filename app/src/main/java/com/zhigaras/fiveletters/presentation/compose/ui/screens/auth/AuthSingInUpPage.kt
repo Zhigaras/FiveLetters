@@ -19,6 +19,8 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconToggleButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
@@ -26,17 +28,23 @@ import androidx.compose.material3.ShapeDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import com.zhigaras.fiveletters.R
-import com.zhigaras.fiveletters.model.auth.AuthProcessStatus
+import com.zhigaras.fiveletters.model.auth.AuthPage
 import com.zhigaras.fiveletters.model.auth.AuthState
 import com.zhigaras.fiveletters.presentation.compose.ui.screens.menu.CommonButton
 import com.zhigaras.fiveletters.presentation.compose.ui.theme.black
@@ -50,6 +58,7 @@ fun AuthSignInUpPage(
     authState: AuthState,
     onEmailChanged: (String) -> Unit,
     onPasswordChanged: (String) -> Unit,
+    onRepeatPasswordChanged: (String) -> Unit,
     onButtonClick: () -> Unit
 ) {
     Column(
@@ -71,14 +80,10 @@ fun AuthSignInUpPage(
             ),
             onTextChange = { onEmailChanged(it) }
         )
-        InputTextField(
+        PasswordInput(
             modifier = maxWidthModifier,
             textState = authState.password,
             hint = stringResource(R.string.password),
-            keyboardOptions = KeyboardOptions(
-                keyboardType = KeyboardType.Password,
-                imeAction = ImeAction.Done
-            ),
             onTextChange = { onPasswordChanged(it) }
         )
         if (authPage == AuthPage.SIGN_IN)
@@ -93,13 +98,20 @@ fun AuthSignInUpPage(
                     )
                 }
             }
+        if (authPage == AuthPage.SIGN_UP)
+            PasswordInput(
+                modifier = maxWidthModifier,
+                textState = authState.passwordRepeat,
+                hint = stringResource(R.string.repeat_password),
+                onTextChange = { onRepeatPasswordChanged(it) }
+            )
         CommonButton(
             modifier = maxWidthModifier,
             text = stringResource(
                 id = if (authPage == AuthPage.SIGN_IN) R.string.sign_in else R.string.sign_up
             ),
             textStyle = MaterialTheme.typography.titleLarge,
-            enabled = authState.status == AuthProcessStatus.Complete,
+            enabled = authState.isCompletelyFilled,
             onClick = { onButtonClick() }
         )
         if (authPage == AuthPage.SIGN_UP) {
@@ -114,9 +126,10 @@ fun InputTextField(
     modifier: Modifier = Modifier,
     textState: String,
     hint: String,
+    visualTransformation: VisualTransformation = VisualTransformation.None,
     keyboardOptions: KeyboardOptions,
     onTextChange: (String) -> Unit,
-//    onNameConfirm: () -> Unit
+    trailingIcon: @Composable (() -> Unit)? = null
 ) {
     val textFieldTextStyle = MaterialTheme.typography.titleLarge
     OutlinedTextField(
@@ -125,6 +138,7 @@ fun InputTextField(
         onValueChange = { onTextChange(it) },
         textStyle = textFieldTextStyle,
         singleLine = true,
+        visualTransformation = visualTransformation,
         shape = ShapeDefaults.Medium,
         keyboardOptions = keyboardOptions,
         keyboardActions = KeyboardActions(onDone = { /*todo*/ }),
@@ -143,6 +157,45 @@ fun InputTextField(
                 text = hint,
                 style = textFieldTextStyle
             )
+        },
+        trailingIcon = trailingIcon
+    )
+}
+
+@Composable
+fun PasswordInput(
+    modifier: Modifier = Modifier,
+    textState: String,
+    hint: String,
+    onTextChange: (String) -> Unit
+) {
+    var isPasswordVisible by rememberSaveable { mutableStateOf(false) }
+    val transformation =
+        if (isPasswordVisible) VisualTransformation.None else PasswordVisualTransformation()
+    val showHideIcon =
+        painterResource(id = if (isPasswordVisible) R.drawable.hide_password else R.drawable.show_password)
+    
+    InputTextField(
+        modifier = modifier,
+        textState = textState,
+        hint = hint,
+        keyboardOptions = KeyboardOptions(
+            keyboardType = KeyboardType.Password,
+            imeAction = ImeAction.Done
+        ),
+        onTextChange = onTextChange,
+        visualTransformation = transformation,
+        trailingIcon = {
+            IconToggleButton(
+                checked = isPasswordVisible,
+                onCheckedChange = { isPasswordVisible = !isPasswordVisible }
+            ) {
+                Icon(
+                    modifier = Modifier.padding(end = 8.dp),
+                    painter = showHideIcon,
+                    contentDescription = null
+                )
+            }
         }
     )
 }

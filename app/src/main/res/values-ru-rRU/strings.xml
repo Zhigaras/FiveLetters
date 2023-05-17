@@ -30,8 +30,9 @@
     <string name="show_rules">Правила игры</string>
     <string name="sign_in">Войти</string>
     <string name="sign_up">Зарегистрироваться</string>
-    <string name="password">Пароль</string>
+    <string name="password">пароль</string>
     <string name="forgot_password">Забыли пароль?</string>
     <string name="or">ИЛИ</string>
     <string name="continue_with_google">Продолжить с Google</string>
+    <string name="repeat_password">повторите пароль</string>
 </resources>

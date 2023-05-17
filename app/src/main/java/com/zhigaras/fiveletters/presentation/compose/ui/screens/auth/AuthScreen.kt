@@ -13,6 +13,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.zhigaras.fiveletters.model.auth.AuthPage
 import com.zhigaras.fiveletters.presentation.compose.ui.viewmodels.AuthViewModel
 
 @Composable
@@ -20,7 +21,7 @@ fun AuthScreen(
     viewModel: AuthViewModel,
     onFinish: () -> Unit
 ) {
-    val authState by viewModel.authStateFlow.collectAsStateWithLifecycle()
+    val authState by viewModel.getState().collectAsStateWithLifecycle()
     var authPage by rememberSaveable { mutableStateOf(AuthPage.START) }
     
     BackHandler(enabled = true) {
@@ -44,6 +45,7 @@ fun AuthScreen(
                     authState = authState,
                     onEmailChanged = { viewModel.onEmailChanged(it) },
                     onPasswordChanged = { viewModel.onPasswordChanged(it) },
+                    onRepeatPasswordChanged = { viewModel.onPasswordRepeatChanged(it) },
                     onButtonClick = {}
                 )
             }
