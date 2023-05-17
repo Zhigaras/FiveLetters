@@ -35,4 +35,6 @@
     <string name="or">ИЛИ</string>
     <string name="continue_with_google">Продолжить с Google</string>
     <string name="repeat_password">повторите пароль</string>
+    <string name="registration_failed">Регистрация не завершена. Проверьте соединение.</string>
+    <string name="signing_in_failed">Вход не выполнен. Проверьте соединение.</string>
 </resources>

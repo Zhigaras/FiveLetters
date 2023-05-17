@@ -39,4 +39,6 @@ In order to guess it, enter words of 5 letters into the field, and we will give 
     <string name="or">OR</string>
     <string name="continue_with_google">Continue with Google</string>
     <string name="repeat_password">repeat password</string>
+    <string name="registration_failed">Registration failed. Check internet connection.</string>
+    <string name="signing_in_failed">Signing in failed. Check internet connection.</string>
 </resources>

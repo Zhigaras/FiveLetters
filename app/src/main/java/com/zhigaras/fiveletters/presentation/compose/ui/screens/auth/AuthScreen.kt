@@ -46,7 +46,9 @@ fun AuthScreen(
                     onEmailChanged = { viewModel.onEmailChanged(it) },
                     onPasswordChanged = { viewModel.onPasswordChanged(it) },
                     onRepeatPasswordChanged = { viewModel.onPasswordRepeatChanged(it) },
-                    onButtonClick = {}
+                    registerWithEmailAndPassword = { viewModel.registerWithEmailAndPassword() },
+                    registerWithGoogle = { /* TODO */ },
+                    signIn = { viewModel.signIn() }
                 )
             }
         }

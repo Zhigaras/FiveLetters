@@ -59,7 +59,9 @@ fun AuthSignInUpPage(
     onEmailChanged: (String) -> Unit,
     onPasswordChanged: (String) -> Unit,
     onRepeatPasswordChanged: (String) -> Unit,
-    onButtonClick: () -> Unit
+    registerWithEmailAndPassword: () -> Unit,
+    registerWithGoogle: () -> Unit,
+    signIn: () -> Unit
 ) {
     Column(
         modifier = Modifier
@@ -112,11 +114,17 @@ fun AuthSignInUpPage(
             ),
             textStyle = MaterialTheme.typography.titleLarge,
             enabled = authState.isCompletelyFilled,
-            onClick = { onButtonClick() }
+            onClick = {
+                if (authPage == AuthPage.SIGN_IN) signIn()
+                else registerWithEmailAndPassword()
+            }
         )
         if (authPage == AuthPage.SIGN_UP) {
             RegisterDivider()
-            RegisterWithGoogleButton(modifier = maxWidthModifier)
+            RegisterWithGoogleButton(
+                modifier = maxWidthModifier,
+                onClick = registerWithGoogle
+            )
         }
     }
 }
@@ -232,10 +240,10 @@ fun RegisterDividerSpacer(
 @Composable
 fun RegisterWithGoogleButton(
     modifier: Modifier = Modifier,
-    onClick: () -> Unit = {} //TODO
+    onClick: () -> Unit
 ) {
     Button(
-        onClick = { onClick() },
+        onClick = onClick,
         shape = ShapeDefaults.Medium,
         colors = ButtonDefaults.buttonColors(
             containerColor = yellow

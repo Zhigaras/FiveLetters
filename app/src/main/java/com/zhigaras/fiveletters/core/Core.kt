@@ -3,6 +3,9 @@ package com.zhigaras.fiveletters.core
 import android.content.Context
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 import com.zhigaras.fiveletters.data.*
 
 interface Core : ProvideRepository {
@@ -12,6 +15,8 @@ interface Core : ProvideRepository {
     fun provideDatabase(): WordDatabase
     
     fun provideDatastore(): DataStore<Preferences>
+    
+    fun provideFirebaseAuth(): FirebaseAuth
     
     class Base(
         context: Context,
@@ -44,6 +49,9 @@ interface Core : ProvideRepository {
         
         override fun provideStateSaver(): StateSaver.Mutable =
             StateSaver.Base(datastoreManager, MoshiSerializer.Base())
+    
+        override fun provideFirebaseAuth(): FirebaseAuth = Firebase.auth
+        
     }
 }
 
