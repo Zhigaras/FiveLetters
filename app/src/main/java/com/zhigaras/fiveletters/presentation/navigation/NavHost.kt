@@ -32,11 +32,11 @@ fun FiveLettersNavHost(
 ) {
     val isExpanded = LocalConfiguration.current.orientation == Configuration.ORIENTATION_LANDSCAPE
     val navController = rememberAnimatedNavController()
-    val gameState by playViewModel.gameStateFlow.collectAsStateWithLifecycle()
+    val gameState by playViewModel.getState().collectAsStateWithLifecycle()
     AnimatedNavHost(
         navController = navController,
-//        startDestination = if (needToShowSplash) Destination.Splash.route else Destination.Menu.route,
-        startDestination = Destination.Auth.route,
+        startDestination = if (needToShowSplash) Destination.Splash.route else Destination.Menu.route,
+//        startDestination = Destination.Auth.route,
         modifier = Modifier.fillMaxSize()
     ) {
         composable(route = Destination.Auth.route) {

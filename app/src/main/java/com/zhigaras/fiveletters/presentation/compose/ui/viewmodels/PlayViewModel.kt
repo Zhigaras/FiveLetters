@@ -1,14 +1,11 @@
 package com.zhigaras.fiveletters.presentation.compose.ui.viewmodels
 
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.zhigaras.fiveletters.core.DispatchersModule
 import com.zhigaras.fiveletters.data.MainRepository
 import com.zhigaras.fiveletters.data.StateSaver
 import com.zhigaras.fiveletters.domain.play.GameStateController
 import com.zhigaras.fiveletters.model.play.GameState
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 class PlayViewModel(
@@ -16,18 +13,14 @@ class PlayViewModel(
     private val mainRepository: MainRepository,
     private val dispatchers: DispatchersModule,
     private val stateSaver: StateSaver.Mutable
-) : ViewModel(), GameInteract {
-    
-    private val _gameStateFlow: MutableStateFlow<GameState> =
-        MutableStateFlow(gameStateController.newGame())
-    val gameStateFlow = _gameStateFlow.asStateFlow()
+) : BaseViewModel<GameState>(gameStateController.newGame()), GameInteract {
     
     override fun inputLetter(char: Char) {
-        _gameStateFlow.value = gameStateController.inputLetter(_gameStateFlow.value, char)
+        state = gameStateController.inputLetter(state, char)
     }
     
     override fun removeLetter() {
-        _gameStateFlow.value = gameStateController.removeLetter(_gameStateFlow.value)
+        state = gameStateController.removeLetter(state)
     }
     
     init {
@@ -36,9 +29,9 @@ class PlayViewModel(
     
     override fun confirmWord() {
         viewModelScope.launch(dispatchers.io()) {
-            _gameStateFlow.value =
+            state =
                 gameStateController.confirmWord(
-                    gameState = _gameStateFlow.value,
+                    gameState = state,
                     saveAttempts = { word -> mainRepository.update(word) },
                     incrementGamesCounter = { mainRepository.incrementGamesCounter() }
                 )
@@ -48,20 +41,20 @@ class PlayViewModel(
     override fun startNewGame() {
         viewModelScope.launch(dispatchers.io()) {
             val origin = mainRepository.getUnsolvedWord()
-            _gameStateFlow.value = gameStateController.newGame(origin)
+            state = gameStateController.newGame(origin)
         }
     }
     
     override fun saveState() {
         viewModelScope.launch(dispatchers.io()) {
-            stateSaver.saveState(gameStateFlow.value)
+            stateSaver.saveState(state)
         }
     }
     
     override fun restoreState() {
         viewModelScope.launch(dispatchers.io()) {
             val restoredState = stateSaver.restoreState()
-            if (restoredState != null) _gameStateFlow.value = restoredState
+            if (restoredState != null) state = restoredState
             else startNewGame()
         }
     }

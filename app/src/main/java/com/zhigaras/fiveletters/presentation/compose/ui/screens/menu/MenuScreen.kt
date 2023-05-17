@@ -59,7 +59,7 @@ fun MenuScreen(
     var backPressedTime by remember { mutableStateOf(0L) }
     var showAlertDialog by rememberSaveable { mutableStateOf(false) }
     var showRulesDialog by rememberSaveable { mutableStateOf(false) }
-    val rulesRowsList by viewModel.rulesRowFlow.collectAsStateWithLifecycle()
+    val rulesRowsList by viewModel.getState().collectAsStateWithLifecycle()
     
     BackHandler(enabled = true) {
         if (backPressedTime + 2000 > System.currentTimeMillis()) onFinish()
