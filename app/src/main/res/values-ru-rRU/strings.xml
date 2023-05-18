@@ -37,4 +37,8 @@
     <string name="repeat_password">повторите пароль</string>
     <string name="registration_failed">Регистрация не завершена. Проверьте соединение.</string>
     <string name="signing_in_failed">Вход не выполнен. Проверьте соединение.</string>
+    <string name="email_is_invalid">Некорректный email</string>
+    <string name="password_is_invalid">Некорректный пароль</string>
+    <string name="passport_mismatch">Несоответствие паролей</string>
+    <string name="password_support_text">Пароль должен состоять минимум из 6 символов</string>
 </resources>

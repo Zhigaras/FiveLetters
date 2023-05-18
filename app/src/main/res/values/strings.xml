@@ -41,4 +41,8 @@ In order to guess it, enter words of 5 letters into the field, and we will give 
     <string name="repeat_password">repeat password</string>
     <string name="registration_failed">Registration failed. Check internet connection.</string>
     <string name="signing_in_failed">Signing in failed. Check internet connection.</string>
+    <string name="email_is_invalid">Email is invalid</string>
+    <string name="password_is_invalid">Password is invalid</string>
+    <string name="passport_mismatch">Passport mismatch</string>
+    <string name="password_support_text">Password must be at least 6 characters long</string>
 </resources>

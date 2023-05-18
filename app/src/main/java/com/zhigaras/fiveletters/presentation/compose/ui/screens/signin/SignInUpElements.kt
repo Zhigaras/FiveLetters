@@ -1,4 +1,4 @@
-package com.zhigaras.fiveletters.presentation.compose.ui.screens.auth
+package com.zhigaras.fiveletters.presentation.compose.ui.screens.signin
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -15,7 +15,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconToggleButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.ShapeDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -34,6 +33,8 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.zhigaras.fiveletters.R
+import com.zhigaras.fiveletters.model.auth.InputFieldState
+import com.zhigaras.fiveletters.model.auth.InputFieldValidity
 import com.zhigaras.fiveletters.presentation.compose.ui.theme.black
 import com.zhigaras.fiveletters.presentation.compose.ui.theme.white
 import com.zhigaras.fiveletters.presentation.compose.ui.theme.yellow
@@ -42,12 +43,14 @@ import com.zhigaras.fiveletters.presentation.compose.ui.theme.yellow
 fun InputTextField(
     modifier: Modifier = Modifier,
     textState: String,
+    isError: Boolean,
     hint: String,
     visualTransformation: VisualTransformation = VisualTransformation.None,
     keyboardOptions: KeyboardOptions,
     onTextChange: (String) -> Unit,
     onDone: () -> Unit = {},
-    trailingIcon: @Composable (() -> Unit)? = null
+    trailingIcon: @Composable (() -> Unit)? = null,
+    supportingText: @Composable (() -> Unit)? = null
 ) {
     val textFieldTextStyle = MaterialTheme.typography.titleLarge
     OutlinedTextField(
@@ -56,39 +59,64 @@ fun InputTextField(
         onValueChange = { onTextChange(it) },
         textStyle = textFieldTextStyle,
         singleLine = true,
+        isError = isError,
         visualTransformation = visualTransformation,
         shape = ShapeDefaults.Medium,
         keyboardOptions = keyboardOptions,
         keyboardActions = KeyboardActions(onDone = { onDone() }),
-        colors = OutlinedTextFieldDefaults.colors(
-            focusedTextColor = MaterialTheme.colorScheme.secondary,
-            unfocusedTextColor = MaterialTheme.colorScheme.secondary,
-            focusedContainerColor = white,
-            unfocusedContainerColor = white,
-            disabledContainerColor = white,
-            cursorColor = MaterialTheme.colorScheme.secondary,
-            focusedBorderColor = MaterialTheme.colorScheme.secondary,
-            unfocusedBorderColor = MaterialTheme.colorScheme.secondary,
-        ),
         placeholder = {
             Text(
                 text = hint,
                 style = textFieldTextStyle
             )
         },
-        trailingIcon = trailingIcon
+        trailingIcon = trailingIcon,
+        supportingText = supportingText
+    )
+}
+
+@Composable
+fun EmailInput(
+    modifier: Modifier = Modifier,
+    state: InputFieldState,
+    hint: String,
+    onTextChange: (String) -> Unit
+) {
+    val errorText: @Composable (() -> Unit)? = if (state.validity is InputFieldValidity.Invalid) {
+        { Text(text = stringResource(id = state.validity.error)) }
+    } else null
+    
+    InputTextField(
+        modifier = modifier,
+        textState = state.value,
+        hint = hint,
+        keyboardOptions = KeyboardOptions(
+            keyboardType = KeyboardType.Email,
+            imeAction = ImeAction.Next
+        ),
+        isError = state.isInvalid,
+        onTextChange = onTextChange,
+        supportingText = errorText
     )
 }
 
 @Composable
 fun PasswordInput(
     modifier: Modifier = Modifier,
-    textState: String,
+    state: InputFieldState,
     hint: String,
     isLastInColumn: Boolean = false,
     onTextChange: (String) -> Unit,
     onDone: () -> Unit = {}
 ) {
+    var supportingText: @Composable (() -> Unit)? = null
+    if (isLastInColumn) {
+        supportingText = { Text(text = stringResource(id = R.string.password_support_text)) }
+    }
+    if (state.validity is InputFieldValidity.Invalid) {
+        supportingText = { Text(text = stringResource(id = state.validity.error)) }
+    }
+    
     var isPasswordVisible by rememberSaveable { mutableStateOf(false) }
     val transformation =
         if (isPasswordVisible) VisualTransformation.None else PasswordVisualTransformation()
@@ -97,8 +125,9 @@ fun PasswordInput(
     
     InputTextField(
         modifier = modifier,
-        textState = textState,
+        textState = state.value,
         hint = hint,
+        isError = state.isInvalid,
         keyboardOptions = KeyboardOptions(
             keyboardType = KeyboardType.Password,
             imeAction = if (isLastInColumn) ImeAction.Done else ImeAction.Next
@@ -117,7 +146,8 @@ fun PasswordInput(
                     contentDescription = null
                 )
             }
-        }
+        },
+        supportingText = supportingText
     )
 }
 

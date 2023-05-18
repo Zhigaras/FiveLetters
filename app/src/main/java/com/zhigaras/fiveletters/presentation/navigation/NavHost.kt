@@ -13,14 +13,14 @@ import androidx.navigation.NavHostController
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
-import com.zhigaras.fiveletters.presentation.compose.ui.screens.auth.SignInScreen
-import com.zhigaras.fiveletters.presentation.compose.ui.screens.auth.SignInViewModel
+import com.zhigaras.fiveletters.presentation.compose.ui.screens.signin.SignInScreen
+import com.zhigaras.fiveletters.presentation.compose.ui.screens.signin.SignInViewModel
 import com.zhigaras.fiveletters.presentation.compose.ui.screens.menu.MenuScreen
 import com.zhigaras.fiveletters.presentation.compose.ui.screens.menu.MenuViewModel
 import com.zhigaras.fiveletters.presentation.compose.ui.screens.play.PlayScreen
 import com.zhigaras.fiveletters.presentation.compose.ui.screens.play.PlayViewModel
-import com.zhigaras.fiveletters.presentation.compose.ui.screens.registration.SignUpScreen
-import com.zhigaras.fiveletters.presentation.compose.ui.screens.registration.SignUpViewModel
+import com.zhigaras.fiveletters.presentation.compose.ui.screens.signup.SignUpScreen
+import com.zhigaras.fiveletters.presentation.compose.ui.screens.signup.SignUpViewModel
 import com.zhigaras.fiveletters.presentation.compose.ui.screens.splash.SplashScreen
 
 @OptIn(ExperimentalAnimationApi::class)

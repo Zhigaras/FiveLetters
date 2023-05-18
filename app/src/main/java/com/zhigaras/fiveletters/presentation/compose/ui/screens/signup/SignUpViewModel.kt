@@ -1,21 +1,24 @@
-package com.zhigaras.fiveletters.presentation.compose.ui.screens.registration
+package com.zhigaras.fiveletters.presentation.compose.ui.screens.signup
 
 import com.zhigaras.fiveletters.core.DispatchersModule
 import com.zhigaras.fiveletters.data.AuthRepository
+import com.zhigaras.fiveletters.data.CredentialsValidator
 import com.zhigaras.fiveletters.domain.auth.InputFieldType
+import com.zhigaras.fiveletters.model.auth.InputFieldState
 import com.zhigaras.fiveletters.model.auth.SignUpState
 import com.zhigaras.fiveletters.presentation.compose.ui.viewmodels.BaseViewModel
 
 class SignUpViewModel(
     private val authRepository: AuthRepository,
+    private val credentialsValidator: CredentialsValidator,
     private val dispatchers: DispatchersModule
 ) : BaseViewModel<SignUpState>(SignUpState.empty) {
     
     fun onFieldChanged(type: InputFieldType, field: String) {
         state = when (type) {
-            InputFieldType.EMAIL -> state.copy(email = field)
-            InputFieldType.PASSWORD -> state.copy(password = field)
-            InputFieldType.REPEAT_PASSWORD -> state.copy(passwordRepeat = field)
+            InputFieldType.EMAIL -> state.copy(email = InputFieldState(field))
+            InputFieldType.PASSWORD -> state.copy(password = InputFieldState(field))
+            InputFieldType.REPEAT_PASSWORD -> state.copy(passwordRepeat = InputFieldState(field))
         }
     }
     
@@ -23,7 +26,8 @@ class SignUpViewModel(
         scopeLaunch(
             context = dispatchers.io()
         ) {
-            authRepository.createUserWithEmailAndPassword(state.email, state.password)
+            state = credentialsValidator.validateSignUp(state)
+//            authRepository.createUserWithEmailAndPassword(state.email.value, state.password.value)
         }
     }
     

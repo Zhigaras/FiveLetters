@@ -13,10 +13,10 @@ import androidx.lifecycle.ViewModelStoreOwner
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.zhigaras.fiveletters.presentation.compose.ui.theme.FiveLettersTheme
-import com.zhigaras.fiveletters.presentation.compose.ui.screens.auth.SignInViewModel
+import com.zhigaras.fiveletters.presentation.compose.ui.screens.signin.SignInViewModel
 import com.zhigaras.fiveletters.presentation.compose.ui.screens.menu.MenuViewModel
 import com.zhigaras.fiveletters.presentation.compose.ui.screens.play.PlayViewModel
-import com.zhigaras.fiveletters.presentation.compose.ui.screens.registration.SignUpViewModel
+import com.zhigaras.fiveletters.presentation.compose.ui.screens.signup.SignUpViewModel
 import com.zhigaras.fiveletters.presentation.navigation.FiveLettersNavHost
 
 class MainActivity : ComponentActivity(), ProvideViewModel {

@@ -1,18 +1,15 @@
 package com.zhigaras.fiveletters.model.auth
 
 data class SignInState(
-    val email: String,
-    val password: String
+    val email: InputFieldState,
+    val password: InputFieldState
 ) {
-    val isCompletelyFilled =
-        email.isNotBlank() && password.isNotBlank()
+    val isCompletelyFilled = email.value.isNotBlank() && password.value.isNotBlank()
     
     companion object {
         val empty = SignInState(
-            email = "",
-            password = ""
+            email = InputFieldState(),
+            password = InputFieldState()
         )
     }
 }
-
-
