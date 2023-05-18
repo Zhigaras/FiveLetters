@@ -1,4 +1,4 @@
-package com.zhigaras.fiveletters.presentation.compose.ui.viewmodels
+package com.zhigaras.fiveletters.presentation.compose.ui.screens.play
 
 import androidx.lifecycle.viewModelScope
 import com.zhigaras.fiveletters.core.DispatchersModule
@@ -6,6 +6,7 @@ import com.zhigaras.fiveletters.data.MainRepository
 import com.zhigaras.fiveletters.data.StateSaver
 import com.zhigaras.fiveletters.domain.play.GameStateController
 import com.zhigaras.fiveletters.model.play.GameState
+import com.zhigaras.fiveletters.presentation.compose.ui.viewmodels.BaseViewModel
 import kotlinx.coroutines.launch
 
 class PlayViewModel(

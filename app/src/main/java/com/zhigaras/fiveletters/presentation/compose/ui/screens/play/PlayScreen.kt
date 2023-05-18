@@ -29,7 +29,6 @@ import com.zhigaras.fiveletters.R
 import com.zhigaras.fiveletters.model.play.GameState
 import com.zhigaras.fiveletters.model.play.LetterFieldState
 import com.zhigaras.fiveletters.model.play.ProgressState
-import com.zhigaras.fiveletters.presentation.compose.ui.viewmodels.PlayViewModel
 import kotlinx.coroutines.delay
 
 @Composable

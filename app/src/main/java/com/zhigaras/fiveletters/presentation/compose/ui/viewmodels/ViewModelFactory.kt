@@ -10,6 +10,10 @@ import com.zhigaras.fiveletters.domain.play.KeyboardStateController
 import com.zhigaras.fiveletters.domain.play.RowStateController
 import com.zhigaras.fiveletters.domain.menu.RulesInteractor
 import com.zhigaras.fiveletters.domain.play.WordCheckable
+import com.zhigaras.fiveletters.presentation.compose.ui.screens.auth.SignInViewModel
+import com.zhigaras.fiveletters.presentation.compose.ui.screens.menu.MenuViewModel
+import com.zhigaras.fiveletters.presentation.compose.ui.screens.play.PlayViewModel
+import com.zhigaras.fiveletters.presentation.compose.ui.screens.registration.SignUpViewModel
 
 class ViewModelFactory(
     private val core: Core
@@ -39,7 +43,12 @@ class ViewModelFactory(
                 RulesInteractor.Base(rowStateController)
             )
             
-            AuthViewModel::class.java -> AuthViewModel(
+            SignInViewModel::class.java -> SignInViewModel(
+                AuthRepository.Base(core.provideFirebaseAuth()),
+                dispatchers
+            )
+    
+            SignUpViewModel::class.java -> SignUpViewModel(
                 AuthRepository.Base(core.provideFirebaseAuth()),
                 dispatchers
             )

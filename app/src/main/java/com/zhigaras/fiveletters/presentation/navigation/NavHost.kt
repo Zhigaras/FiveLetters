@@ -13,13 +13,15 @@ import androidx.navigation.NavHostController
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
-import com.zhigaras.fiveletters.presentation.compose.ui.screens.auth.AuthScreen
+import com.zhigaras.fiveletters.presentation.compose.ui.screens.auth.SignInScreen
+import com.zhigaras.fiveletters.presentation.compose.ui.screens.auth.SignInViewModel
 import com.zhigaras.fiveletters.presentation.compose.ui.screens.menu.MenuScreen
+import com.zhigaras.fiveletters.presentation.compose.ui.screens.menu.MenuViewModel
 import com.zhigaras.fiveletters.presentation.compose.ui.screens.play.PlayScreen
+import com.zhigaras.fiveletters.presentation.compose.ui.screens.play.PlayViewModel
+import com.zhigaras.fiveletters.presentation.compose.ui.screens.registration.SignUpScreen
+import com.zhigaras.fiveletters.presentation.compose.ui.screens.registration.SignUpViewModel
 import com.zhigaras.fiveletters.presentation.compose.ui.screens.splash.SplashScreen
-import com.zhigaras.fiveletters.presentation.compose.ui.viewmodels.AuthViewModel
-import com.zhigaras.fiveletters.presentation.compose.ui.viewmodels.MenuViewModel
-import com.zhigaras.fiveletters.presentation.compose.ui.viewmodels.PlayViewModel
 
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
@@ -27,7 +29,8 @@ fun FiveLettersNavHost(
     needToShowSplash: Boolean,
     playViewModel: PlayViewModel,
     menuViewModel: MenuViewModel,
-    authViewModel: AuthViewModel,
+    signInViewModel: SignInViewModel,
+    signUpViewModel: SignUpViewModel,
     onFinish: () -> Unit
 ) {
     val isExpanded = LocalConfiguration.current.orientation == Configuration.ORIENTATION_LANDSCAPE
@@ -36,16 +39,18 @@ fun FiveLettersNavHost(
     AnimatedNavHost(
         navController = navController,
 //        startDestination = if (needToShowSplash) Destination.Splash.route else Destination.Menu.route,
-        startDestination = Destination.Auth.route,
+        startDestination = Destination.SignIn.route,
         modifier = Modifier.fillMaxSize()
     ) {
-        composable(route = Destination.Auth.route) {
-            AuthScreen(
-                viewModel = authViewModel,
-                onFinish = onFinish
+        composable(route = Destination.SignIn.route) {
+            SignInScreen(
+                viewModel = signInViewModel,
+                toSignUpScreen = { navController.navigate(Destination.SignUp.route) }
             )
         }
-        
+        composable(route = Destination.SignUp.route) {
+            SignUpScreen(viewModel = signUpViewModel)
+        }
         composable(
             route = Destination.Splash.route,
             exitTransition = { fadeOut(animationSpec = tween(700)) }

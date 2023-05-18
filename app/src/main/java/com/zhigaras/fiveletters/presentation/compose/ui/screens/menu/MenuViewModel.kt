@@ -1,10 +1,11 @@
-package com.zhigaras.fiveletters.presentation.compose.ui.viewmodels
+package com.zhigaras.fiveletters.presentation.compose.ui.screens.menu
 
 import com.zhigaras.fiveletters.core.DispatchersModule
 import com.zhigaras.fiveletters.data.UserStatRepository
 import com.zhigaras.fiveletters.domain.menu.RulesInteractor
 import com.zhigaras.fiveletters.model.menu.UserStat
 import com.zhigaras.fiveletters.model.play.RowState
+import com.zhigaras.fiveletters.presentation.compose.ui.viewmodels.BaseViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.emitAll
 import kotlinx.coroutines.flow.flow

@@ -42,7 +42,6 @@ import com.zhigaras.fiveletters.presentation.compose.ui.screens.OrientationSwapp
 import com.zhigaras.fiveletters.presentation.compose.ui.theme.black
 import com.zhigaras.fiveletters.presentation.compose.ui.theme.gray
 import com.zhigaras.fiveletters.presentation.compose.ui.theme.yellow
-import com.zhigaras.fiveletters.presentation.compose.ui.viewmodels.MenuViewModel
 
 @Composable
 fun MenuScreen(
