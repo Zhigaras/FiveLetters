@@ -1,5 +1,10 @@
 package com.zhigaras.fiveletters.presentation.compose.ui.screens.signup
 
+import android.util.Log
+import androidx.activity.result.IntentSenderRequest
+import com.google.android.gms.auth.api.identity.BeginSignInRequest
+import com.google.android.gms.auth.api.identity.BeginSignInResult
+import com.google.android.gms.tasks.Task
 import com.zhigaras.fiveletters.core.DispatchersModule
 import com.zhigaras.fiveletters.data.AuthRepository
 import com.zhigaras.fiveletters.data.CredentialsValidator
@@ -31,7 +36,29 @@ class SignUpViewModel(
         }
     }
     
-    fun signUpWithGoogle() {
+    fun signInWithGoogle(
+        beginSignIn: (BeginSignInRequest) -> Task<BeginSignInResult>,
+        launchIntent: (IntentSenderRequest) -> Unit
+    ) {
+        scopeLaunch {
+            beginSignIn(authRepository.getSignInWithGoogleRequest()).addOnSuccessListener {
+                try {
+                    launchIntent(IntentSenderRequest.Builder(it.pendingIntent).build())
+                    Log.d("AAA", "launched")
+                } catch (e: Exception) {
+                    Log.d("AAA", e.message.toString())
+                }
+            }.addOnFailureListener {
+                Log.d("AAA", it.message.toString())
+            }
+        }
+    }
     
+    fun changeGoogleIdToCredential(token: String?) {
+        scopeLaunch {
+            if (token != null) {
+                authRepository.changeGoogleIdToCredential(token)
+            }
+        }
     }
 }

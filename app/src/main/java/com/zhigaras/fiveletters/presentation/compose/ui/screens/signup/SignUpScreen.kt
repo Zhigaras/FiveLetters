@@ -1,5 +1,8 @@
 package com.zhigaras.fiveletters.presentation.compose.ui.screens.signup
 
+import android.app.Activity.RESULT_OK
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -14,9 +17,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.google.android.gms.auth.api.identity.Identity
 import com.zhigaras.fiveletters.R
 import com.zhigaras.fiveletters.domain.auth.InputFieldType
 import com.zhigaras.fiveletters.presentation.compose.ui.screens.menu.CommonButton
@@ -31,6 +36,16 @@ fun SignUpScreen(
     viewModel: SignUpViewModel
 ) {
     val state by viewModel.getState().collectAsStateWithLifecycle()
+    val signInClient = Identity.getSignInClient(LocalContext.current)
+    val signWithGoogleLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.StartIntentSenderForResult()
+    ) {
+        if (it.resultCode == RESULT_OK) {
+            val token = signInClient.getSignInCredentialFromIntent(it.data).googleIdToken
+            viewModel.changeGoogleIdToCredential(token)
+        }
+    }
+    
     
     Box(
         modifier = Modifier.padding(16.dp),
@@ -75,7 +90,12 @@ fun SignUpScreen(
             AuthDivider()
             RegisterWithGoogleButton(
                 modifier = maxWidthModifier,
-                onClick = { viewModel.signUpWithGoogle() }
+                onClick = {
+                    viewModel.signInWithGoogle(
+                        beginSignIn = { signInClient.beginSignIn(it) },
+                        launchIntent = { signWithGoogleLauncher.launch(it) }
+                    )
+                }
             )
         }
     }
