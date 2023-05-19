@@ -5,8 +5,13 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Surface
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelStoreOwner
@@ -35,19 +40,31 @@ class MainActivity : ComponentActivity(), ProvideViewModel {
         val needToShowSplash = Build.VERSION.SDK_INT <= 31
         
         setContent {
+            val snackBarHostState = remember { SnackbarHostState() }
             FiveLettersTheme {
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.secondary
                 ) {
-                    FiveLettersNavHost(
-                        needToShowSplash = needToShowSplash,
-                        playViewModel = playViewModel,
-                        menuViewModel = menuViewModel,
-                        signInViewModel = signInViewModel,
-                        signUpViewModel = signUpViewModel,
-                        onFinish = { this.finish() }
-                    )
+                    Scaffold(
+                        snackbarHost = { SnackbarHost(hostState = snackBarHostState) }
+                    ) { innerPaddings ->
+                        FiveLettersNavHost(
+                            modifier = Modifier.padding(innerPaddings),
+                            needToShowSplash = needToShowSplash,
+                            playViewModel = playViewModel,
+                            menuViewModel = menuViewModel,
+                            signInViewModel = signInViewModel,
+                            signUpViewModel = signUpViewModel,
+                            showSnackBar = {
+                                snackBarHostState.showSnackbar(
+                                    message = it,
+                                    withDismissAction = true
+                                )
+                            },
+                            onFinish = { this.finish() }
+                        )
+                    }
                 }
             }
         }

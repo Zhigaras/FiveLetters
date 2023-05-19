@@ -6,6 +6,9 @@ import com.google.android.gms.auth.api.identity.BeginSignInRequest
 import com.google.android.gms.auth.api.identity.BeginSignInResult
 import com.google.android.gms.tasks.Task
 import com.zhigaras.fiveletters.core.DispatchersModule
+import com.zhigaras.fiveletters.core.presentation.UiText
+import com.zhigaras.fiveletters.core.presentation.consumed
+import com.zhigaras.fiveletters.core.presentation.triggered
 import com.zhigaras.fiveletters.data.AuthRepository
 import com.zhigaras.fiveletters.data.CredentialsValidator
 import com.zhigaras.fiveletters.domain.auth.InputFieldType
@@ -40,18 +43,35 @@ class SignUpViewModel(
         beginSignIn: (BeginSignInRequest) -> Task<BeginSignInResult>,
         launchIntent: (IntentSenderRequest) -> Unit
     ) {
-        scopeLaunch {
+        scopeLaunch(
+            onLoading = ::setLoading,
+            onFinally = ::revokeLoading,
+//            onError = { showError(UiText.Dynamic(it.message.toString())) }
+        ) {
             beginSignIn(authRepository.getSignInWithGoogleRequest()).addOnSuccessListener {
-                try {
-                    launchIntent(IntentSenderRequest.Builder(it.pendingIntent).build())
-                    Log.d("AAA", "launched")
-                } catch (e: Exception) {
-                    Log.d("AAA", e.message.toString())
-                }
+                launchIntent(IntentSenderRequest.Builder(it.pendingIntent).build())
             }.addOnFailureListener {
-                Log.d("AAA", it.message.toString())
+                Log.d("aaa", it.toString())
+                state =
+                    state.copy(errorEvent = triggered(UiText.Dynamic(it.message.toString())))
             }
         }
+    }
+    
+    private fun setLoading() {
+        state = state.copy(isLoading = true)
+    }
+    
+    private fun revokeLoading() {
+        state = state.copy(isLoading = false)
+    }
+    
+    private fun showError(message: UiText) {
+        state = state.copy(errorEvent = triggered(message))
+    }
+    
+    fun onConsumeError() {
+        state = state.copy(errorEvent = consumed())
     }
     
     fun changeGoogleIdToCredential(token: String?) {

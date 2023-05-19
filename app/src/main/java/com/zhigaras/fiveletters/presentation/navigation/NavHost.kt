@@ -26,11 +26,13 @@ import com.zhigaras.fiveletters.presentation.compose.ui.screens.splash.SplashScr
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun FiveLettersNavHost(
+    modifier: Modifier = Modifier,
     needToShowSplash: Boolean,
     playViewModel: PlayViewModel,
     menuViewModel: MenuViewModel,
     signInViewModel: SignInViewModel,
     signUpViewModel: SignUpViewModel,
+    showSnackBar: suspend (String) -> Unit,
     onFinish: () -> Unit
 ) {
     val isExpanded = LocalConfiguration.current.orientation == Configuration.ORIENTATION_LANDSCAPE
@@ -40,7 +42,7 @@ fun FiveLettersNavHost(
         navController = navController,
 //        startDestination = if (needToShowSplash) Destination.Splash.route else Destination.Menu.route,
         startDestination = Destination.SignIn.route,
-        modifier = Modifier.fillMaxSize()
+        modifier = modifier.fillMaxSize()
     ) {
         composable(route = Destination.SignIn.route) {
             SignInScreen(
@@ -49,7 +51,10 @@ fun FiveLettersNavHost(
             )
         }
         composable(route = Destination.SignUp.route) {
-            SignUpScreen(viewModel = signUpViewModel)
+            SignUpScreen(
+                viewModel = signUpViewModel,
+                showSnackBar = showSnackBar
+            )
         }
         composable(
             route = Destination.Splash.route,

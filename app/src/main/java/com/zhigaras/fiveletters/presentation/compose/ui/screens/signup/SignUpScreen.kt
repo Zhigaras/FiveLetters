@@ -23,6 +23,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.google.android.gms.auth.api.identity.Identity
 import com.zhigaras.fiveletters.R
+import com.zhigaras.fiveletters.core.presentation.EventEffect
 import com.zhigaras.fiveletters.domain.auth.InputFieldType
 import com.zhigaras.fiveletters.presentation.compose.ui.screens.menu.CommonButton
 import com.zhigaras.fiveletters.presentation.compose.ui.screens.signin.AuthDivider
@@ -33,10 +34,12 @@ import com.zhigaras.fiveletters.presentation.compose.ui.theme.playScreenMaxWidth
 
 @Composable
 fun SignUpScreen(
-    viewModel: SignUpViewModel
+    viewModel: SignUpViewModel,
+    showSnackBar: suspend (String) -> Unit
 ) {
+    val context = LocalContext.current
     val state by viewModel.getState().collectAsStateWithLifecycle()
-    val signInClient = Identity.getSignInClient(LocalContext.current)
+    val signInClient = Identity.getSignInClient(context)
     val signWithGoogleLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.StartIntentSenderForResult()
     ) {
@@ -45,7 +48,9 @@ fun SignUpScreen(
             viewModel.changeGoogleIdToCredential(token)
         }
     }
-    
+    EventEffect(event = state.errorEvent, onConsumed = { viewModel.onConsumeError() }) {
+        showSnackBar(it.asString(context))
+    }
     
     Box(
         modifier = Modifier.padding(16.dp),
