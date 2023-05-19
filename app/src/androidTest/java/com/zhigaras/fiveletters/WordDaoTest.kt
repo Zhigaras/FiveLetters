@@ -2,19 +2,17 @@ package com.zhigaras.fiveletters
 
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.zhigaras.fiveletters.core.DatabaseModule
-import com.zhigaras.fiveletters.data.WordDao
-import com.zhigaras.fiveletters.data.WordDatabase
-import com.zhigaras.fiveletters.model.play.Word
+import com.zhigaras.fiveletters.database.DatabaseModule
+import com.zhigaras.fiveletters.database.WordDao
+import com.zhigaras.fiveletters.database.WordDatabase
+import com.zhigaras.fiveletters.feature.play.domain.model.Word
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
 import org.junit.After
-
-import org.junit.Test
-import org.junit.runner.RunWith
-
 import org.junit.Assert.*
 import org.junit.Before
+import org.junit.Test
+import org.junit.runner.RunWith
 
 @RunWith(AndroidJUnit4::class)
 class WordDaoTest {
