@@ -1,4 +1,4 @@
-package com.zhigaras.fiveletters.domain.auth
+package com.zhigaras.fiveletters.model.auth
 
 enum class InputFieldType {
     EMAIL,

@@ -1,24 +1,23 @@
 package com.zhigaras.fiveletters.presentation.compose.ui.screens.signup
 
-import android.util.Log
+import androidx.activity.compose.ManagedActivityResultLauncher
+import androidx.activity.result.ActivityResult
 import androidx.activity.result.IntentSenderRequest
-import com.google.android.gms.auth.api.identity.BeginSignInRequest
-import com.google.android.gms.auth.api.identity.BeginSignInResult
-import com.google.android.gms.tasks.Task
+import com.google.android.gms.auth.api.identity.SignInClient
 import com.zhigaras.fiveletters.core.DispatchersModule
 import com.zhigaras.fiveletters.core.presentation.UiText
 import com.zhigaras.fiveletters.core.presentation.consumed
 import com.zhigaras.fiveletters.core.presentation.triggered
-import com.zhigaras.fiveletters.data.AuthRepository
-import com.zhigaras.fiveletters.data.CredentialsValidator
-import com.zhigaras.fiveletters.domain.auth.InputFieldType
+import com.zhigaras.fiveletters.domain.auth.SignUpWithEmailAndPasswordUseCase
+import com.zhigaras.fiveletters.domain.auth.SignWithGoogleUseCase
 import com.zhigaras.fiveletters.model.auth.InputFieldState
+import com.zhigaras.fiveletters.model.auth.InputFieldType
 import com.zhigaras.fiveletters.model.auth.SignUpState
 import com.zhigaras.fiveletters.presentation.compose.ui.viewmodels.BaseViewModel
 
 class SignUpViewModel(
-    private val authRepository: AuthRepository,
-    private val credentialsValidator: CredentialsValidator,
+    private val signInWithGoogleUseCase: SignWithGoogleUseCase,
+    private val signUpWithEmailAndPasswordUseCase: SignUpWithEmailAndPasswordUseCase,
     private val dispatchers: DispatchersModule
 ) : BaseViewModel<SignUpState>(SignUpState.empty) {
     
@@ -34,27 +33,30 @@ class SignUpViewModel(
         scopeLaunch(
             context = dispatchers.io()
         ) {
-            state = credentialsValidator.validateSignUp(state)
-//            authRepository.createUserWithEmailAndPassword(state.email.value, state.password.value)
+            state =
+                signUpWithEmailAndPasswordUseCase.signUpWithEmailAndPassword(state) //TODO refactor
         }
     }
     
-    fun signInWithGoogle(
-        beginSignIn: (BeginSignInRequest) -> Task<BeginSignInResult>,
-        launchIntent: (IntentSenderRequest) -> Unit
+    fun signUpWithGoogle(
+        signWithGoogleLauncher: ManagedActivityResultLauncher<IntentSenderRequest, ActivityResult>,
+        signInClient: SignInClient
     ) {
         scopeLaunch(
-            onLoading = ::setLoading,
-            onFinally = ::revokeLoading,
-//            onError = { showError(UiText.Dynamic(it.message.toString())) }
+            onLoading = { setLoading() },
+            onError = { showError(UiText.Resource(it.messageId)); revokeLoading() }
         ) {
-            beginSignIn(authRepository.getSignInWithGoogleRequest()).addOnSuccessListener {
-                launchIntent(IntentSenderRequest.Builder(it.pendingIntent).build())
-            }.addOnFailureListener {
-                Log.d("aaa", it.toString())
-                state =
-                    state.copy(errorEvent = triggered(UiText.Dynamic(it.message.toString())))
-            }
+            signInWithGoogleUseCase.signInWithGoogle(signWithGoogleLauncher, signInClient)
+        }
+    }
+    
+    fun changeGoogleIdToCredential(result: ActivityResult, signInClient: SignInClient) {
+        scopeLaunch(
+            onLoading = { setLoading() },
+            onError = { showError(UiText.Resource(it.messageId)); revokeLoading() },
+            onFinally = { revokeLoading() }
+        ) {
+            signInWithGoogleUseCase.changeGoogleIdToCredential(result, signInClient)
         }
     }
     
@@ -72,13 +74,5 @@ class SignUpViewModel(
     
     fun onConsumeError() {
         state = state.copy(errorEvent = consumed())
-    }
-    
-    fun changeGoogleIdToCredential(token: String?) {
-        scopeLaunch {
-            if (token != null) {
-                authRepository.changeGoogleIdToCredential(token)
-            }
-        }
     }
 }

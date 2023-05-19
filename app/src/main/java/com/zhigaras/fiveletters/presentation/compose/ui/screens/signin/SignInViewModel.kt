@@ -3,7 +3,7 @@ package com.zhigaras.fiveletters.presentation.compose.ui.screens.signin
 import com.zhigaras.fiveletters.core.DispatchersModule
 import com.zhigaras.fiveletters.data.AuthRepository
 import com.zhigaras.fiveletters.data.CredentialsValidator
-import com.zhigaras.fiveletters.domain.auth.InputFieldType
+import com.zhigaras.fiveletters.model.auth.InputFieldType
 import com.zhigaras.fiveletters.model.auth.InputFieldState
 import com.zhigaras.fiveletters.model.auth.SignInState
 import com.zhigaras.fiveletters.presentation.compose.ui.viewmodels.BaseViewModel

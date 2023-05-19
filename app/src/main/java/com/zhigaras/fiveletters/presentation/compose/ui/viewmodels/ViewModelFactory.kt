@@ -5,6 +5,8 @@ import androidx.lifecycle.ViewModelProvider
 import com.zhigaras.fiveletters.core.Core
 import com.zhigaras.fiveletters.data.AuthRepository
 import com.zhigaras.fiveletters.data.CredentialsValidator
+import com.zhigaras.fiveletters.domain.auth.SignUpWithEmailAndPasswordUseCase
+import com.zhigaras.fiveletters.domain.auth.SignWithGoogleUseCase
 import com.zhigaras.fiveletters.model.play.Alphabet
 import com.zhigaras.fiveletters.domain.play.GameStateController
 import com.zhigaras.fiveletters.domain.play.KeyboardStateController
@@ -24,6 +26,7 @@ class ViewModelFactory(
         val dispatchers = core.provideDispatchers()
         val mainRepository = core.provideMainRepository()
         val stateSaver = core.provideStateSaver()
+        val authRepository = AuthRepository.Base(core.provideFirebaseAuth())
         val rowStateController = RowStateController.Base(WordCheckable.Base())
         val viewModel = when (modelClass) {
             PlayViewModel::class.java ->
@@ -51,8 +54,8 @@ class ViewModelFactory(
             )
     
             SignUpViewModel::class.java -> SignUpViewModel(
-                AuthRepository.Base(core.provideFirebaseAuth()),
-                CredentialsValidator.Base(),
+                SignWithGoogleUseCase.Base(authRepository),
+                SignUpWithEmailAndPasswordUseCase.Base(CredentialsValidator.Base(), authRepository),
                 dispatchers
             )
             

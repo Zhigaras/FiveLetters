@@ -1,17 +1,23 @@
 package com.zhigaras.fiveletters.presentation.compose.ui.screens.signup
 
-import android.app.Activity.RESULT_OK
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -24,13 +30,14 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.google.android.gms.auth.api.identity.Identity
 import com.zhigaras.fiveletters.R
 import com.zhigaras.fiveletters.core.presentation.EventEffect
-import com.zhigaras.fiveletters.domain.auth.InputFieldType
+import com.zhigaras.fiveletters.model.auth.InputFieldType
 import com.zhigaras.fiveletters.presentation.compose.ui.screens.menu.CommonButton
 import com.zhigaras.fiveletters.presentation.compose.ui.screens.signin.AuthDivider
 import com.zhigaras.fiveletters.presentation.compose.ui.screens.signin.EmailInput
 import com.zhigaras.fiveletters.presentation.compose.ui.screens.signin.PasswordInput
 import com.zhigaras.fiveletters.presentation.compose.ui.screens.signin.RegisterWithGoogleButton
 import com.zhigaras.fiveletters.presentation.compose.ui.theme.playScreenMaxWidth
+import com.zhigaras.fiveletters.presentation.compose.ui.theme.semiTransparentBlack
 
 @Composable
 fun SignUpScreen(
@@ -43,10 +50,7 @@ fun SignUpScreen(
     val signWithGoogleLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.StartIntentSenderForResult()
     ) {
-        if (it.resultCode == RESULT_OK) {
-            val token = signInClient.getSignInCredentialFromIntent(it.data).googleIdToken
-            viewModel.changeGoogleIdToCredential(token)
-        }
+        viewModel.changeGoogleIdToCredential(it, signInClient)
     }
     EventEffect(event = state.errorEvent, onConsumed = { viewModel.onConsumeError() }) {
         showSnackBar(it.asString(context))
@@ -96,12 +100,24 @@ fun SignUpScreen(
             RegisterWithGoogleButton(
                 modifier = maxWidthModifier,
                 onClick = {
-                    viewModel.signInWithGoogle(
-                        beginSignIn = { signInClient.beginSignIn(it) },
-                        launchIntent = { signWithGoogleLauncher.launch(it) }
-                    )
+                    viewModel.signUpWithGoogle(signWithGoogleLauncher, signInClient)
                 }
             )
+        }
+    }
+    
+    AnimatedVisibility(
+        visible = state.isLoading,
+        enter = fadeIn(tween(300)),
+        exit = fadeOut(tween(300))
+    ) {
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(semiTransparentBlack),
+            contentAlignment = Alignment.Center
+        ) {
+            CircularProgressIndicator()
         }
     }
 }

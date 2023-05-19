@@ -41,4 +41,10 @@
     <string name="password_is_invalid">Некорректный пароль</string>
     <string name="passport_mismatch">Несоответствие паролей</string>
     <string name="password_support_text">Пароль должен состоять минимум из 6 символов</string>
+    <string name="something_went_wrong">Что-то пошло не так</string>
+    <string name="couldn_t_get_credentials">Невозможно получить учетные данные</string>
+    <string name="check_internet_connection">Проверьте соединение</string>
+    <string name="couldn_t_start_signing_in_with_google">Вход с помощью Google невозможен</string>
+    <string name="no_google_accounts_found">Аккаунтов Google не найдено</string>
+    <string name="token_not_received">Токен не получен</string>
 </resources>

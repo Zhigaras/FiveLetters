@@ -2,6 +2,7 @@ package com.zhigaras.fiveletters.presentation.compose.ui.viewmodels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.zhigaras.fiveletters.core.FiveLettersException
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -25,7 +26,7 @@ abstract class BaseViewModel<T : Any>(initialState: T) : ViewModel() {
         context: CoroutineContext = EmptyCoroutineContext,
         crossinline onLoading: () -> Unit = {},
         crossinline onSuccess: () -> Unit = {},
-        crossinline onError: (e: Exception) -> Unit = {},
+        crossinline onError: (e: FiveLettersException) -> Unit = {},
         crossinline onFinally: () -> Unit = {},
         crossinline job: suspend () -> Unit,
     ): Job {
@@ -34,7 +35,7 @@ abstract class BaseViewModel<T : Any>(initialState: T) : ViewModel() {
                 onLoading()
                 job()
                 onSuccess()
-            } catch (e: Exception) {
+            } catch (e: FiveLettersException) {
                 onError(e)
             } finally {
                 onFinally()
