@@ -10,6 +10,7 @@ import com.zhigaras.fiveletters.core.CouldNotGetCredentials
 import com.zhigaras.fiveletters.core.CouldNotStartOneTapSignIn
 import com.zhigaras.fiveletters.core.NetworkException
 import com.zhigaras.fiveletters.core.NoGoogleAccountsFound
+import com.zhigaras.fiveletters.core.OneTapSignInCanceled
 import com.zhigaras.fiveletters.core.TokenNotReceived
 import com.zhigaras.fiveletters.data.AuthRepository
 import kotlinx.coroutines.tasks.await
@@ -60,7 +61,7 @@ interface SignWithGoogleUseCase {
             } catch (e: ApiException) {
                 when (e.statusCode) {
                     CommonStatusCodes.NETWORK_ERROR -> throw NetworkException()
-                    CommonStatusCodes.CANCELED -> {}
+                    CommonStatusCodes.CANCELED -> throw OneTapSignInCanceled()
                     else -> throw CouldNotGetCredentials()
                 }
             }

@@ -1,4 +1,4 @@
-package com.zhigaras.fiveletters.presentation.compose.ui.screens.signin
+package com.zhigaras.fiveletters.presentation.compose.ui.screens.auth.signin
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -22,6 +22,9 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.zhigaras.fiveletters.R
 import com.zhigaras.fiveletters.model.auth.InputFieldType
+import com.zhigaras.fiveletters.presentation.compose.ui.screens.auth.AuthDivider
+import com.zhigaras.fiveletters.presentation.compose.ui.screens.auth.EmailInput
+import com.zhigaras.fiveletters.presentation.compose.ui.screens.auth.PasswordInput
 import com.zhigaras.fiveletters.presentation.compose.ui.screens.menu.CommonButton
 import com.zhigaras.fiveletters.presentation.compose.ui.theme.playScreenMaxWidth
 
@@ -49,7 +52,8 @@ fun SignInScreen(
                 modifier = maxWidthModifier,
                 state = state.email,
                 hint = stringResource(R.string.email_hint),
-                onTextChange = { viewModel.onFieldChanged(InputFieldType.EMAIL, it) }
+                onTextChange = { viewModel.onFieldChanged(InputFieldType.EMAIL, it) },
+                onClear = { viewModel.clearEmail() }
             )
             PasswordInput(
                 modifier = maxWidthModifier,

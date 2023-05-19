@@ -13,14 +13,14 @@ import androidx.navigation.NavHostController
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
-import com.zhigaras.fiveletters.presentation.compose.ui.screens.signin.SignInScreen
-import com.zhigaras.fiveletters.presentation.compose.ui.screens.signin.SignInViewModel
+import com.zhigaras.fiveletters.presentation.compose.ui.screens.auth.signin.SignInScreen
+import com.zhigaras.fiveletters.presentation.compose.ui.screens.auth.signin.SignInViewModel
 import com.zhigaras.fiveletters.presentation.compose.ui.screens.menu.MenuScreen
 import com.zhigaras.fiveletters.presentation.compose.ui.screens.menu.MenuViewModel
 import com.zhigaras.fiveletters.presentation.compose.ui.screens.play.PlayScreen
 import com.zhigaras.fiveletters.presentation.compose.ui.screens.play.PlayViewModel
-import com.zhigaras.fiveletters.presentation.compose.ui.screens.signup.SignUpScreen
-import com.zhigaras.fiveletters.presentation.compose.ui.screens.signup.SignUpViewModel
+import com.zhigaras.fiveletters.presentation.compose.ui.screens.auth.signup.SignUpScreen
+import com.zhigaras.fiveletters.presentation.compose.ui.screens.auth.signup.SignUpViewModel
 import com.zhigaras.fiveletters.presentation.compose.ui.screens.splash.SplashScreen
 
 @OptIn(ExperimentalAnimationApi::class)
@@ -28,6 +28,7 @@ import com.zhigaras.fiveletters.presentation.compose.ui.screens.splash.SplashScr
 fun FiveLettersNavHost(
     modifier: Modifier = Modifier,
     needToShowSplash: Boolean,
+    needToAuth: Boolean,
     playViewModel: PlayViewModel,
     menuViewModel: MenuViewModel,
     signInViewModel: SignInViewModel,
@@ -40,10 +41,25 @@ fun FiveLettersNavHost(
     val gameState by playViewModel.getState().collectAsStateWithLifecycle()
     AnimatedNavHost(
         navController = navController,
-//        startDestination = if (needToShowSplash) Destination.Splash.route else Destination.Menu.route,
-        startDestination = Destination.SignIn.route,
+        startDestination =
+        if (needToShowSplash) Destination.Splash.route
+        else if (needToAuth) Destination.SignIn.route
+        else Destination.Menu.route,
+//        startDestination = Destination.SignIn.route,
         modifier = modifier.fillMaxSize()
     ) {
+        composable(
+            route = Destination.Splash.route,
+            exitTransition = { fadeOut(animationSpec = tween(700)) }
+        ) {
+            SplashScreen(
+                navigateToNext = {
+                    navController.navigateWithClearBackStack(
+                        if (needToAuth) Destination.SignIn.route else Destination.SignIn.route
+                    )
+                }
+            )
+        }
         composable(route = Destination.SignIn.route) {
             SignInScreen(
                 viewModel = signInViewModel,
@@ -53,14 +69,7 @@ fun FiveLettersNavHost(
         composable(route = Destination.SignUp.route) {
             SignUpScreen(
                 viewModel = signUpViewModel,
-                showSnackBar = showSnackBar
-            )
-        }
-        composable(
-            route = Destination.Splash.route,
-            exitTransition = { fadeOut(animationSpec = tween(700)) }
-        ) {
-            SplashScreen(
+                showSnackBar = showSnackBar,
                 navigateToMenu = { navController.navigateWithClearBackStack(Destination.Menu.route) }
             )
         }

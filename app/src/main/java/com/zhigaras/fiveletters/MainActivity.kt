@@ -10,18 +10,17 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
-import androidx.compose.material3.Surface
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelStoreOwner
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
-import com.zhigaras.fiveletters.presentation.compose.ui.theme.FiveLettersTheme
-import com.zhigaras.fiveletters.presentation.compose.ui.screens.signin.SignInViewModel
+import com.zhigaras.fiveletters.presentation.compose.ui.screens.auth.signin.SignInViewModel
+import com.zhigaras.fiveletters.presentation.compose.ui.screens.auth.signup.SignUpViewModel
 import com.zhigaras.fiveletters.presentation.compose.ui.screens.menu.MenuViewModel
 import com.zhigaras.fiveletters.presentation.compose.ui.screens.play.PlayViewModel
-import com.zhigaras.fiveletters.presentation.compose.ui.screens.signup.SignUpViewModel
+import com.zhigaras.fiveletters.presentation.compose.ui.theme.FiveLettersTheme
 import com.zhigaras.fiveletters.presentation.navigation.FiveLettersNavHost
 
 class MainActivity : ComponentActivity(), ProvideViewModel {
@@ -30,7 +29,7 @@ class MainActivity : ComponentActivity(), ProvideViewModel {
     
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val auth = Firebase.auth //TODO
+        val auth = Firebase.auth //TODO maybe remain that way
         val needToAuth = auth.currentUser == null
         val menuViewModel = provideViewModel(MenuViewModel::class.java, this)
         playViewModel = provideViewModel(PlayViewModel::class.java, this)
@@ -42,29 +41,27 @@ class MainActivity : ComponentActivity(), ProvideViewModel {
         setContent {
             val snackBarHostState = remember { SnackbarHostState() }
             FiveLettersTheme {
-                Surface(
+                Scaffold(
                     modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.secondary
-                ) {
-                    Scaffold(
-                        snackbarHost = { SnackbarHost(hostState = snackBarHostState) }
-                    ) { innerPaddings ->
-                        FiveLettersNavHost(
-                            modifier = Modifier.padding(innerPaddings),
-                            needToShowSplash = needToShowSplash,
-                            playViewModel = playViewModel,
-                            menuViewModel = menuViewModel,
-                            signInViewModel = signInViewModel,
-                            signUpViewModel = signUpViewModel,
-                            showSnackBar = {
-                                snackBarHostState.showSnackbar(
-                                    message = it,
-                                    withDismissAction = true
-                                )
-                            },
-                            onFinish = { this.finish() }
-                        )
-                    }
+                    containerColor = MaterialTheme.colorScheme.secondary,
+                    snackbarHost = { SnackbarHost(hostState = snackBarHostState) }
+                ) { innerPaddings ->
+                    FiveLettersNavHost(
+                        modifier = Modifier.padding(innerPaddings),
+                        needToShowSplash = needToShowSplash,
+                        needToAuth = needToAuth,
+                        playViewModel = playViewModel,
+                        menuViewModel = menuViewModel,
+                        signInViewModel = signInViewModel,
+                        signUpViewModel = signUpViewModel,
+                        showSnackBar = {
+                            snackBarHostState.showSnackbar(
+                                message = it,
+                                withDismissAction = true
+                            )
+                        },
+                        onFinish = { this.finish() }
+                    )
                 }
             }
         }

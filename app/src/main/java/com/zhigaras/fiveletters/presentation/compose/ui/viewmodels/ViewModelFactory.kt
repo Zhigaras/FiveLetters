@@ -7,16 +7,17 @@ import com.zhigaras.fiveletters.data.AuthRepository
 import com.zhigaras.fiveletters.data.CredentialsValidator
 import com.zhigaras.fiveletters.domain.auth.SignUpWithEmailAndPasswordUseCase
 import com.zhigaras.fiveletters.domain.auth.SignWithGoogleUseCase
+import com.zhigaras.fiveletters.domain.menu.GetUserInfoUseCase
 import com.zhigaras.fiveletters.model.play.Alphabet
 import com.zhigaras.fiveletters.domain.play.GameStateController
 import com.zhigaras.fiveletters.domain.play.KeyboardStateController
 import com.zhigaras.fiveletters.domain.play.RowStateController
 import com.zhigaras.fiveletters.domain.menu.RulesInteractor
 import com.zhigaras.fiveletters.domain.play.WordCheckable
-import com.zhigaras.fiveletters.presentation.compose.ui.screens.signin.SignInViewModel
+import com.zhigaras.fiveletters.presentation.compose.ui.screens.auth.signin.SignInViewModel
 import com.zhigaras.fiveletters.presentation.compose.ui.screens.menu.MenuViewModel
 import com.zhigaras.fiveletters.presentation.compose.ui.screens.play.PlayViewModel
-import com.zhigaras.fiveletters.presentation.compose.ui.screens.signup.SignUpViewModel
+import com.zhigaras.fiveletters.presentation.compose.ui.screens.auth.signup.SignUpViewModel
 
 class ViewModelFactory(
     private val core: Core
@@ -42,6 +43,7 @@ class ViewModelFactory(
                 )
             
             MenuViewModel::class.java -> MenuViewModel(
+                GetUserInfoUseCase.Base(authRepository),
                 core.provideUserStatRepository(),
                 dispatchers,
                 RulesInteractor.Base(rowStateController)
@@ -52,7 +54,7 @@ class ViewModelFactory(
                 CredentialsValidator.Base(),
                 dispatchers
             )
-    
+            
             SignUpViewModel::class.java -> SignUpViewModel(
                 SignWithGoogleUseCase.Base(authRepository),
                 SignUpWithEmailAndPasswordUseCase.Base(CredentialsValidator.Base(), authRepository),

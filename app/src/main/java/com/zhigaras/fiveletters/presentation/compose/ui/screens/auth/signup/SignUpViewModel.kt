@@ -1,4 +1,4 @@
-package com.zhigaras.fiveletters.presentation.compose.ui.screens.signup
+package com.zhigaras.fiveletters.presentation.compose.ui.screens.auth.signup
 
 import androidx.activity.compose.ManagedActivityResultLauncher
 import androidx.activity.result.ActivityResult
@@ -12,6 +12,7 @@ import com.zhigaras.fiveletters.domain.auth.SignUpWithEmailAndPasswordUseCase
 import com.zhigaras.fiveletters.domain.auth.SignWithGoogleUseCase
 import com.zhigaras.fiveletters.model.auth.InputFieldState
 import com.zhigaras.fiveletters.model.auth.InputFieldType
+import com.zhigaras.fiveletters.model.auth.SignUpResult
 import com.zhigaras.fiveletters.model.auth.SignUpState
 import com.zhigaras.fiveletters.presentation.compose.ui.viewmodels.BaseViewModel
 
@@ -19,7 +20,7 @@ class SignUpViewModel(
     private val signInWithGoogleUseCase: SignWithGoogleUseCase,
     private val signUpWithEmailAndPasswordUseCase: SignUpWithEmailAndPasswordUseCase,
     private val dispatchers: DispatchersModule
-) : BaseViewModel<SignUpState>(SignUpState.empty) {
+) : BaseViewModel<SignUpState>(SignUpState()) {
     
     fun onFieldChanged(type: InputFieldType, field: String) {
         state = when (type) {
@@ -27,6 +28,10 @@ class SignUpViewModel(
             InputFieldType.PASSWORD -> state.copy(password = InputFieldState(field))
             InputFieldType.REPEAT_PASSWORD -> state.copy(passwordRepeat = InputFieldState(field))
         }
+    }
+    
+    fun clearEmail() {
+        state = state.copy(email = InputFieldState(""))
     }
     
     fun signUpWithEmailAndPassword() {
@@ -57,6 +62,7 @@ class SignUpViewModel(
             onFinally = { revokeLoading() }
         ) {
             signInWithGoogleUseCase.changeGoogleIdToCredential(result, signInClient)
+            state = state.copy(signUpResult = SignUpResult.Success)
         }
     }
     

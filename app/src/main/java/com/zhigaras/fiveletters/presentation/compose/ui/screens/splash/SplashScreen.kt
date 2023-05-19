@@ -20,7 +20,7 @@ import kotlinx.coroutines.delay
 
 @Composable
 fun SplashScreen(
-    navigateToMenu: () -> Unit
+    navigateToNext: () -> Unit
 ) {
     val alpha = remember { Animatable(0f) }
     
@@ -30,7 +30,7 @@ fun SplashScreen(
             animationSpec = tween(700)
         )
         delay(700)
-        navigateToMenu()
+        navigateToNext()
     }
     
     Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {

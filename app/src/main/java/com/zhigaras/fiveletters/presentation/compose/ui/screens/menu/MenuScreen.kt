@@ -2,6 +2,7 @@ package com.zhigaras.fiveletters.presentation.compose.ui.screens.menu
 
 import android.widget.Toast
 import androidx.activity.compose.BackHandler
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -85,7 +86,8 @@ fun MenuScreen(
             UserStatistics(
                 modifier = it,
                 userStat = userStat,
-                isExpanded = isExpanded
+                isExpanded = isExpanded,
+                getUser = { viewModel.getUser() } //TODO remove after debugging
             )
         },
         {
@@ -104,7 +106,8 @@ fun MenuScreen(
 fun UserStatistics(
     modifier: Modifier = Modifier,
     userStat: UserStat,
-    isExpanded: Boolean
+    isExpanded: Boolean,
+    getUser: () -> Unit
 ) {
     Box(
         modifier = modifier
@@ -126,6 +129,7 @@ fun UserStatistics(
                         modifier = Modifier
                             .align(Alignment.CenterHorizontally)
                             .padding(16.dp)
+                            .clickable { getUser() }
                     )
                 Column(
                     verticalArrangement = Arrangement.spacedBy(8.dp),

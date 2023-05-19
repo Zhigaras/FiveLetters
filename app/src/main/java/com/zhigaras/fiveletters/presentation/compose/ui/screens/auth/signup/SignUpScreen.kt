@@ -1,4 +1,4 @@
-package com.zhigaras.fiveletters.presentation.compose.ui.screens.signup
+package com.zhigaras.fiveletters.presentation.compose.ui.screens.auth.signup
 
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -31,17 +31,19 @@ import com.google.android.gms.auth.api.identity.Identity
 import com.zhigaras.fiveletters.R
 import com.zhigaras.fiveletters.core.presentation.EventEffect
 import com.zhigaras.fiveletters.model.auth.InputFieldType
+import com.zhigaras.fiveletters.model.auth.SignUpResult
 import com.zhigaras.fiveletters.presentation.compose.ui.screens.menu.CommonButton
-import com.zhigaras.fiveletters.presentation.compose.ui.screens.signin.AuthDivider
-import com.zhigaras.fiveletters.presentation.compose.ui.screens.signin.EmailInput
-import com.zhigaras.fiveletters.presentation.compose.ui.screens.signin.PasswordInput
-import com.zhigaras.fiveletters.presentation.compose.ui.screens.signin.RegisterWithGoogleButton
+import com.zhigaras.fiveletters.presentation.compose.ui.screens.auth.AuthDivider
+import com.zhigaras.fiveletters.presentation.compose.ui.screens.auth.EmailInput
+import com.zhigaras.fiveletters.presentation.compose.ui.screens.auth.PasswordInput
+import com.zhigaras.fiveletters.presentation.compose.ui.screens.auth.RegisterWithGoogleButton
 import com.zhigaras.fiveletters.presentation.compose.ui.theme.playScreenMaxWidth
 import com.zhigaras.fiveletters.presentation.compose.ui.theme.semiTransparentBlack
 
 @Composable
 fun SignUpScreen(
     viewModel: SignUpViewModel,
+    navigateToMenu: () -> Unit,
     showSnackBar: suspend (String) -> Unit
 ) {
     val context = LocalContext.current
@@ -55,6 +57,8 @@ fun SignUpScreen(
     EventEffect(event = state.errorEvent, onConsumed = { viewModel.onConsumeError() }) {
         showSnackBar(it.asString(context))
     }
+    
+    if (state.signUpResult is SignUpResult.Success) navigateToMenu()
     
     Box(
         modifier = Modifier.padding(16.dp),
@@ -73,7 +77,8 @@ fun SignUpScreen(
                 modifier = maxWidthModifier,
                 state = state.email,
                 hint = stringResource(R.string.email_hint),
-                onTextChange = { viewModel.onFieldChanged(InputFieldType.EMAIL, it) }
+                onTextChange = { viewModel.onFieldChanged(InputFieldType.EMAIL, it) },
+                onClear = { viewModel.clearEmail() }
             )
             PasswordInput(
                 modifier = maxWidthModifier,

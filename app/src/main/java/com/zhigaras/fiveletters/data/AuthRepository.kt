@@ -2,6 +2,7 @@ package com.zhigaras.fiveletters.data
 
 import com.google.android.gms.auth.api.identity.BeginSignInRequest
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
 import com.zhigaras.fiveletters.core.RegistrationFailed
 import com.zhigaras.fiveletters.core.SigningInFailed
@@ -16,6 +17,8 @@ interface AuthRepository {
     suspend fun getSignInWithGoogleRequest(): BeginSignInRequest
     
     suspend fun changeGoogleIdToCredential(token: String)
+    
+    fun getCurrentUser(): FirebaseUser?
     
     class Base(private val auth: FirebaseAuth) : AuthRepository {
         
@@ -49,6 +52,8 @@ interface AuthRepository {
                 throw SigningInFailed()
             }
         }
+        
+        override fun getCurrentUser(): FirebaseUser? = auth.currentUser //TODO move to needed layer
         
         private companion object {
             const val WEB_CLIENT_ID = //TODO move to BuildConfig

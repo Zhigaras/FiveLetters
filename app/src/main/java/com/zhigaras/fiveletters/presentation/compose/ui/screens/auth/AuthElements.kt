@@ -1,4 +1,4 @@
-package com.zhigaras.fiveletters.presentation.compose.ui.screens.signin
+package com.zhigaras.fiveletters.presentation.compose.ui.screens.auth
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -9,9 +9,12 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.IconToggleButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
@@ -80,7 +83,8 @@ fun EmailInput(
     modifier: Modifier = Modifier,
     state: InputFieldState,
     hint: String,
-    onTextChange: (String) -> Unit
+    onTextChange: (String) -> Unit,
+    onClear: () -> Unit
 ) {
     val errorText: @Composable (() -> Unit)? = if (state.validity is InputFieldValidity.Invalid) {
         { Text(text = stringResource(id = state.validity.error)) }
@@ -96,7 +100,18 @@ fun EmailInput(
         ),
         isError = state.isInvalid,
         onTextChange = onTextChange,
-        supportingText = errorText
+        supportingText = errorText,
+        trailingIcon = {
+            IconButton(
+                modifier = Modifier.padding(end = 5.dp),
+                onClick = onClear
+            ) {
+                Icon(
+                    imageVector = Icons.Default.Clear,
+                    contentDescription = stringResource(R.string.clear)
+                )
+            }
+        }
     )
 }
 

@@ -51,4 +51,7 @@ In order to guess it, enter words of 5 letters into the field, and we will give 
     <string name="couldn_t_start_signing_in_with_google">Couldn`t start signing in with Google</string>
     <string name="no_google_accounts_found">No Google Accounts found</string>
     <string name="token_not_received">Token not received</string>
+    <string name="clear">Clear</string> <!-- TODO translate if needed-->
+    <string name="signing_in_with_google_canceled">Signing in with Google canceled by user</string>
+    <string name="unnamed">Unnamed</string>
 </resources>

@@ -39,3 +39,7 @@ class NoGoogleAccountsFound : OneTapSignInException() {
 class TokenNotReceived : OneTapSignInException() {
     override val messageId: Int = R.string.token_not_received
 }
+
+class OneTapSignInCanceled : OneTapSignInException() {
+    override val messageId: Int = R.string.signing_in_with_google_canceled
+}
