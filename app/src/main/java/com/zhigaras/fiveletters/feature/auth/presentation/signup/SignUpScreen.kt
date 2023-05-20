@@ -21,10 +21,10 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.zhigaras.fiveletters.R
 import com.zhigaras.fiveletters.core.presentation.compose.CircleProgressBar
-import com.zhigaras.fiveletters.core.presentation.compose.EventEffect
+import com.zhigaras.fiveletters.core.presentation.compose.ErrorEffect
 import com.zhigaras.fiveletters.core.presentation.compose.theme.playScreenMaxWidth
 import com.zhigaras.fiveletters.feature.auth.domain.model.InputFieldType
-import com.zhigaras.fiveletters.feature.auth.domain.model.SignUpResult
+import com.zhigaras.fiveletters.feature.auth.domain.model.SignInResult
 import com.zhigaras.fiveletters.feature.auth.presentation.EmailInput
 import com.zhigaras.fiveletters.feature.auth.presentation.PasswordInput
 import com.zhigaras.fiveletters.feature.menu.presentation.CommonButton
@@ -38,11 +38,11 @@ fun SignUpScreen(
     val context = LocalContext.current
     val state by viewModel.getState().collectAsStateWithLifecycle()
     
-    EventEffect(event = state.errorEvent, onConsumed = { viewModel.onConsumeError() }) {
+    ErrorEffect(event = state.errorEvent, onConsumed = { viewModel.onConsumeError() }) {
         showSnackBar(it.asString(context))
     }
     
-    if (state.signUpResult is SignUpResult.Success) navigateToMenu()
+    if (state.signInResult is SignInResult.Success) navigateToMenu()
     
     Box(
         modifier = Modifier.padding(16.dp),

@@ -27,10 +27,10 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.google.android.gms.auth.api.identity.Identity
 import com.zhigaras.fiveletters.R
 import com.zhigaras.fiveletters.core.presentation.compose.CircleProgressBar
-import com.zhigaras.fiveletters.core.presentation.compose.EventEffect
+import com.zhigaras.fiveletters.core.presentation.compose.ErrorEffect
 import com.zhigaras.fiveletters.core.presentation.compose.theme.playScreenMaxWidth
 import com.zhigaras.fiveletters.feature.auth.domain.model.InputFieldType
-import com.zhigaras.fiveletters.feature.auth.domain.model.SignUpResult
+import com.zhigaras.fiveletters.feature.auth.domain.model.SignInResult
 import com.zhigaras.fiveletters.feature.auth.presentation.AuthDivider
 import com.zhigaras.fiveletters.feature.auth.presentation.EmailInput
 import com.zhigaras.fiveletters.feature.auth.presentation.PasswordInput
@@ -52,11 +52,11 @@ fun SignInScreen(
     ) {
         viewModel.changeGoogleIdToCredential(it, signInClient)
     }
-    EventEffect(event = state.errorEvent, onConsumed = { viewModel.onConsumeError() }) {
-        showSnackBar(it.asString(context))
+    ErrorEffect(event = state.errorEvent, onConsumed = { viewModel.onConsumeError() }) {
+        showSnackBar(state.errorEvent.message.asString(context))
     }
     
-    if (state.signUpResult is SignUpResult.Success) navigateToMenu()
+    if (state.signInResult is SignInResult.Success) navigateToMenu()
     
     Box(
         modifier = Modifier.padding(16.dp),

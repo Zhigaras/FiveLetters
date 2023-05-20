@@ -19,4 +19,10 @@ interface UiText {
             return context.getString(resId, *args)
         }
     }
+    
+    object Empty: UiText {
+        override fun asString(context: Context): String {
+            return ""
+        }
+    }
 }

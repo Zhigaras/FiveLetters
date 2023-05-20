@@ -2,8 +2,8 @@ package com.zhigaras.fiveletters.feature.auth.domain.usecases
 
 import com.zhigaras.fiveletters.feature.auth.domain.AuthRepository
 import com.zhigaras.fiveletters.feature.auth.domain.CredentialsValidator
+import com.zhigaras.fiveletters.feature.auth.domain.model.SignInResult
 import com.zhigaras.fiveletters.feature.auth.domain.model.SignInState
-import com.zhigaras.fiveletters.feature.auth.domain.model.SignUpResult
 
 interface SignInWithEmailAndPasswordUseCase {
     
@@ -21,7 +21,7 @@ interface SignInWithEmailAndPasswordUseCase {
                         state.email.value,
                         state.password.value
                     )
-                    return it.copy(signUpResult = SignUpResult.Success)
+                    return it.copy(signInResult = SignInResult.Success)
                 } else return it
             }
         }

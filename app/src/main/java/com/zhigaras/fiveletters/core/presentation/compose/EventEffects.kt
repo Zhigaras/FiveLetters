@@ -2,26 +2,18 @@ package com.zhigaras.fiveletters.core.presentation.compose
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import com.zhigaras.fiveletters.core.presentation.UiText
+import com.zhigaras.fiveletters.feature.auth.domain.model.ErrorEvent
 
 @Composable
-fun EventEffect(event: StateEvent, onConsumed: () -> Unit, action: suspend () -> Unit) {
-    LaunchedEffect(key1 = event, key2 = onConsumed) {
-        if (event is StateEvent.Triggered) {
-            action()
-            onConsumed()
-        }
-    }
-}
-
-@Composable
-fun <T> EventEffect(
-    event: StateEventWithContent<T>,
+fun ErrorEffect(
+    event: ErrorEvent,
     onConsumed: () -> Unit,
-    action: suspend (T) -> Unit
+    action: suspend (UiText) -> Unit
 ) {
-    LaunchedEffect(key1 = event, key2 = onConsumed) {
-        if (event is StateEventWithContentTriggered<T>) {
-            action(event.content)
+    LaunchedEffect(key1 = event) {
+        if (event.isVisible) {
+            action(event.message)
             onConsumed()
         }
     }
