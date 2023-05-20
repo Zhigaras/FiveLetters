@@ -24,10 +24,14 @@ class SignUpViewModel(
     
     fun signUpWithEmailAndPassword() {
         scopeLaunch(
-            context = dispatchers.io()
+            context = dispatchers.io(),
+            onLoading = { setLoading() },
+            onError = { showError(UiText.Resource(it.messageId)); revokeLoading() },
+            onFinally = { revokeLoading() }
         ) {
-            state =
-                signUpWithEmailAndPasswordUseCase.signUpWithEmailAndPassword(state) //TODO refactor
+            signUpWithEmailAndPasswordUseCase.signUpWithEmailAndPassword(state).let {
+                state = it
+            }
         }
     }
     

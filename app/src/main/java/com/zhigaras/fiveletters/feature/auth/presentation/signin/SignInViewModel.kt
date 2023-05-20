@@ -33,6 +33,7 @@ class SignInViewModel(
     
     fun signInWithEmailAndPassword() {
         scopeLaunch(
+            context = dispatchers.io(),
             onLoading = { setLoading() },
             onError = { showError(UiText.Resource(it.messageId)); revokeLoading() },
             onFinally = { revokeLoading() }
@@ -48,6 +49,7 @@ class SignInViewModel(
         signInClient: SignInClient
     ) {
         scopeLaunch(
+            context = dispatchers.io(),
             onLoading = { setLoading() },
             onError = { showError(UiText.Resource(it.messageId)); revokeLoading() }
         ) {
@@ -66,6 +68,7 @@ class SignInViewModel(
     
     fun changeGoogleIdToCredential(result: ActivityResult, signInClient: SignInClient) {
         scopeLaunch(
+            context = dispatchers.io(),
             onLoading = { setLoading() },
             onError = { showError(UiText.Resource(it.messageId)); revokeLoading() },
             onFinally = { revokeLoading() }

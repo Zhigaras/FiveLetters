@@ -3,8 +3,10 @@ package com.zhigaras.fiveletters.feature.auth.data
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.google.firebase.auth.FirebaseAuthInvalidUserException
+import com.google.firebase.auth.FirebaseAuthUserCollisionException
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
+import com.zhigaras.fiveletters.core.EmailIsUsed
 import com.zhigaras.fiveletters.core.InvalidCredentials
 import com.zhigaras.fiveletters.core.InvalidUser
 import com.zhigaras.fiveletters.core.RegistrationFailed
@@ -15,9 +17,14 @@ import kotlinx.coroutines.tasks.await
 class AuthRepositoryImpl(private val auth: FirebaseAuth) : AuthRepository {
     
     override suspend fun createUserWithEmailAndPassword(email: String, password: String) {
-        val user = auth.createUserWithEmailAndPassword(email, password).await().user
-            ?: throw RegistrationFailed()
-        user.sendEmailVerification()
+        try {
+            val user = auth.createUserWithEmailAndPassword(email, password).await().user
+            user?.sendEmailVerification()
+        } catch (e: FirebaseAuthUserCollisionException) {
+            throw EmailIsUsed()
+        } catch (e: Exception) {
+            throw RegistrationFailed()
+        }
     }
     
     override suspend fun signInWithEmailAndPassword(email: String, password: String) {

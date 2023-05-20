@@ -47,6 +47,10 @@
     <string name="couldn_t_start_signing_in_with_google">Вход с помощью Google невозможен</string>
     <string name="no_google_accounts_found">Аккаунтов Google не найдено, проверьте соединение</string>
     <string name="token_not_received">Токен не получен</string>
+    <string name="clear">Очистить</string>
+    <string name="signing_in_with_google_canceled">Вход через Google отменен пользователем</string>
     <string name="log_in_as_a_guest">Войти как гость</string>
     <string name="still_not_registered">До сих пор не зарегистрировались?</string>
+    <string name="invalid_credentials">Email или пароль некорректны. Проверьте их и попробуйте снова. Если ошибка повторяется - нажмите \"Забыли пароль?\"</string>
+    <string name="email_is_used">Этот email уже используется другим аккаунтом</string>
 </resources>

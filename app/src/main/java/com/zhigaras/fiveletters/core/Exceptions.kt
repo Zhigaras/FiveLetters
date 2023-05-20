@@ -14,19 +14,27 @@ class NetworkException : FiveLettersException() {
 
 abstract class AuthException : FiveLettersException()
 
-class RegistrationFailed : AuthException() {
+abstract class RegistrationException : AuthException()
+
+class RegistrationFailed : RegistrationException() {
     override val messageId = R.string.registration_failed
 }
 
-class SigningInFailed : AuthException() {
+class EmailIsUsed : RegistrationException() {
+    override val messageId: Int = R.string.email_is_used
+}
+
+abstract class LoginException : AuthException()
+
+class SigningInFailed : LoginException() {
     override val messageId: Int = R.string.signing_in_failed
 }
 
-class InvalidUser : AuthException() {
+class InvalidUser : LoginException() {
     override val messageId: Int = R.string.invalid_credentials
 }
 
-class InvalidCredentials : AuthException() {
+class InvalidCredentials : LoginException() {
     override val messageId: Int = R.string.invalid_password
 }
 
