@@ -9,12 +9,12 @@ interface SignUpWithEmailAndPasswordUseCase {
     fun signUpWithEmailAndPassword(state: SignUpState): SignUpState
     
     class Base(
-        private val credentialsValidator: CredentialsValidator,
-        private val authRepository: AuthRepository
+        private val authRepository: AuthRepository,
+        private val signUpValidator: CredentialsValidator.SignUpValidator
     ) : SignUpWithEmailAndPasswordUseCase {
         
         override fun signUpWithEmailAndPassword(state: SignUpState): SignUpState {
-            return credentialsValidator.validateSignUp(state)
+            return signUpValidator.validate(state)
 //            authRepository.createUserWithEmailAndPassword(state.email.value, state.password.value)
         
         }

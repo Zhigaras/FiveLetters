@@ -11,7 +11,7 @@ interface GetUserInfoUseCase {
     
     class Base(private val authRepository: AuthRepository) : GetUserInfoUseCase {
         
-        override fun getUser(): MenuUser {
+        override fun getUser(): MenuUser { //TODO remove after debugging
             val currentUser = authRepository.getCurrentUser()
             return MenuUser(
                 name = currentUser?.displayName?.let { UiText.Dynamic(it) }

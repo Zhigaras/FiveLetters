@@ -13,6 +13,6 @@ interface AuthRepository {
     
     suspend fun changeGoogleIdToCredential(token: String)
     
-    fun getCurrentUser(): FirebaseUser?
+    fun getCurrentUser(): FirebaseUser? // TODO remove after debugging
     
 }

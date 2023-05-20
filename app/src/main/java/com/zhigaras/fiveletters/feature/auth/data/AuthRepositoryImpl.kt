@@ -2,8 +2,12 @@ package com.zhigaras.fiveletters.feature.auth.data
 
 import com.google.android.gms.auth.api.identity.BeginSignInRequest
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
+import com.google.firebase.auth.FirebaseAuthInvalidUserException
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
+import com.zhigaras.fiveletters.core.InvalidCredentials
+import com.zhigaras.fiveletters.core.InvalidUser
 import com.zhigaras.fiveletters.core.RegistrationFailed
 import com.zhigaras.fiveletters.core.SigningInFailed
 import com.zhigaras.fiveletters.feature.auth.domain.AuthRepository
@@ -18,8 +22,14 @@ class AuthRepositoryImpl(private val auth: FirebaseAuth) : AuthRepository {
     }
     
     override suspend fun signInWithEmailAndPassword(email: String, password: String) {
-        auth.signInWithEmailAndPassword(email, password).addOnCompleteListener {
-            if (!it.isSuccessful) throw SigningInFailed()
+        try {
+            auth.signInWithEmailAndPassword(email, password).await().user
+        } catch (e: FirebaseAuthInvalidUserException) {
+            throw InvalidUser()
+        } catch (e: FirebaseAuthInvalidCredentialsException) {
+            throw InvalidCredentials()
+        } catch (e: Exception) {
+            throw SigningInFailed()
         }
     }
     

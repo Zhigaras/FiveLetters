@@ -3,9 +3,11 @@ package com.zhigaras.fiveletters.di
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.zhigaras.fiveletters.feature.auth.data.AuthRepositoryImpl
-import com.zhigaras.fiveletters.feature.auth.data.CredentialsValidatorImpl
+import com.zhigaras.fiveletters.feature.auth.data.SignInValidatorImpl
+import com.zhigaras.fiveletters.feature.auth.data.SignUpValidatorImpl
+import com.zhigaras.fiveletters.feature.auth.domain.usecases.SignInWithEmailAndPasswordUseCase
 import com.zhigaras.fiveletters.feature.auth.domain.usecases.SignUpWithEmailAndPasswordUseCase
-import com.zhigaras.fiveletters.feature.auth.domain.usecases.SignWithGoogleUseCase
+import com.zhigaras.fiveletters.feature.auth.domain.usecases.SignInWithGoogleUseCase
 import com.zhigaras.fiveletters.feature.auth.presentation.signin.SignInViewModel
 import com.zhigaras.fiveletters.feature.auth.presentation.signup.SignUpViewModel
 import com.zhigaras.fiveletters.feature.menu.data.RulesRepositoryImpl
@@ -52,14 +54,13 @@ class ViewModelFactory(
             )
             
             SignInViewModel::class.java -> SignInViewModel(
-                AuthRepositoryImpl(core.provideFirebaseAuth()),
-                CredentialsValidatorImpl(),
+                SignInWithEmailAndPasswordUseCase.Base(authRepository, SignInValidatorImpl()),
+                SignInWithGoogleUseCase.Base(authRepository),
                 dispatchers
             )
             
             SignUpViewModel::class.java -> SignUpViewModel(
-                SignWithGoogleUseCase.Base(authRepository),
-                SignUpWithEmailAndPasswordUseCase.Base(CredentialsValidatorImpl(), authRepository),
+                SignUpWithEmailAndPasswordUseCase.Base(authRepository, SignUpValidatorImpl()),
                 dispatchers
             )
             

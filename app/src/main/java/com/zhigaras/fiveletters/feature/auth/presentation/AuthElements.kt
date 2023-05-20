@@ -1,5 +1,6 @@
 package com.zhigaras.fiveletters.feature.auth.presentation
 
+import androidx.annotation.StringRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Row
@@ -168,7 +169,8 @@ fun PasswordInput(
 
 @Composable
 fun AuthDivider(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    @StringRes textId: Int
 ) {
     Row(
         modifier = modifier,
@@ -176,7 +178,7 @@ fun AuthDivider(
     ) {
         AuthDividerSpacer(modifier.weight(1f))
         Text(
-            text = stringResource(R.string.or),
+            text = stringResource(textId),
             style = MaterialTheme.typography.titleSmall
         )
         AuthDividerSpacer(modifier.weight(1f))
@@ -196,7 +198,7 @@ fun AuthDividerSpacer(
 }
 
 @Composable
-fun RegisterWithGoogleButton(
+fun SignInWithGoogleButton(
     modifier: Modifier = Modifier,
     onClick: () -> Unit
 ) {

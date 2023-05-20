@@ -41,11 +41,11 @@ fun FiveLettersNavHost(
     val gameState by playViewModel.getState().collectAsStateWithLifecycle()
     AnimatedNavHost(
         navController = navController,
-        startDestination =
-        if (needToShowSplash) Destination.Splash.route
-        else if (needToAuth) Destination.SignIn.route
-        else Destination.Menu.route,
-//        startDestination = Destination.SignIn.route,
+//        startDestination =
+//        if (needToShowSplash) Destination.Splash.route
+//        else if (needToAuth) Destination.SignIn.route
+//        else Destination.Menu.route,
+        startDestination = Destination.SignIn.route,
         modifier = modifier.fillMaxSize()
     ) {
         composable(
@@ -63,7 +63,9 @@ fun FiveLettersNavHost(
         composable(route = Destination.SignIn.route) {
             SignInScreen(
                 viewModel = signInViewModel,
-                toSignUpScreen = { navController.navigate(Destination.SignUp.route) }
+                showSnackBar = showSnackBar,
+                navigateToSignUpScreen = { navController.navigate(Destination.SignUp.route) },
+                navigateToMenu = { navController.navigateWithClearBackStack(Destination.Menu.route) }
             )
         }
         composable(route = Destination.SignUp.route) {

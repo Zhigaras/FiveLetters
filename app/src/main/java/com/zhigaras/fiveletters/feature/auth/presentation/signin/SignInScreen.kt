@@ -1,9 +1,12 @@
 package com.zhigaras.fiveletters.feature.auth.presentation.signin
 
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.widthIn
@@ -16,24 +19,44 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.google.android.gms.auth.api.identity.Identity
 import com.zhigaras.fiveletters.R
+import com.zhigaras.fiveletters.core.presentation.compose.CircleProgressBar
+import com.zhigaras.fiveletters.core.presentation.compose.EventEffect
 import com.zhigaras.fiveletters.core.presentation.compose.theme.playScreenMaxWidth
 import com.zhigaras.fiveletters.feature.auth.domain.model.InputFieldType
+import com.zhigaras.fiveletters.feature.auth.domain.model.SignUpResult
 import com.zhigaras.fiveletters.feature.auth.presentation.AuthDivider
 import com.zhigaras.fiveletters.feature.auth.presentation.EmailInput
 import com.zhigaras.fiveletters.feature.auth.presentation.PasswordInput
+import com.zhigaras.fiveletters.feature.auth.presentation.SignInWithGoogleButton
 import com.zhigaras.fiveletters.feature.menu.presentation.CommonButton
 
 @Composable
 fun SignInScreen(
     viewModel: SignInViewModel,
-    toSignUpScreen: () -> Unit
+    showSnackBar: suspend (String) -> Unit,
+    navigateToSignUpScreen: () -> Unit,
+    navigateToMenu: () -> Unit
 ) {
+    val context = LocalContext.current
     val state by viewModel.getState().collectAsStateWithLifecycle()
+    val signInClient = Identity.getSignInClient(context)
+    val signWithGoogleLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.StartIntentSenderForResult()
+    ) {
+        viewModel.changeGoogleIdToCredential(it, signInClient)
+    }
+    EventEffect(event = state.errorEvent, onConsumed = { viewModel.onConsumeError() }) {
+        showSnackBar(it.asString(context))
+    }
+    
+    if (state.signUpResult is SignUpResult.Success) navigateToMenu()
     
     Box(
         modifier = Modifier.padding(16.dp),
@@ -61,13 +84,13 @@ fun SignInScreen(
                 hint = stringResource(R.string.password),
                 isLastInColumn = true,
                 onTextChange = { viewModel.onFieldChanged(InputFieldType.PASSWORD, it) },
-                onDone = { viewModel.signIn() }
+                onDone = { viewModel.signInWithEmailAndPassword() }
             )
             Box(
                 modifier = maxWidthModifier,
                 contentAlignment = Alignment.CenterEnd
             ) {
-                TextButton(onClick = { /*TODO*/ }) {
+                TextButton(onClick = { viewModel.forgotPassword() }) {
                     Text(
                         text = stringResource(R.string.forgot_password),
                         textDecoration = TextDecoration.Underline
@@ -79,15 +102,32 @@ fun SignInScreen(
                 text = stringResource(R.string.sign_in),
                 textStyle = MaterialTheme.typography.titleLarge,
                 enabled = state.isCompletelyFilled,
-                onClick = { viewModel.signIn() }
+                onClick = { viewModel.signInWithEmailAndPassword() }
             )
-            AuthDivider()
+            AuthDivider(textId = R.string.or)
+            SignInWithGoogleButton(
+                modifier = maxWidthModifier,
+                onClick = { viewModel.signInWithGoogle(signWithGoogleLauncher, signInClient) }
+            )
+            AuthDivider(textId = R.string.or)
+            CommonButton(
+                modifier = maxWidthModifier,
+                text = stringResource(id = R.string.log_in_as_a_guest),
+                textStyle = MaterialTheme.typography.titleLarge,
+                onClick = { viewModel.logInAsGuest() }
+            )
+            AuthDivider(textId = R.string.still_not_registered)
             CommonButton(
                 modifier = maxWidthModifier,
                 text = stringResource(id = R.string.sign_up),
                 textStyle = MaterialTheme.typography.titleLarge,
-                onClick = toSignUpScreen
+                onClick = navigateToSignUpScreen
             )
         }
     }
+    
+    CircleProgressBar(
+        modifier = Modifier.fillMaxSize(),
+        state = state.isLoading
+    )
 }

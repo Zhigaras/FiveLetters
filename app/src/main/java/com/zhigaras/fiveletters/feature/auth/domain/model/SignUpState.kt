@@ -9,6 +9,7 @@ data class SignUpState(
     val password: InputFieldState = InputFieldState(),
     val passwordRepeat: InputFieldState = InputFieldState(),
     val isLoading: Boolean = false,
+    val isValid: Boolean = true,
     val errorEvent: StateEventWithContent<UiText> = consumed(),
     val signUpResult: SignUpResult = SignUpResult.Undefined
 ) {

@@ -47,4 +47,6 @@
     <string name="couldn_t_start_signing_in_with_google">Вход с помощью Google невозможен</string>
     <string name="no_google_accounts_found">Аккаунтов Google не найдено, проверьте соединение</string>
     <string name="token_not_received">Токен не получен</string>
+    <string name="log_in_as_a_guest">Войти как гость</string>
+    <string name="still_not_registered">До сих пор не зарегистрировались?</string>
 </resources>

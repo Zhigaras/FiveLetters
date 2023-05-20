@@ -22,6 +22,14 @@ class SigningInFailed : AuthException() {
     override val messageId: Int = R.string.signing_in_failed
 }
 
+class InvalidUser : AuthException() {
+    override val messageId: Int = R.string.invalid_credentials
+}
+
+class InvalidCredentials : AuthException() {
+    override val messageId: Int = R.string.invalid_password
+}
+
 abstract class OneTapSignInException : AuthException()
 
 class CouldNotStartOneTapSignIn : OneTapSignInException() {

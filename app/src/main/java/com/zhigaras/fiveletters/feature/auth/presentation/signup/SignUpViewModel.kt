@@ -1,9 +1,5 @@
 package com.zhigaras.fiveletters.feature.auth.presentation.signup
 
-import androidx.activity.compose.ManagedActivityResultLauncher
-import androidx.activity.result.ActivityResult
-import androidx.activity.result.IntentSenderRequest
-import com.google.android.gms.auth.api.identity.SignInClient
 import com.zhigaras.fiveletters.core.presentation.BaseViewModel
 import com.zhigaras.fiveletters.core.presentation.UiText
 import com.zhigaras.fiveletters.core.presentation.compose.consumed
@@ -11,13 +7,10 @@ import com.zhigaras.fiveletters.core.presentation.compose.triggered
 import com.zhigaras.fiveletters.di.DispatchersModule
 import com.zhigaras.fiveletters.feature.auth.domain.model.InputFieldState
 import com.zhigaras.fiveletters.feature.auth.domain.model.InputFieldType
-import com.zhigaras.fiveletters.feature.auth.domain.model.SignUpResult
 import com.zhigaras.fiveletters.feature.auth.domain.model.SignUpState
 import com.zhigaras.fiveletters.feature.auth.domain.usecases.SignUpWithEmailAndPasswordUseCase
-import com.zhigaras.fiveletters.feature.auth.domain.usecases.SignWithGoogleUseCase
 
 class SignUpViewModel(
-    private val signInWithGoogleUseCase: SignWithGoogleUseCase,
     private val signUpWithEmailAndPasswordUseCase: SignUpWithEmailAndPasswordUseCase,
     private val dispatchers: DispatchersModule
 ) : BaseViewModel<SignUpState>(SignUpState()) {
@@ -30,10 +23,6 @@ class SignUpViewModel(
         }
     }
     
-    fun clearEmail() {
-        state = state.copy(email = InputFieldState(""))
-    }
-    
     fun signUpWithEmailAndPassword() {
         scopeLaunch(
             context = dispatchers.io()
@@ -43,27 +32,8 @@ class SignUpViewModel(
         }
     }
     
-    fun signUpWithGoogle(
-        signWithGoogleLauncher: ManagedActivityResultLauncher<IntentSenderRequest, ActivityResult>,
-        signInClient: SignInClient
-    ) {
-        scopeLaunch(
-            onLoading = { setLoading() },
-            onError = { showError(UiText.Resource(it.messageId)); revokeLoading() }
-        ) {
-            signInWithGoogleUseCase.signInWithGoogle(signWithGoogleLauncher, signInClient)
-        }
-    }
-    
-    fun changeGoogleIdToCredential(token: String?) {
-        scopeLaunch(
-            onLoading = { setLoading() },
-            onError = { showError(UiText.Resource(it.messageId)); revokeLoading() },
-            onFinally = { revokeLoading() }
-        ) {
-            signInWithGoogleUseCase.changeGoogleIdToCredential(token)
-            state = state.copy(signUpResult = SignUpResult.Success)
-        }
+    fun clearEmail() {
+        state = state.copy(email = InputFieldState(""))
     }
     
     private fun setLoading() {

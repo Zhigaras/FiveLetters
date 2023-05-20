@@ -5,8 +5,15 @@ import com.zhigaras.fiveletters.feature.auth.domain.model.SignUpState
 
 interface CredentialsValidator {
     
-    fun validateSignIn(state: SignInState): SignInState
+    interface SignInValidator : CredentialsValidator {
+        
+        fun validate(state: SignInState): SignInState
+    }
     
-    fun validateSignUp(state: SignUpState): SignUpState
+    interface SignUpValidator : CredentialsValidator {
+        
+        fun validate(state: SignUpState): SignUpState
+        
+    }
     
 }

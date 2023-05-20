@@ -16,18 +16,18 @@ import com.zhigaras.fiveletters.core.TokenNotReceived
 import com.zhigaras.fiveletters.feature.auth.domain.AuthRepository
 import kotlinx.coroutines.tasks.await
 
-interface SignWithGoogleUseCase {
+interface SignInWithGoogleUseCase {
     
     suspend fun signInWithGoogle(
         signWithGoogleLauncher: ManagedActivityResultLauncher<IntentSenderRequest, ActivityResult>,
         signInClient: SignInClient
     )
     
-    suspend fun changeGoogleIdToCredential(token: String?)
+    suspend fun changeGoogleIdToCredential(result: ActivityResult, signInClient: SignInClient)
     
     class Base(
         private val authRepository: AuthRepository
-    ) : SignWithGoogleUseCase {
+    ) : SignInWithGoogleUseCase {
         
         override suspend fun signInWithGoogle(
             signWithGoogleLauncher: ManagedActivityResultLauncher<IntentSenderRequest, ActivityResult>,
@@ -50,9 +50,11 @@ interface SignWithGoogleUseCase {
         }
         
         override suspend fun changeGoogleIdToCredential(
-            token: String?
+            result: ActivityResult,
+            signInClient: SignInClient
         ) {
             try {
+                val token = signInClient.getSignInCredentialFromIntent(result.data).googleIdToken
                 if (token != null) {
                     authRepository.changeGoogleIdToCredential(token)
                 } else {
