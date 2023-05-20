@@ -45,6 +45,6 @@
     <string name="couldn_t_get_credentials">Невозможно получить учетные данные</string>
     <string name="check_internet_connection">Проверьте соединение</string>
     <string name="couldn_t_start_signing_in_with_google">Вход с помощью Google невозможен</string>
-    <string name="no_google_accounts_found">Аккаунтов Google не найдено</string>
+    <string name="no_google_accounts_found">Аккаунтов Google не найдено, проверьте соединение</string>
     <string name="token_not_received">Токен не получен</string>
 </resources>

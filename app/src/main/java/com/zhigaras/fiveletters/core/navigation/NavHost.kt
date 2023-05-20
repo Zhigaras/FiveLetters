@@ -55,7 +55,7 @@ fun FiveLettersNavHost(
             SplashScreen(
                 navigateToNext = {
                     navController.navigateWithClearBackStack(
-                        if (needToAuth) Destination.SignIn.route else Destination.SignIn.route
+                        if (needToAuth) Destination.SignIn.route else Destination.Menu.route
                     )
                 }
             )

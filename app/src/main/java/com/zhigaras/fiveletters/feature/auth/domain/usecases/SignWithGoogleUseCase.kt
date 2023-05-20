@@ -1,5 +1,6 @@
 package com.zhigaras.fiveletters.feature.auth.domain.usecases
 
+import android.util.Log
 import androidx.activity.compose.ManagedActivityResultLauncher
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.IntentSenderRequest
@@ -22,7 +23,7 @@ interface SignWithGoogleUseCase {
         signInClient: SignInClient
     )
     
-    suspend fun changeGoogleIdToCredential(result: ActivityResult, signInClient: SignInClient)
+    suspend fun changeGoogleIdToCredential(token: String?)
     
     class Base(
         private val authRepository: AuthRepository
@@ -43,16 +44,15 @@ interface SignWithGoogleUseCase {
                     throw CouldNotStartOneTapSignIn()
                 }
             } catch (e: Exception) {
+                Log.d("AAA", e.message.toString()) //TODO remove
                 throw NoGoogleAccountsFound()
             }
         }
         
         override suspend fun changeGoogleIdToCredential(
-            result: ActivityResult,
-            signInClient: SignInClient
+            token: String?
         ) {
             try {
-                val token = signInClient.getSignInCredentialFromIntent(result.data).googleIdToken
                 if (token != null) {
                     authRepository.changeGoogleIdToCredential(token)
                 } else {

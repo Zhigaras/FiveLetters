@@ -30,7 +30,9 @@ class AuthRepositoryImpl(private val auth: FirebaseAuth) : AuthRepository {
                 .setServerClientId(WEB_CLIENT_ID)
                 .setFilterByAuthorizedAccounts(false)
                 .build()
-        ).build()
+        )
+            .setAutoSelectEnabled(true) //TODO check if it needed or not
+            .build()
     }
     
     override suspend fun changeGoogleIdToCredential(token: String) {

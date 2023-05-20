@@ -52,7 +52,8 @@ fun SignUpScreen(
     val signWithGoogleLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.StartIntentSenderForResult()
     ) {
-        viewModel.changeGoogleIdToCredential(it, signInClient)
+        val token = signInClient.getSignInCredentialFromIntent(it.data).googleIdToken
+        viewModel.changeGoogleIdToCredential(token)
     }
     EventEffect(event = state.errorEvent, onConsumed = { viewModel.onConsumeError() }) {
         showSnackBar(it.asString(context))

@@ -2,6 +2,7 @@ package com.zhigaras.fiveletters.core.presentation
 
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
@@ -32,6 +33,7 @@ class MainActivity : ComponentActivity(), ProvideViewModel {
         super.onCreate(savedInstanceState)
         val auth = Firebase.auth //TODO maybe remain that way
         val needToAuth = auth.currentUser == null
+        Log.d("AAA", auth.currentUser?.email.toString()) //TODO remove
         val menuViewModel = provideViewModel(MenuViewModel::class.java, this)
         playViewModel = provideViewModel(PlayViewModel::class.java, this)
         val signInViewModel = provideViewModel(SignInViewModel::class.java, this)

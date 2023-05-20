@@ -55,13 +55,13 @@ class SignUpViewModel(
         }
     }
     
-    fun changeGoogleIdToCredential(result: ActivityResult, signInClient: SignInClient) {
+    fun changeGoogleIdToCredential(token: String?) {
         scopeLaunch(
             onLoading = { setLoading() },
             onError = { showError(UiText.Resource(it.messageId)); revokeLoading() },
             onFinally = { revokeLoading() }
         ) {
-            signInWithGoogleUseCase.changeGoogleIdToCredential(result, signInClient)
+            signInWithGoogleUseCase.changeGoogleIdToCredential(token)
             state = state.copy(signUpResult = SignUpResult.Success)
         }
     }
