@@ -1,6 +1,5 @@
 package com.zhigaras.fiveletters.feature.auth.data
 
-import com.google.android.gms.auth.api.identity.BeginSignInRequest
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.google.firebase.auth.FirebaseAuthInvalidUserException
@@ -33,18 +32,6 @@ class AuthRepositoryImpl(private val auth: FirebaseAuth) : AuthRepository {
         }
     }
     
-    override suspend fun getSignInWithGoogleRequest(): BeginSignInRequest {
-        return BeginSignInRequest.builder().setGoogleIdTokenRequestOptions(
-            BeginSignInRequest.GoogleIdTokenRequestOptions.builder()
-                .setSupported(true)
-                .setServerClientId(WEB_CLIENT_ID)
-                .setFilterByAuthorizedAccounts(false)
-                .build()
-        )
-            .setAutoSelectEnabled(true) //TODO check if it needed or not
-            .build()
-    }
-    
     override suspend fun changeGoogleIdToCredential(token: String) {
         val firebaseCredentials = GoogleAuthProvider.getCredential(token, null)
         try {
@@ -56,8 +43,4 @@ class AuthRepositoryImpl(private val auth: FirebaseAuth) : AuthRepository {
     
     override fun getCurrentUser(): FirebaseUser? = auth.currentUser //TODO move to needed layer
     
-    private companion object {
-        const val WEB_CLIENT_ID = //TODO move to BuildConfig
-            "470265061278-l6757bt5k9q6eh7bls1hs2vs9m1a93si.apps.googleusercontent.com"
-    }
 }

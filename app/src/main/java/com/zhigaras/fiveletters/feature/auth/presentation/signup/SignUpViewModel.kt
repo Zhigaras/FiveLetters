@@ -2,9 +2,8 @@ package com.zhigaras.fiveletters.feature.auth.presentation.signup
 
 import com.zhigaras.fiveletters.core.presentation.BaseViewModel
 import com.zhigaras.fiveletters.core.presentation.UiText
-import com.zhigaras.fiveletters.core.presentation.compose.consumed
-import com.zhigaras.fiveletters.core.presentation.compose.triggered
 import com.zhigaras.fiveletters.di.DispatchersModule
+import com.zhigaras.fiveletters.feature.auth.domain.model.ErrorEvent
 import com.zhigaras.fiveletters.feature.auth.domain.model.InputFieldState
 import com.zhigaras.fiveletters.feature.auth.domain.model.InputFieldType
 import com.zhigaras.fiveletters.feature.auth.domain.model.SignUpState
@@ -45,10 +44,10 @@ class SignUpViewModel(
     }
     
     private fun showError(message: UiText) {
-        state = state.copy(errorEvent = triggered(message))
+        state = state.copy(errorEvent = ErrorEvent(message).also { it.trigger() })
     }
     
     fun onConsumeError() {
-        state = state.copy(errorEvent = consumed())
+        state = state.copy(errorEvent = ErrorEvent.CONSUMED)
     }
 }

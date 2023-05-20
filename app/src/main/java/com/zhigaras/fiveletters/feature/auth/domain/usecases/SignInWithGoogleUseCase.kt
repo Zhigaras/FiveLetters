@@ -1,9 +1,9 @@
 package com.zhigaras.fiveletters.feature.auth.domain.usecases
 
-import android.util.Log
 import androidx.activity.compose.ManagedActivityResultLauncher
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.IntentSenderRequest
+import com.google.android.gms.auth.api.identity.BeginSignInRequest
 import com.google.android.gms.auth.api.identity.SignInClient
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.common.api.CommonStatusCodes
@@ -35,7 +35,7 @@ interface SignInWithGoogleUseCase {
         ) {
             try {
                 val signInResult =
-                    signInClient.beginSignIn(authRepository.getSignInWithGoogleRequest()).await()
+                    signInClient.beginSignIn(getSignInWithGoogleRequest()).await()
                 try {
                     signWithGoogleLauncher.launch(
                         IntentSenderRequest.Builder(signInResult.pendingIntent).build()
@@ -44,7 +44,6 @@ interface SignInWithGoogleUseCase {
                     throw CouldNotStartOneTapSignIn()
                 }
             } catch (e: Exception) {
-                Log.d("AAA", e.message.toString()) //TODO remove
                 throw NoGoogleAccountsFound()
             }
         }
@@ -67,6 +66,23 @@ interface SignInWithGoogleUseCase {
                     else -> throw CouldNotGetCredentials()
                 }
             }
+        }
+        
+        private fun getSignInWithGoogleRequest(): BeginSignInRequest {
+            return BeginSignInRequest.builder().setGoogleIdTokenRequestOptions(
+                BeginSignInRequest.GoogleIdTokenRequestOptions.builder()
+                    .setSupported(true)
+                    .setServerClientId(WEB_CLIENT_ID)
+                    .setFilterByAuthorizedAccounts(false)
+                    .build()
+            )
+                .setAutoSelectEnabled(true) //TODO check if it needed or not
+                .build()
+        }
+        
+        private companion object {
+            const val WEB_CLIENT_ID = //TODO move to BuildConfig
+                "470265061278-l6757bt5k9q6eh7bls1hs2vs9m1a93si.apps.googleusercontent.com"
         }
     }
 }
