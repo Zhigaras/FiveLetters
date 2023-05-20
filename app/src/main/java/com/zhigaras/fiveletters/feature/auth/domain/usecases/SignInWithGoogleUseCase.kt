@@ -7,12 +7,12 @@ import com.google.android.gms.auth.api.identity.BeginSignInRequest
 import com.google.android.gms.auth.api.identity.SignInClient
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.common.api.CommonStatusCodes
-import com.zhigaras.fiveletters.core.CouldNotGetCredentials
-import com.zhigaras.fiveletters.core.CouldNotStartOneTapSignIn
-import com.zhigaras.fiveletters.core.NetworkException
-import com.zhigaras.fiveletters.core.NoGoogleAccountsFound
-import com.zhigaras.fiveletters.core.OneTapSignInCanceled
-import com.zhigaras.fiveletters.core.TokenNotReceived
+import com.zhigaras.fiveletters.feature.auth.core.CouldNotGetCredentials
+import com.zhigaras.fiveletters.feature.auth.core.CouldNotStartOneTapSignIn
+import com.zhigaras.fiveletters.feature.auth.core.NetworkException
+import com.zhigaras.fiveletters.feature.auth.core.NoGoogleAccountsFound
+import com.zhigaras.fiveletters.feature.auth.core.OneTapSignInCanceled
+import com.zhigaras.fiveletters.feature.auth.core.TokenNotReceived
 import com.zhigaras.fiveletters.feature.auth.domain.AuthRepository
 import kotlinx.coroutines.tasks.await
 

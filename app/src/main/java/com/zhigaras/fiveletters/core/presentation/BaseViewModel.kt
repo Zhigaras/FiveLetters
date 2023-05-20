@@ -2,7 +2,7 @@ package com.zhigaras.fiveletters.core.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.zhigaras.fiveletters.core.FiveLettersException
+import com.zhigaras.fiveletters.feature.auth.core.FiveLettersException
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow

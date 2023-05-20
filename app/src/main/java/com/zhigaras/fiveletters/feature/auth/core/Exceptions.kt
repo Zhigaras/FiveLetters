@@ -1,4 +1,4 @@
-package com.zhigaras.fiveletters.core
+package com.zhigaras.fiveletters.feature.auth.core
 
 import com.zhigaras.fiveletters.R
 
@@ -36,6 +36,10 @@ class InvalidUser : LoginException() {
 
 class InvalidCredentials : LoginException() {
     override val messageId: Int = R.string.invalid_password
+}
+
+class TooManyRequests : LoginException() {
+    override val messageId: Int = R.string.accaunt_disabled
 }
 
 abstract class OneTapSignInException : AuthException()
