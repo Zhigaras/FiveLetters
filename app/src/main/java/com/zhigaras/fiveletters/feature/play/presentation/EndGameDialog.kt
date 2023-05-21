@@ -17,10 +17,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import com.zhigaras.fiveletters.R
+import com.zhigaras.fiveletters.core.presentation.compose.CommonTextButton
 import com.zhigaras.fiveletters.core.presentation.compose.theme.gray
 import com.zhigaras.fiveletters.core.presentation.compose.theme.white
 import com.zhigaras.fiveletters.core.presentation.compose.theme.yellow
-import com.zhigaras.fiveletters.feature.menu.presentation.CommonButton
 
 @Composable
 fun EndGameDialog(
@@ -56,14 +56,14 @@ fun EndGameDialog(
                     modifier = modifier
                 )
                 content(Modifier.padding(bottom = 16.dp))
-                CommonButton(
+                CommonTextButton(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(horizontal = 16.dp),
                     text = stringResource(R.string.to_menu),
                     onClick = toMenuClick
                 )
-                CommonButton(
+                CommonTextButton(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(16.dp),

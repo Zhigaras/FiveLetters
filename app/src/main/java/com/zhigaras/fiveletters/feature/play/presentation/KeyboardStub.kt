@@ -10,8 +10,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.zhigaras.fiveletters.R
+import com.zhigaras.fiveletters.core.presentation.compose.CommonTextButton
 import com.zhigaras.fiveletters.core.presentation.compose.theme.playScreenMaxWidth
-import com.zhigaras.fiveletters.feature.menu.presentation.CommonButton
 
 @Composable
 fun KeyboardStub(
@@ -25,14 +25,14 @@ fun KeyboardStub(
             .widthIn(max = playScreenMaxWidth),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        CommonButton(
+        CommonTextButton(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(top = 4.dp),
             text = stringResource(R.string.to_menu),
             onClick = onBackClick
         )
-        CommonButton(
+        CommonTextButton(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(vertical = 16.dp),

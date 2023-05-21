@@ -23,6 +23,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.google.android.gms.auth.api.identity.Identity
 import com.zhigaras.fiveletters.R
 import com.zhigaras.fiveletters.core.presentation.compose.CircleProgressBar
+import com.zhigaras.fiveletters.core.presentation.compose.CommonTextButton
 import com.zhigaras.fiveletters.core.presentation.compose.DoublePressBackHandler
 import com.zhigaras.fiveletters.core.presentation.compose.ErrorEffect
 import com.zhigaras.fiveletters.core.presentation.compose.theme.screenEdgePadding
@@ -32,7 +33,6 @@ import com.zhigaras.fiveletters.feature.auth.presentation.AuthDivider
 import com.zhigaras.fiveletters.feature.auth.presentation.EmailInput
 import com.zhigaras.fiveletters.feature.auth.presentation.PasswordInput
 import com.zhigaras.fiveletters.feature.auth.presentation.SignInWithGoogleButton
-import com.zhigaras.fiveletters.feature.menu.presentation.CommonButton
 
 @Composable
 fun SignInScreen(
@@ -92,7 +92,7 @@ fun SignInScreen(
                 )
             }
         }
-        CommonButton(
+        CommonTextButton(
             modifier = modifier,
             text = stringResource(R.string.sign_in),
             enabled = state.isCompletelyFilled,
@@ -104,13 +104,13 @@ fun SignInScreen(
             onClick = { viewModel.signInWithGoogle(signWithGoogleLauncher, signInClient) }
         )
         AuthDivider(modifier = modifier, textId = R.string.or)
-        CommonButton(
+        CommonTextButton(
             modifier = modifier,
             text = stringResource(id = R.string.log_in_as_a_guest),
             onClick = { viewModel.signInAnonymously() }
         )
         AuthDivider(modifier = modifier, textId = R.string.still_not_registered)
-        CommonButton(
+        CommonTextButton(
             modifier.padding(bottom = screenEdgePadding),
             text = stringResource(id = R.string.sign_up),
             onClick = navigateToSignUpScreen

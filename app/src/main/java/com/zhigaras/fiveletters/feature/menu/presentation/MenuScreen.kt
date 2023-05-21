@@ -11,33 +11,27 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Info
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.ShapeDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.zhigaras.fiveletters.R
 import com.zhigaras.fiveletters.core.presentation.compose.DoublePressBackHandler
 import com.zhigaras.fiveletters.core.presentation.compose.OrientationSwapper
+import com.zhigaras.fiveletters.core.presentation.compose.SingleClickButton
 import com.zhigaras.fiveletters.core.presentation.compose.theme.black
-import com.zhigaras.fiveletters.core.presentation.compose.theme.gray
 import com.zhigaras.fiveletters.core.presentation.compose.theme.yellow
 import com.zhigaras.fiveletters.feature.menu.domain.model.UserStat
 import com.zhigaras.fiveletters.feature.play.domain.model.ProgressState
@@ -190,54 +184,4 @@ fun PlayButtonArea(
             )
         }
     }
-}
-
-@Composable
-fun CommonButton(
-    modifier: Modifier = Modifier,
-    text: String,
-    textStyle: TextStyle = MaterialTheme.typography.titleMedium,
-    enabled: Boolean = true,
-    onClick: () -> Unit
-) {
-    Button(
-        modifier = modifier,
-        onClick = { onClick() },
-        shape = ShapeDefaults.Medium,
-        enabled = enabled,
-        colors = ButtonDefaults.buttonColors(
-            containerColor = yellow,
-            disabledContainerColor = gray
-        )
-    ) {
-        Text(
-            text = text,
-            style = textStyle.copy(color = black),
-            modifier = Modifier.padding(horizontal = 16.dp),
-            textAlign = TextAlign.Center
-        )
-    }
-}
-
-@Composable
-fun SingleClickButton(
-    modifier: Modifier = Modifier,
-    text: String,
-    textStyle: TextStyle = MaterialTheme.typography.titleMedium,
-    clickDisabledPeriod: Long = 1000L,
-    onClick: () -> Unit
-) {
-    var lastClickTime by remember { mutableStateOf(0L) }
-    
-    CommonButton(
-        modifier = modifier,
-        text = text,
-        textStyle = textStyle,
-        onClick = {
-            if (lastClickTime + clickDisabledPeriod < System.currentTimeMillis()) {
-                onClick()
-                lastClickTime = System.currentTimeMillis()
-            }
-        }
-    )
 }

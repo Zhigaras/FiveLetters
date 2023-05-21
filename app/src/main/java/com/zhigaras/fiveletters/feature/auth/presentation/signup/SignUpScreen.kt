@@ -17,13 +17,13 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.zhigaras.fiveletters.R
 import com.zhigaras.fiveletters.core.presentation.compose.CircleProgressBar
+import com.zhigaras.fiveletters.core.presentation.compose.CommonTextButton
 import com.zhigaras.fiveletters.core.presentation.compose.ErrorEffect
 import com.zhigaras.fiveletters.core.presentation.compose.theme.screenEdgePadding
 import com.zhigaras.fiveletters.feature.auth.domain.model.InputFieldType
 import com.zhigaras.fiveletters.feature.auth.domain.model.ProcessResult
 import com.zhigaras.fiveletters.feature.auth.presentation.EmailInput
 import com.zhigaras.fiveletters.feature.auth.presentation.PasswordInput
-import com.zhigaras.fiveletters.feature.menu.presentation.CommonButton
 
 @Composable
 fun SignUpScreen(
@@ -72,7 +72,7 @@ fun SignUpScreen(
             onTextChange = { viewModel.onFieldChanged(InputFieldType.REPEAT_PASSWORD, it) },
             onDone = { viewModel.signUpWithEmailAndPassword() }
         )
-        CommonButton(
+        CommonTextButton(
             modifier = modifier.padding(bottom = screenEdgePadding),
             text = stringResource(id = R.string.sign_up),
             enabled = state.isCompletelyFilled,

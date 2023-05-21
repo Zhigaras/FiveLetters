@@ -19,9 +19,9 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.zhigaras.fiveletters.R
+import com.zhigaras.fiveletters.core.presentation.compose.CommonTextButton
 import com.zhigaras.fiveletters.core.presentation.compose.ErrorEffect
 import com.zhigaras.fiveletters.feature.auth.presentation.EmailInput
-import com.zhigaras.fiveletters.feature.menu.presentation.CommonButton
 
 @Composable
 fun ResetPasswordScreen(
@@ -59,7 +59,7 @@ fun ResetPasswordScreen(
             onClear = { viewModel.clearEmail() },
             onDone = { viewModel.resetPassword() }
         )
-        CommonButton(
+        CommonTextButton(
             modifier = modifier,
             text = stringResource(R.string.send_reset_instruction),
             enabled = state.isCompletelyFilled,
