@@ -18,7 +18,7 @@ import kotlinx.coroutines.tasks.await
 
 interface SignInWithGoogleUseCase {
     
-    suspend fun signInWithGoogle(
+    suspend fun signIn(
         signWithGoogleLauncher: ManagedActivityResultLauncher<IntentSenderRequest, ActivityResult>,
         signInClient: SignInClient
     )
@@ -29,7 +29,7 @@ interface SignInWithGoogleUseCase {
         private val authRepository: AuthRepository
     ) : SignInWithGoogleUseCase {
         
-        override suspend fun signInWithGoogle(
+        override suspend fun signIn(
             signWithGoogleLauncher: ManagedActivityResultLauncher<IntentSenderRequest, ActivityResult>,
             signInClient: SignInClient
         ) {

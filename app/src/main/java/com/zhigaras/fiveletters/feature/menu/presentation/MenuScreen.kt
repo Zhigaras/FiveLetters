@@ -207,7 +207,7 @@ fun PlayButtonArea(
 fun CommonButton(
     modifier: Modifier = Modifier,
     text: String,
-    textStyle: TextStyle,
+    textStyle: TextStyle = MaterialTheme.typography.titleLarge,
     enabled: Boolean = true,
     onClick: () -> Unit
 ) {

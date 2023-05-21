@@ -7,14 +7,14 @@ import com.zhigaras.fiveletters.feature.auth.domain.model.SignInState
 
 interface SignInWithEmailAndPasswordUseCase {
     
-    suspend fun signInWithEmailAndPassword(state: SignInState): SignInState
+    suspend fun signIn(state: SignInState): SignInState
     
     class Base(
         private val authRepository: AuthRepository,
         private val signInValidator: CredentialsValidator.SignInValidator
     ) : SignInWithEmailAndPasswordUseCase {
         
-        override suspend fun signInWithEmailAndPassword(state: SignInState): SignInState {
+        override suspend fun signIn(state: SignInState): SignInState {
             signInValidator.validate(state).let {
                 if (it.isValid) {
                     authRepository.signInWithEmailAndPassword(

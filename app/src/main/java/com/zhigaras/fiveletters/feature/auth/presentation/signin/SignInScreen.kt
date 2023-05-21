@@ -12,11 +12,13 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -46,6 +48,7 @@ fun SignInScreen(
 ) {
     val context = LocalContext.current
     val state by viewModel.getState().collectAsStateWithLifecycle()
+    var showConfirmationDialog by rememberSaveable { mutableStateOf(false) }
     val signInClient = Identity.getSignInClient(context)
     val signWithGoogleLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.StartIntentSenderForResult()
@@ -57,6 +60,15 @@ fun SignInScreen(
     }
     
     if (state.signInResult is SignInResult.Success) navigateToMenu()
+    
+    if (showConfirmationDialog)
+        ResetPasswordDialog(
+            emailState = state.email,
+            onEmailChanged = { viewModel.onFieldChanged(InputFieldType.EMAIL, it) },
+            onClear = { viewModel.clearEmail() },
+            onDismiss = { showConfirmationDialog = false },
+            onConfirmClick = { viewModel.resetPassword() }
+        )
     
     Box(
         modifier = Modifier.padding(16.dp),
@@ -74,7 +86,6 @@ fun SignInScreen(
             EmailInput(
                 modifier = maxWidthModifier,
                 state = state.email,
-                hint = stringResource(R.string.email_hint),
                 onTextChange = { viewModel.onFieldChanged(InputFieldType.EMAIL, it) },
                 onClear = { viewModel.clearEmail() }
             )
@@ -90,7 +101,7 @@ fun SignInScreen(
                 modifier = maxWidthModifier,
                 contentAlignment = Alignment.CenterEnd
             ) {
-                TextButton(onClick = { viewModel.forgotPassword() }) {
+                TextButton(onClick = { showConfirmationDialog = true }) {
                     Text(
                         text = stringResource(R.string.forgot_password),
                         textDecoration = TextDecoration.Underline
@@ -100,7 +111,6 @@ fun SignInScreen(
             CommonButton(
                 modifier = maxWidthModifier,
                 text = stringResource(R.string.sign_in),
-                textStyle = MaterialTheme.typography.titleLarge,
                 enabled = state.isCompletelyFilled,
                 onClick = { viewModel.signInWithEmailAndPassword() }
             )
@@ -113,14 +123,12 @@ fun SignInScreen(
             CommonButton(
                 modifier = maxWidthModifier,
                 text = stringResource(id = R.string.log_in_as_a_guest),
-                textStyle = MaterialTheme.typography.titleLarge,
                 onClick = { viewModel.signInAnonymously() }
             )
             AuthDivider(textId = R.string.still_not_registered)
             CommonButton(
                 modifier = maxWidthModifier,
                 text = stringResource(id = R.string.sign_up),
-                textStyle = MaterialTheme.typography.titleLarge,
                 onClick = navigateToSignUpScreen
             )
         }

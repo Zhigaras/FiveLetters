@@ -12,6 +12,7 @@ import com.zhigaras.fiveletters.feature.auth.domain.model.InputFieldState
 import com.zhigaras.fiveletters.feature.auth.domain.model.InputFieldType
 import com.zhigaras.fiveletters.feature.auth.domain.model.SignInResult
 import com.zhigaras.fiveletters.feature.auth.domain.model.SignInState
+import com.zhigaras.fiveletters.feature.auth.domain.usecases.ForgotPasswordUseCase
 import com.zhigaras.fiveletters.feature.auth.domain.usecases.SignInAnonymouslyUseCase
 import com.zhigaras.fiveletters.feature.auth.domain.usecases.SignInWithEmailAndPasswordUseCase
 import com.zhigaras.fiveletters.feature.auth.domain.usecases.SignInWithGoogleUseCase
@@ -20,7 +21,7 @@ class SignInViewModel(
     private val signInWithEmailAndPasswordUseCase: SignInWithEmailAndPasswordUseCase,
     private val signInWithGoogleUseCase: SignInWithGoogleUseCase,
     private val signInAnonymouslyUseCase: SignInAnonymouslyUseCase,
-//    private val forgotPasswordUseCase: ForgotPasswordUseCase,
+    private val forgotPasswordUseCase: ForgotPasswordUseCase,
     private val dispatchers: DispatchersModule
 ) : BaseViewModel<SignInState>(SignInState()) {
     
@@ -39,7 +40,7 @@ class SignInViewModel(
             onError = { showError(UiText.Resource(it.messageId)); revokeLoading() },
             onFinally = { revokeLoading() }
         ) {
-            signInWithEmailAndPasswordUseCase.signInWithEmailAndPassword(state).let {
+            signInWithEmailAndPasswordUseCase.signIn(state).let {
                 state = it
             }
         }
@@ -54,7 +55,7 @@ class SignInViewModel(
             onLoading = { setLoading() },
             onError = { showError(UiText.Resource(it.messageId)); revokeLoading() }
         ) {
-            signInWithGoogleUseCase.signInWithGoogle(signWithGoogleLauncher, signInClient)
+            signInWithGoogleUseCase.signIn(signWithGoogleLauncher, signInClient)
         }
     }
     
@@ -65,13 +66,15 @@ class SignInViewModel(
             onError = { showError(UiText.Resource(it.messageId)); revokeLoading() },
             onFinally = { revokeLoading() }
         ) {
-            signInAnonymouslyUseCase.signInAnonymously()
+            signInAnonymouslyUseCase.signIn()
             state = state.copy(signInResult = SignInResult.Success)
         }
     }
     
-    fun forgotPassword() {
-    
+    fun resetPassword() {
+        scopeLaunch {
+            forgotPasswordUseCase.resetPassword(state.email.value) //TODO check
+        }
     }
     
     fun changeGoogleIdToCredential(result: ActivityResult, signInClient: SignInClient) {

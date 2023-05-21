@@ -4,11 +4,11 @@ import com.zhigaras.fiveletters.feature.auth.domain.AuthRepository
 
 interface SignInAnonymouslyUseCase {
     
-    suspend fun signInAnonymously()
+    suspend fun signIn()
     
     class Base(private val authRepository: AuthRepository) : SignInAnonymouslyUseCase {
         
-        override suspend fun signInAnonymously() {
+        override suspend fun signIn() {
             authRepository.signInAnonymously()
         }
     }

@@ -60,4 +60,6 @@ In order to guess it, enter words of 5 letters into the field, and we will give 
     <string name="invalid_password">The password is invalid or you does not have a password. Press \"Forgot password\"</string>
     <string name="email_is_used">The email address is already in use by another account</string>
     <string name="accaunt_disabled">Access to this account has been temporarily disabled due to many failed login attempts. You can immediately restore it by resetting your password or you can try again later</string>
+    <string name="enter_email_for_password_reset">No problem! Just enter the email address that you signed up with to reset it.</string>
+    <string name="send_reset_instruction">Send reset instruction</string>
 </resources>

@@ -4,7 +4,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.widthIn
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -31,7 +30,6 @@ fun KeyboardStub(
                 .fillMaxWidth()
                 .padding(top = 4.dp),
             text = stringResource(R.string.to_menu),
-            textStyle = MaterialTheme.typography.titleLarge,
             onClick = onBackClick
         )
         CommonButton(
@@ -39,7 +37,6 @@ fun KeyboardStub(
                 .fillMaxWidth()
                 .padding(vertical = 16.dp),
             text = stringResource(R.string.new_word),
-            textStyle = MaterialTheme.typography.titleLarge,
             onClick = onNewGameClick
         )
     }

@@ -61,7 +61,6 @@ fun EndGameDialog(
                         .fillMaxWidth()
                         .padding(horizontal = 16.dp),
                     text = stringResource(R.string.to_menu),
-                    textStyle = MaterialTheme.typography.titleLarge,
                     onClick = toMenuClick
                 )
                 CommonButton(
@@ -69,7 +68,6 @@ fun EndGameDialog(
                         .fillMaxWidth()
                         .padding(16.dp),
                     text = stringResource(R.string.new_word),
-                    textStyle = MaterialTheme.typography.titleLarge,
                     onClick = { onNewGameClick(); onDismiss() }
                 )
             }

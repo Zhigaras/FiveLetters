@@ -18,7 +18,7 @@ import kotlinx.coroutines.tasks.await
 
 class AuthRepositoryImpl(private val auth: FirebaseAuth) : AuthRepository {
     
-    override suspend fun createUserWithEmailAndPassword(email: String, password: String) {
+    override suspend fun signUpWithEmailAndPassword(email: String, password: String) {
         try {
             val user = auth.createUserWithEmailAndPassword(email, password).await().user
             user?.sendEmailVerification()
@@ -58,6 +58,10 @@ class AuthRepositoryImpl(private val auth: FirebaseAuth) : AuthRepository {
         } catch (e: Exception) {
             throw SigningInFailed()
         }
+    }
+    
+    override suspend fun resetPassword(email: String) {
+        auth.sendPasswordResetEmail(email)
     }
     
     override fun getCurrentUser(): FirebaseUser? = auth.currentUser //TODO move to needed layer

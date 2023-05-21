@@ -1,6 +1,7 @@
 package com.zhigaras.fiveletters.feature.menu.presentation
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -66,7 +67,8 @@ fun RulesDialogContent(
         Column(
             modifier = modifier
                 .padding(16.dp)
-                .verticalScroll(rememberScrollState())
+                .verticalScroll(rememberScrollState()),
+            verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             RulesContent(rulesRowsList = rulesRowsList)
         }
@@ -89,39 +91,27 @@ fun RulesContent(
     rulesRowsList: List<RowState>
 ) {
     Text(text = stringResource(id = R.string.rules1))
-    RulesSpacer(
-        Modifier
-            .fillMaxWidth()
-            .padding(vertical = 16.dp)
-    )
+    RulesSpacer()
     LetterRow(newRow = rulesRowsList[0])
     val wrongLetters = rulesRowsList[0].select(LetterState.Wrong::class.java)
     val rightLetters = rulesRowsList[0].select(LetterState.Right::class.java)
     Text(
-        modifier = Modifier.padding(vertical = 16.dp),
         text = stringResource(id = R.string.rules2, wrongLetters, rightLetters)
     )
     LetterRow(newRow = rulesRowsList[1])
     val exactLetters = rulesRowsList[1].select(LetterState.Exact::class.java)
     Text(
-        modifier = Modifier.padding(vertical = 16.dp),
         text = stringResource(id = R.string.rules3, exactLetters)
     )
     LetterRow(newRow = rulesRowsList[3])
     Text(
-        modifier = Modifier.padding(vertical = 16.dp),
         text = stringResource(id = R.string.rules4)
     )
     LetterRow(newRow = rulesRowsList[2])
     Text(
-        modifier = Modifier.padding(top = 16.dp),
         text = stringResource(id = R.string.rules5)
     )
-    RulesSpacer(
-        Modifier
-            .fillMaxWidth()
-            .padding(vertical = 16.dp)
-    )
+    RulesSpacer()
     Text(text = stringResource(id = R.string.rules6))
 }
 
@@ -131,6 +121,7 @@ fun RulesSpacer(
 ) {
     Spacer(
         modifier = modifier
+            .fillMaxWidth()
             .height(2.dp)
             .background(yellow10)
             .clip(shape = ShapeDefaults.ExtraLarge)

@@ -29,7 +29,7 @@ class SignUpViewModel(
             onError = { showError(UiText.Resource(it.messageId)); revokeLoading() },
             onFinally = { revokeLoading() }
         ) {
-            signUpWithEmailAndPasswordUseCase.signUpWithEmailAndPassword(state).let {
+            signUpWithEmailAndPasswordUseCase.signUp(state).let {
                 state = it
             }
         }

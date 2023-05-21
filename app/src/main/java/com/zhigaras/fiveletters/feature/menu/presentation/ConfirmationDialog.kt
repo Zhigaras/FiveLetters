@@ -48,7 +48,6 @@ fun ConfirmationDialog(
                         .fillMaxWidth()
                         .padding(horizontal = 16.dp),
                     text = stringResource(R.string.continue_game),
-                    textStyle = MaterialTheme.typography.titleLarge,
                     onClick = { continueGame(); onDismiss() }
                 )
                 CommonButton(
@@ -56,7 +55,6 @@ fun ConfirmationDialog(
                         .fillMaxWidth()
                         .padding(16.dp),
                     text = stringResource(R.string.new_game),
-                    textStyle = MaterialTheme.typography.titleLarge,
                     onClick = { startNewGame(); onDismiss() }
                 )
             }

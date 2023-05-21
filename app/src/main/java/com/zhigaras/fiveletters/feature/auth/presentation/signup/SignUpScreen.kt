@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -60,7 +59,6 @@ fun SignUpScreen(
             EmailInput(
                 modifier = maxWidthModifier,
                 state = state.email,
-                hint = stringResource(R.string.email_hint),
                 onTextChange = { viewModel.onFieldChanged(InputFieldType.EMAIL, it) },
                 onClear = { viewModel.clearEmail() }
             )
@@ -81,7 +79,6 @@ fun SignUpScreen(
             CommonButton(
                 modifier = maxWidthModifier,
                 text = stringResource(id = R.string.sign_up),
-                textStyle = MaterialTheme.typography.titleLarge,
                 enabled = state.isCompletelyFilled,
                 onClick = { viewModel.signUpWithEmailAndPassword() }
             )

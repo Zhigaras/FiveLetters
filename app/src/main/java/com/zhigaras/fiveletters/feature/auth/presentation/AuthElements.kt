@@ -83,7 +83,6 @@ fun InputTextField(
 fun EmailInput(
     modifier: Modifier = Modifier,
     state: InputFieldState,
-    hint: String,
     onTextChange: (String) -> Unit,
     onClear: () -> Unit
 ) {
@@ -94,7 +93,7 @@ fun EmailInput(
     InputTextField(
         modifier = modifier,
         textState = state.value,
-        hint = hint,
+        hint = stringResource(R.string.email_hint),
         keyboardOptions = KeyboardOptions(
             keyboardType = KeyboardType.Email,
             imeAction = ImeAction.Next
