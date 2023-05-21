@@ -38,9 +38,9 @@ import com.zhigaras.fiveletters.feature.auth.presentation.SignInWithGoogleButton
 fun SignInScreen(
     modifier: Modifier = Modifier,
     viewModel: SignInViewModel,
-    navigateToSignUpScreen: () -> Unit,
+    navigateToSignUpScreen: (String) -> Unit,
     navigateToMenu: () -> Unit,
-    navigateToResetPassword: () -> Unit,
+    navigateToResetPassword: (String) -> Unit,
     onFinish: () -> Unit,
     showSnackBar: suspend (String) -> Unit
 ) {
@@ -85,7 +85,7 @@ fun SignInScreen(
             modifier = modifier,
             contentAlignment = Alignment.CenterEnd
         ) {
-            TextButton(onClick = navigateToResetPassword) {
+            TextButton(onClick = { navigateToResetPassword(state.email.value) }) {
                 Text(
                     text = stringResource(R.string.forgot_password),
                     textDecoration = TextDecoration.Underline
@@ -113,7 +113,7 @@ fun SignInScreen(
         CommonTextButton(
             modifier.padding(bottom = screenEdgePadding),
             text = stringResource(id = R.string.sign_up),
-            onClick = navigateToSignUpScreen
+            onClick = { navigateToSignUpScreen(state.email.value) }
         )
     }
     CircleProgressBar(

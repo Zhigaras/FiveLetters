@@ -14,6 +14,7 @@ import androidx.compose.ui.Modifier
 import com.zhigaras.fiveletters.core.presentation.compose.theme.playScreenMaxWidth
 import com.zhigaras.fiveletters.core.presentation.compose.theme.screenEdgePadding
 import com.zhigaras.fiveletters.feature.auth.domain.model.AuthScreenPage
+import com.zhigaras.fiveletters.feature.auth.domain.model.InputFieldType
 import com.zhigaras.fiveletters.feature.auth.presentation.resetpassword.ResetPasswordScreen
 import com.zhigaras.fiveletters.feature.auth.presentation.resetpassword.ResetPasswordViewModel
 import com.zhigaras.fiveletters.feature.auth.presentation.signin.SignInScreen
@@ -45,9 +46,15 @@ fun SharedAuthScreen(
                 AuthScreenPage.SIGN_IN -> SignInScreen(
                     modifier = maxWidthModifier,
                     viewModel = signInViewModel,
-                    navigateToSignUpScreen = { authScreenPage = AuthScreenPage.SIGN_UP },
+                    navigateToSignUpScreen = { email ->
+                        authScreenPage = AuthScreenPage.SIGN_UP
+                        signUpViewModel.onFieldChanged(InputFieldType.EMAIL, email)
+                    },
                     navigateToMenu = navigateToMenu,
-                    navigateToResetPassword = { authScreenPage = AuthScreenPage.RESET_PASSWORD },
+                    navigateToResetPassword = { email ->
+                        authScreenPage = AuthScreenPage.RESET_PASSWORD
+                        resetPasswordViewModel.onEmailChanged(email)
+                    },
                     onFinish = onFinish,
                     showSnackBar = showSnackBar,
                 )
@@ -56,14 +63,20 @@ fun SharedAuthScreen(
                     modifier = maxWidthModifier,
                     viewModel = signUpViewModel,
                     navigateToMenu = navigateToMenu,
-                    navigateToSignIn = { authScreenPage = AuthScreenPage.SIGN_IN },
+                    navigateToSignIn = { email ->
+                        authScreenPage = AuthScreenPage.SIGN_IN
+                        signInViewModel.onFieldChanged(InputFieldType.EMAIL, email)
+                    },
                     showSnackBar = showSnackBar
                 )
                 
                 AuthScreenPage.RESET_PASSWORD -> ResetPasswordScreen(
                     modifier = maxWidthModifier,
                     viewModel = resetPasswordViewModel,
-                    navigateToSignIn = { authScreenPage = AuthScreenPage.SIGN_IN },
+                    navigateToSignIn = { email ->
+                        authScreenPage = AuthScreenPage.SIGN_IN
+                        signInViewModel.onFieldChanged(InputFieldType.EMAIL, email)
+                    },
                     showSnackBar = showSnackBar
                 )
             }

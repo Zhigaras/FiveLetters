@@ -30,13 +30,13 @@ import com.zhigaras.fiveletters.feature.auth.presentation.EmailInput
 fun ResetPasswordScreen(
     modifier: Modifier = Modifier,
     viewModel: ResetPasswordViewModel,
-    navigateToSignIn: () -> Unit,
+    navigateToSignIn: (String) -> Unit,
     showSnackBar: suspend (String) -> Unit
 ) {
     val context = LocalContext.current
     val state by viewModel.getState().collectAsStateWithLifecycle()
     BackHandler {
-        navigateToSignIn()
+        navigateToSignIn(state.email.value)
     }
     ErrorEffect(event = state.errorEvent, onConsumed = { viewModel.onConsumeError() }) {
         showSnackBar(state.errorEvent.message.asString(context))
@@ -63,7 +63,7 @@ fun ResetPasswordScreen(
                 CommonTextButton(
                     modifier = modifier,
                     text = stringResource(id = R.string.back),
-                    onClick = navigateToSignIn
+                    onClick = { navigateToSignIn(state.email.value) }
                 )
             } else {
                 Text(

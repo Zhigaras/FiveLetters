@@ -29,14 +29,14 @@ fun SignUpScreen(
     modifier: Modifier = Modifier,
     viewModel: SignUpViewModel,
     navigateToMenu: () -> Unit,
-    navigateToSignIn: () -> Unit,
+    navigateToSignIn: (String) -> Unit,
     showSnackBar: suspend (String) -> Unit
 ) {
     val context = LocalContext.current
     val state by viewModel.getState().collectAsStateWithLifecycle()
     
     BackHandler {
-        navigateToSignIn()
+        navigateToSignIn(state.email.value)
     }
     
     ErrorEffect(event = state.errorEvent, onConsumed = { viewModel.onConsumeError() }) {
