@@ -43,6 +43,14 @@ class AuthRepositoryImpl(private val auth: FirebaseAuth) : AuthRepository {
         }
     }
     
+    override suspend fun signInAnonymously() {
+        try {
+            auth.signInAnonymously().await().user
+        } catch (e: Exception) {
+            throw SigningInFailed()
+        }
+    }
+    
     override suspend fun changeGoogleIdToCredential(token: String) {
         val firebaseCredentials = GoogleAuthProvider.getCredential(token, null)
         try {

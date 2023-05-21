@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.zhigaras.fiveletters.feature.auth.data.AuthRepositoryImpl
 import com.zhigaras.fiveletters.feature.auth.data.SignInValidatorImpl
 import com.zhigaras.fiveletters.feature.auth.data.SignUpValidatorImpl
+import com.zhigaras.fiveletters.feature.auth.domain.usecases.SignInAnonymouslyUseCase
 import com.zhigaras.fiveletters.feature.auth.domain.usecases.SignInWithEmailAndPasswordUseCase
 import com.zhigaras.fiveletters.feature.auth.domain.usecases.SignUpWithEmailAndPasswordUseCase
 import com.zhigaras.fiveletters.feature.auth.domain.usecases.SignInWithGoogleUseCase
@@ -56,6 +57,7 @@ class ViewModelFactory(
             SignInViewModel::class.java -> SignInViewModel(
                 SignInWithEmailAndPasswordUseCase.Base(authRepository, SignInValidatorImpl()),
                 SignInWithGoogleUseCase.Base(authRepository),
+                SignInAnonymouslyUseCase.Base(authRepository),
                 dispatchers
             )
             

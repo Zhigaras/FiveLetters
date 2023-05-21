@@ -114,7 +114,7 @@ fun SignInScreen(
                 modifier = maxWidthModifier,
                 text = stringResource(id = R.string.log_in_as_a_guest),
                 textStyle = MaterialTheme.typography.titleLarge,
-                onClick = { viewModel.logInAsGuest() }
+                onClick = { viewModel.signInAnonymously() }
             )
             AuthDivider(textId = R.string.still_not_registered)
             CommonButton(

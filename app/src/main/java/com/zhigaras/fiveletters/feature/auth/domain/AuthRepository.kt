@@ -8,6 +8,8 @@ interface AuthRepository {
     
     suspend fun signInWithEmailAndPassword(email: String, password: String)
     
+    suspend fun signInAnonymously()
+    
     suspend fun changeGoogleIdToCredential(token: String)
     
     fun getCurrentUser(): FirebaseUser? // TODO remove after debugging
