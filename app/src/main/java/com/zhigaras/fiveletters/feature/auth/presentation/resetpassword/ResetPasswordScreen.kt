@@ -1,6 +1,7 @@
 package com.zhigaras.fiveletters.feature.auth.presentation.resetpassword
 
 import androidx.activity.compose.BackHandler
+import androidx.compose.animation.AnimatedContent
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -20,7 +21,9 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.zhigaras.fiveletters.R
 import com.zhigaras.fiveletters.core.presentation.compose.ButtonWithProgressBar
+import com.zhigaras.fiveletters.core.presentation.compose.CommonTextButton
 import com.zhigaras.fiveletters.core.presentation.compose.ErrorEffect
+import com.zhigaras.fiveletters.feature.auth.domain.model.ProcessResult
 import com.zhigaras.fiveletters.feature.auth.presentation.EmailInput
 
 @Composable
@@ -38,33 +41,53 @@ fun ResetPasswordScreen(
     ErrorEffect(event = state.errorEvent, onConsumed = { viewModel.onConsumeError() }) {
         showSnackBar(state.errorEvent.message.asString(context))
     }
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .verticalScroll(rememberScrollState()),
-        verticalArrangement = Arrangement.spacedBy(16.dp, Alignment.CenterVertically),
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        Text(
-            modifier = modifier,
-            text = stringResource(R.string.enter_email_for_password_reset),
-            textAlign = TextAlign.Center,
-            style = MaterialTheme.typography.bodyLarge
-        )
-        EmailInput(
-            modifier = modifier,
-            state = state.email,
-            imeAction = ImeAction.Done,
-            onTextChange = { viewModel.onEmailChanged(it) },
-            onClear = { viewModel.clearEmail() },
-            onDone = { viewModel.resetPassword() }
-        )
-        ButtonWithProgressBar(
-            modifier = modifier,
-            text = stringResource(R.string.send_reset_instruction),
-            enabled = state.isCompletelyFilled,
-            isLoading = state.isLoading,
-            onClick = { viewModel.resetPassword() }
-        )
+    AnimatedContent(targetState = state.processResult is ProcessResult.Success) {
+        
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .verticalScroll(rememberScrollState()),
+            verticalArrangement = Arrangement.spacedBy(16.dp, Alignment.CenterVertically),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            if (it) {
+                Text(
+                    modifier = modifier,
+                    text = stringResource(
+                        id = R.string.successful_resetting_password,
+                        state.email.value
+                    ),
+                    textAlign = TextAlign.Center,
+                    style = MaterialTheme.typography.bodyLarge
+                )
+                CommonTextButton(
+                    modifier = modifier,
+                    text = stringResource(id = R.string.back),
+                    onClick = navigateToSignIn
+                )
+            } else {
+                Text(
+                    modifier = modifier,
+                    text = stringResource(R.string.enter_email_for_password_reset),
+                    textAlign = TextAlign.Center,
+                    style = MaterialTheme.typography.bodyLarge
+                )
+                EmailInput(
+                    modifier = modifier,
+                    state = state.email,
+                    imeAction = ImeAction.Done,
+                    onTextChange = { viewModel.onEmailChanged(it) },
+                    onClear = { viewModel.clearEmail() },
+                    onDone = { viewModel.resetPassword() }
+                )
+                ButtonWithProgressBar(
+                    modifier = modifier,
+                    text = stringResource(R.string.send_reset_instruction),
+                    enabled = state.isCompletelyFilled,
+                    isLoading = state.isLoading,
+                    onClick = { viewModel.resetPassword() }
+                )
+            }
+        }
     }
 }

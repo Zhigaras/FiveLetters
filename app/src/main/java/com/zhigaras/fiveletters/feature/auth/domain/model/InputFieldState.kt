@@ -26,7 +26,7 @@ abstract class InputFieldValidity {
         }
         
         class PasswordMismatch : Invalid() {
-            override val error = R.string.passport_mismatch
+            override val error = R.string.password_mismatch
         }
     }
 }

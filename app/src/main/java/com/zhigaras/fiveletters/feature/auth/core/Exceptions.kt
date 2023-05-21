@@ -43,7 +43,7 @@ class InvalidCredentials : LoginException() {
 }
 
 class TooManyRequests : LoginException() {
-    override val messageId: Int = R.string.accaunt_disabled
+    override val messageId: Int = R.string.account_disabled
 }
 
 abstract class OneTapSignInException : AuthException()

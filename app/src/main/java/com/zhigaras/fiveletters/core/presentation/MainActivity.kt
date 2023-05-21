@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.remember
@@ -63,7 +64,8 @@ class MainActivity : ComponentActivity(), ProvideViewModel {
                         showSnackBar = {
                             snackBarHostState.showSnackbar(
                                 message = it,
-                                withDismissAction = true
+                                withDismissAction = true,
+                                duration = SnackbarDuration.Long
                             )
                         },
                         onFinish = { this.finish() }
