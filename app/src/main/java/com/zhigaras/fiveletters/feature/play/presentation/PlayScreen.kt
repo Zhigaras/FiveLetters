@@ -6,6 +6,7 @@ import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.togetherWith
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -26,6 +27,7 @@ import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.rememberLottieComposition
 import com.zhigaras.fiveletters.BuildConfig
 import com.zhigaras.fiveletters.R
+import com.zhigaras.fiveletters.core.presentation.compose.theme.black
 import com.zhigaras.fiveletters.feature.play.domain.model.GameState
 import com.zhigaras.fiveletters.feature.play.domain.model.LetterFieldState
 import com.zhigaras.fiveletters.feature.play.domain.model.ProgressState
@@ -78,7 +80,9 @@ fun PlayScreen(
     
     Column(
         verticalArrangement = Arrangement.Bottom,
-        modifier = Modifier.fillMaxSize()
+        modifier = Modifier
+            .fillMaxSize()
+            .background(black)
     ) {
         AdBanner(modifier = Modifier.fillMaxWidth(), isTest = BuildConfig.DEBUG)
         Box(

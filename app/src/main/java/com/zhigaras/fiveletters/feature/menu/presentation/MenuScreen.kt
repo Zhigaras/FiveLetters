@@ -1,7 +1,5 @@
 package com.zhigaras.fiveletters.feature.menu.presentation
 
-import android.widget.Toast
-import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -30,13 +28,13 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.zhigaras.fiveletters.R
+import com.zhigaras.fiveletters.core.presentation.compose.DoublePressBackHandler
 import com.zhigaras.fiveletters.core.presentation.compose.OrientationSwapper
 import com.zhigaras.fiveletters.core.presentation.compose.theme.black
 import com.zhigaras.fiveletters.core.presentation.compose.theme.gray
@@ -54,22 +52,13 @@ fun MenuScreen(
     onFinish: () -> Unit
 ) {
     
-    val context = LocalContext.current
     val userStat by viewModel.userStatFlow().collectAsStateWithLifecycle(UserStat.Empty())
-    var backPressedTime by remember { mutableStateOf(0L) }
     var showAlertDialog by rememberSaveable { mutableStateOf(false) }
     var showRulesDialog by rememberSaveable { mutableStateOf(false) }
     val rulesRowsList by viewModel.getState().collectAsStateWithLifecycle()
     
-    BackHandler(enabled = true) {
-        if (backPressedTime + 2000 > System.currentTimeMillis()) onFinish()
-        else Toast.makeText(
-            context,
-            context.getString(R.string.press_back_again),
-            Toast.LENGTH_SHORT
-        ).show()
-        backPressedTime = System.currentTimeMillis()
-    }
+    DoublePressBackHandler(onFinish = onFinish)
+    
     if (showAlertDialog) {
         ConfirmationDialog(
             startNewGame = newGame,

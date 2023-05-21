@@ -2,6 +2,7 @@ package com.zhigaras.fiveletters.core.navigation
 
 import android.content.res.Configuration
 import androidx.compose.animation.*
+import androidx.compose.animation.core.EaseInExpo
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
@@ -13,9 +14,8 @@ import androidx.navigation.NavHostController
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
-import com.zhigaras.fiveletters.feature.auth.presentation.signin.SignInScreen
+import com.zhigaras.fiveletters.feature.auth.presentation.SharedAuthScreen
 import com.zhigaras.fiveletters.feature.auth.presentation.signin.SignInViewModel
-import com.zhigaras.fiveletters.feature.auth.presentation.signup.SignUpScreen
 import com.zhigaras.fiveletters.feature.auth.presentation.signup.SignUpViewModel
 import com.zhigaras.fiveletters.feature.menu.presentation.MenuScreen
 import com.zhigaras.fiveletters.feature.menu.presentation.MenuViewModel
@@ -39,57 +39,68 @@ fun FiveLettersNavHost(
     val isExpanded = LocalConfiguration.current.orientation == Configuration.ORIENTATION_LANDSCAPE
     val navController = rememberAnimatedNavController()
     val gameState by playViewModel.getState().collectAsStateWithLifecycle()
+    val animationDuration = 700
+    val splashAnim = EaseInExpo
+    
     AnimatedNavHost(
         navController = navController,
 //        startDestination =
 //        if (needToShowSplash) Destination.Splash.route
 //        else if (needToAuth) Destination.SignIn.route
 //        else Destination.Menu.route,
-        startDestination = Destination.SignIn.route,
+        startDestination = Destination.Splash.route,
         modifier = modifier.fillMaxSize()
     ) {
         composable(
             route = Destination.Splash.route,
-            exitTransition = { fadeOut(animationSpec = tween(700)) }
+            enterTransition = { fadeIn(animationSpec = tween(animationDuration)) }, //todo seems to be not working
+            exitTransition = {
+                scaleOut(
+                    animationSpec = tween(
+                        durationMillis = animationDuration,
+                        easing = splashAnim
+                    ), targetScale = 30f
+                ) + fadeOut(
+                    tween(durationMillis = animationDuration)
+                )
+            }
         ) {
             SplashScreen(
                 navigateToNext = {
                     navController.navigateWithClearBackStack(
-                        if (needToAuth) Destination.SignIn.route else Destination.Menu.route
+//                        if (needToAuth) Destination.SignIn.route else Destination.Menu.route
+                        Destination.Auth.route
                     )
                 }
             )
         }
-        composable(route = Destination.SignIn.route) {
-            SignInScreen(
-                viewModel = signInViewModel,
-                showSnackBar = showSnackBar,
-                navigateToSignUpScreen = { navController.navigate(Destination.SignUp.route) },
-                navigateToMenu = { navController.navigateWithClearBackStack(Destination.Menu.route) }
-            )
-        }
-        composable(route = Destination.SignUp.route) {
-            SignUpScreen(
-                viewModel = signUpViewModel,
-                showSnackBar = showSnackBar,
-                navigateToMenu = { navController.navigateWithClearBackStack(Destination.Menu.route) }
+        composable(
+            route = Destination.Auth.route,
+            enterTransition = {
+                scaleIn(
+                    animationSpec = tween(
+                        durationMillis = animationDuration,
+                        easing = splashAnim
+                    )
+                )
+            },
+            exitTransition = {
+                fadeOut(animationSpec = tween(animationDuration))
+            }
+        ) {
+            SharedAuthScreen(
+                signInViewModel = signInViewModel,
+                signUpViewModel = signUpViewModel,
+                navigateToMenu = { navController.navigateWithClearBackStack(Destination.Menu.route) },
+                onFinish = onFinish,
+                showSnackBar = showSnackBar
             )
         }
         composable(
             route = Destination.Menu.route,
-            enterTransition = { fadeIn(animationSpec = tween(700)) },
-            popEnterTransition = {
-                slideIntoContainer(
-                    animationSpec = tween(700),
-                    towards = AnimatedContentTransitionScope.SlideDirection.End
-                )
-            },
-            exitTransition = {
-                slideOutOfContainer(
-                    animationSpec = tween(700),
-                    towards = AnimatedContentTransitionScope.SlideDirection.Start
-                )
-            }) {
+            enterTransition = { fadeIn(animationSpec = tween(animationDuration)) },
+            exitTransition = { fadeOut(animationSpec = tween(animationDuration)) },
+        ) {
             MenuScreen(
                 viewModel = menuViewModel,
                 isExpanded = isExpanded,
@@ -106,13 +117,13 @@ fun FiveLettersNavHost(
             route = Destination.Play.route,
             enterTransition = {
                 slideIntoContainer(
-                    animationSpec = tween(700),
+                    animationSpec = tween(animationDuration),
                     towards = AnimatedContentTransitionScope.SlideDirection.Start
                 )
             },
             exitTransition = {
                 slideOutOfContainer(
-                    animationSpec = tween(700),
+                    animationSpec = tween(animationDuration),
                     towards = AnimatedContentTransitionScope.SlideDirection.End
                 )
             }

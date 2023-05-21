@@ -2,9 +2,13 @@ package com.zhigaras.fiveletters.feature.auth.presentation.signin
 
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -17,27 +21,30 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextDecoration
+import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.google.android.gms.auth.api.identity.Identity
 import com.zhigaras.fiveletters.R
 import com.zhigaras.fiveletters.core.presentation.compose.CircleProgressBar
+import com.zhigaras.fiveletters.core.presentation.compose.DoublePressBackHandler
 import com.zhigaras.fiveletters.core.presentation.compose.ErrorEffect
-import com.zhigaras.fiveletters.core.presentation.compose.theme.screenEdgeDimen
+import com.zhigaras.fiveletters.core.presentation.compose.theme.screenEdgePadding
 import com.zhigaras.fiveletters.feature.auth.domain.model.InputFieldType
 import com.zhigaras.fiveletters.feature.auth.domain.model.SignInResult
 import com.zhigaras.fiveletters.feature.auth.presentation.AuthDivider
 import com.zhigaras.fiveletters.feature.auth.presentation.EmailInput
 import com.zhigaras.fiveletters.feature.auth.presentation.PasswordInput
-import com.zhigaras.fiveletters.feature.auth.presentation.SharedAuthScreen
 import com.zhigaras.fiveletters.feature.auth.presentation.SignInWithGoogleButton
 import com.zhigaras.fiveletters.feature.menu.presentation.CommonButton
 
 @Composable
 fun SignInScreen(
+    modifier: Modifier = Modifier,
     viewModel: SignInViewModel,
-    showSnackBar: suspend (String) -> Unit,
     navigateToSignUpScreen: () -> Unit,
-    navigateToMenu: () -> Unit
+    navigateToMenu: () -> Unit,
+    onFinish: () -> Unit,
+    showSnackBar: suspend (String) -> Unit
 ) {
     val context = LocalContext.current
     val state by viewModel.getState().collectAsStateWithLifecycle()
@@ -48,6 +55,9 @@ fun SignInScreen(
     ) {
         viewModel.changeGoogleIdToCredential(it, signInClient)
     }
+    
+    DoublePressBackHandler(onFinish = onFinish)
+    
     ErrorEffect(event = state.errorEvent, onConsumed = { viewModel.onConsumeError() }) {
         showSnackBar(state.errorEvent.message.asString(context))
     }
@@ -61,16 +71,21 @@ fun SignInScreen(
             onDismiss = { showResetPasswordDialog = false },
             onConfirmClick = { viewModel.resetPassword() }
         )
-    
-    SharedAuthScreen {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .verticalScroll(rememberScrollState()),
+        verticalArrangement = Arrangement.spacedBy(16.dp, Alignment.Bottom),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
         EmailInput(
-            modifier = it.padding(top = screenEdgeDimen),
+            modifier = modifier.padding(top = screenEdgePadding),
             state = state.email,
             onTextChange = { viewModel.onFieldChanged(InputFieldType.EMAIL, it) },
             onClear = { viewModel.clearEmail() }
         )
         PasswordInput(
-            modifier = it,
+            modifier = modifier,
             state = state.password,
             hint = stringResource(R.string.password),
             isLastInColumn = true,
@@ -78,7 +93,7 @@ fun SignInScreen(
             onDone = { viewModel.signInWithEmailAndPassword() }
         )
         Box(
-            modifier = it,
+            modifier = modifier,
             contentAlignment = Alignment.CenterEnd
         ) {
             TextButton(onClick = { showResetPasswordDialog = true }) {
@@ -89,25 +104,25 @@ fun SignInScreen(
             }
         }
         CommonButton(
-            modifier = it,
+            modifier = modifier,
             text = stringResource(R.string.sign_in),
             enabled = state.isCompletelyFilled,
             onClick = { viewModel.signInWithEmailAndPassword() }
         )
-        AuthDivider(modifier = it, textId = R.string.or)
+        AuthDivider(modifier = modifier, textId = R.string.or)
         SignInWithGoogleButton(
-            modifier = it,
+            modifier = modifier,
             onClick = { viewModel.signInWithGoogle(signWithGoogleLauncher, signInClient) }
         )
-        AuthDivider(modifier = it, textId = R.string.or)
+        AuthDivider(modifier = modifier, textId = R.string.or)
         CommonButton(
-            modifier = it,
+            modifier = modifier,
             text = stringResource(id = R.string.log_in_as_a_guest),
             onClick = { viewModel.signInAnonymously() }
         )
-        AuthDivider(modifier = it, textId = R.string.still_not_registered)
+        AuthDivider(modifier = modifier, textId = R.string.still_not_registered)
         CommonButton(
-            modifier = it.padding(bottom = screenEdgeDimen),
+            modifier.padding(bottom = screenEdgePadding),
             text = stringResource(id = R.string.sign_up),
             onClick = navigateToSignUpScreen
         )

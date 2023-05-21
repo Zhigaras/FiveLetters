@@ -1,37 +1,60 @@
 package com.zhigaras.fiveletters.feature.auth.presentation
 
-import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.animation.AnimatedContent
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
 import com.zhigaras.fiveletters.core.presentation.compose.theme.playScreenMaxWidth
-import com.zhigaras.fiveletters.core.presentation.compose.theme.screenEdgeDimen
+import com.zhigaras.fiveletters.core.presentation.compose.theme.screenEdgePadding
+import com.zhigaras.fiveletters.feature.auth.domain.model.AuthScreenPage
+import com.zhigaras.fiveletters.feature.auth.presentation.signin.SignInScreen
+import com.zhigaras.fiveletters.feature.auth.presentation.signin.SignInViewModel
+import com.zhigaras.fiveletters.feature.auth.presentation.signup.SignUpScreen
+import com.zhigaras.fiveletters.feature.auth.presentation.signup.SignUpViewModel
 
 @Composable
 fun SharedAuthScreen(
-    content: @Composable (Modifier) -> Unit
+    signInViewModel: SignInViewModel,
+    signUpViewModel: SignUpViewModel,
+    navigateToMenu: () -> Unit,
+    onFinish: () -> Unit,
+    showSnackBar: suspend (String) -> Unit
 ) {
+    var authScreenPage by rememberSaveable { mutableStateOf(AuthScreenPage.SIGN_IN) }
+    
     Box(
-        modifier = Modifier.padding(horizontal = screenEdgeDimen),
+        modifier = Modifier.padding(horizontal = screenEdgePadding),
         contentAlignment = Alignment.Center
     ) {
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .verticalScroll(rememberScrollState()),
-            verticalArrangement = Arrangement.spacedBy(16.dp, Alignment.Bottom),
-            horizontalAlignment = Alignment.CenterHorizontally
+        AnimatedContent(
+            targetState = authScreenPage,
         ) {
             val maxWidthModifier = Modifier.width(playScreenMaxWidth)
-            content(maxWidthModifier)
+            
+            if (it == AuthScreenPage.SIGN_IN)
+                SignInScreen(
+                    modifier = maxWidthModifier,
+                    viewModel = signInViewModel,
+                    navigateToSignUpScreen = { authScreenPage = AuthScreenPage.SIGN_UP },
+                    navigateToMenu = navigateToMenu,
+                    onFinish = onFinish,
+                    showSnackBar = showSnackBar,
+                )
+            else
+                SignUpScreen(
+                    modifier = maxWidthModifier,
+                    viewModel = signUpViewModel,
+                    navigateToMenu = navigateToMenu,
+                    navigateToSignIn = { authScreenPage = AuthScreenPage.SIGN_IN },
+                    showSnackBar = showSnackBar
+                )
         }
     }
 }
