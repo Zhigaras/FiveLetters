@@ -36,11 +36,11 @@ In order to guess it, enter words of 5 letters into the field, and we will give 
     <string name="ad_mob_banner_id" translatable="false">ca-app-pub-1332033107151527/3031627834</string>
     <string name="ad_mob_test_banner_id" translatable="false">ca-app-pub-3940256099942544/6300978111</string>
     <string name="email_hint" translatable="false">Email</string>
-    <string name="password" translatable="false">Password</string>
+    <string name="password">Password</string>
     <string name="forgot_password">Forgot password?</string>
     <string name="or">OR</string>
     <string name="continue_with_google">Continue with Google</string>
-    <string name="repeat_password">repeat password</string>
+    <string name="repeat_password">Repeat password</string>
     <string name="registration_failed">Registration failed. Check internet connection.</string>
     <string name="signing_in_failed">Signing in failed. Check internet connection.</string>
     <string name="email_is_invalid">Email is invalid</string>

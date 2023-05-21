@@ -33,7 +33,7 @@
     <string name="forgot_password">Забыли пароль?</string>
     <string name="or">ИЛИ</string>
     <string name="continue_with_google">Продолжить с Google</string>
-    <string name="repeat_password">повторите пароль</string>
+    <string name="repeat_password">Повторите пароль</string>
     <string name="registration_failed">Регистрация не завершена. Проверьте соединение.</string>
     <string name="signing_in_failed">Вход не выполнен. Проверьте соединение.</string>
     <string name="email_is_invalid">Некорректный email</string>
@@ -53,4 +53,5 @@
     <string name="invalid_credentials">Email или пароль некорректны. Проверьте их и попробуйте снова. Если ошибка повторяется - нажмите \"Забыли пароль?\"</string>
     <string name="email_is_used">Этот email уже используется другим аккаунтом</string>
     <string name="accaunt_disabled">Доступ к этой учетной записи был временно отключен из-за множества неудачных попыток входа в систему. Вы можете немедленно восстановить его, сбросив пароль, или повторить попытку позже</string>
+    <string name="password">Пароль</string>
 </resources>
