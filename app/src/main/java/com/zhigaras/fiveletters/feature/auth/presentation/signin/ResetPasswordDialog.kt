@@ -4,9 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -43,9 +41,7 @@ fun ResetPasswordDialog(
         Box(
             modifier = Modifier
                 .clip(ShapeDefaults.ExtraLarge)
-                .heightIn(max = 600.dp)
                 .background(gray100)
-                .fillMaxSize()
         ) {
             Column(
                 modifier = modifier

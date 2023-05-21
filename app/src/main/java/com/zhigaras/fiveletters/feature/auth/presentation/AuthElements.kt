@@ -30,6 +30,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
@@ -49,6 +50,7 @@ fun InputTextField(
     textState: String,
     isError: Boolean,
     hint: String,
+    textStyle: TextStyle = MaterialTheme.typography.titleSmall,
     visualTransformation: VisualTransformation = VisualTransformation.None,
     keyboardOptions: KeyboardOptions,
     onTextChange: (String) -> Unit,
@@ -56,12 +58,11 @@ fun InputTextField(
     trailingIcon: @Composable (() -> Unit)? = null,
     supportingText: @Composable (() -> Unit)? = null
 ) {
-    val textFieldTextStyle = MaterialTheme.typography.titleLarge
     OutlinedTextField(
         modifier = modifier,
         value = textState,
         onValueChange = { onTextChange(it) },
-        textStyle = textFieldTextStyle,
+        textStyle = textStyle,
         singleLine = true,
         isError = isError,
         visualTransformation = visualTransformation,
@@ -71,7 +72,7 @@ fun InputTextField(
         placeholder = {
             Text(
                 text = hint,
-                style = textFieldTextStyle
+                style = textStyle
             )
         },
         trailingIcon = trailingIcon,
@@ -83,6 +84,7 @@ fun InputTextField(
 fun EmailInput(
     modifier: Modifier = Modifier,
     state: InputFieldState,
+    textStyle: TextStyle = MaterialTheme.typography.titleMedium,
     onTextChange: (String) -> Unit,
     onClear: () -> Unit
 ) {
@@ -92,6 +94,7 @@ fun EmailInput(
     
     InputTextField(
         modifier = modifier,
+        textStyle = textStyle,
         textState = state.value,
         hint = stringResource(R.string.email_hint),
         keyboardOptions = KeyboardOptions(
@@ -216,7 +219,7 @@ fun SignInWithGoogleButton(
         )
         Text(
             text = stringResource(R.string.continue_with_google),
-            style = MaterialTheme.typography.titleLarge.copy(color = black),
+            style = MaterialTheme.typography.titleMedium.copy(color = black),
             modifier = Modifier.padding(horizontal = 16.dp),
             textAlign = TextAlign.Center
         )

@@ -170,7 +170,7 @@ fun PlayButtonArea(
     ) {
         SingleClickButton(
             text = stringResource(R.string.start),
-            textStyle = MaterialTheme.typography.titleLarge,
+            textStyle = MaterialTheme.typography.titleMedium,
             clickDisabledPeriod = 800L,
             onClick = {
                 if (progressState == ProgressState.PROGRESS) showAlertDialog()
@@ -196,7 +196,7 @@ fun PlayButtonArea(
 fun CommonButton(
     modifier: Modifier = Modifier,
     text: String,
-    textStyle: TextStyle = MaterialTheme.typography.titleLarge,
+    textStyle: TextStyle = MaterialTheme.typography.titleMedium,
     enabled: Boolean = true,
     onClick: () -> Unit
 ) {
@@ -223,7 +223,7 @@ fun CommonButton(
 fun SingleClickButton(
     modifier: Modifier = Modifier,
     text: String,
-    textStyle: TextStyle,
+    textStyle: TextStyle = MaterialTheme.typography.titleMedium,
     clickDisabledPeriod: Long = 1000L,
     onClick: () -> Unit
 ) {
