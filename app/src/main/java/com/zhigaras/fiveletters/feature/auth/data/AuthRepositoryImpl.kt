@@ -10,6 +10,7 @@ import com.google.firebase.auth.GoogleAuthProvider
 import com.zhigaras.fiveletters.feature.auth.core.EmailIsUsed
 import com.zhigaras.fiveletters.feature.auth.core.InvalidCredentials
 import com.zhigaras.fiveletters.feature.auth.core.InvalidUser
+import com.zhigaras.fiveletters.feature.auth.core.NoSuchUser
 import com.zhigaras.fiveletters.feature.auth.core.RegistrationFailed
 import com.zhigaras.fiveletters.feature.auth.core.SigningInFailed
 import com.zhigaras.fiveletters.feature.auth.core.TooManyRequests
@@ -61,7 +62,11 @@ class AuthRepositoryImpl(private val auth: FirebaseAuth) : AuthRepository {
     }
     
     override suspend fun resetPassword(email: String) {
-        auth.sendPasswordResetEmail(email)
+        try {
+            auth.sendPasswordResetEmail(email).await()
+        } catch (e: Exception) {
+            throw NoSuchUser()
+        }
     }
     
     override fun getCurrentUser(): FirebaseUser? = auth.currentUser //TODO move to needed layer

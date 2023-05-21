@@ -6,7 +6,7 @@ data class SignInState(
     val isLoading: Boolean = false,
     val isValid: Boolean = true,
     val errorEvent: ErrorEvent = ErrorEvent.CONSUMED,
-    val signInResult: SignInResult = SignInResult.Undefined
+    val processResult: ProcessResult = ProcessResult.Undefined
 ) {
     val isCompletelyFilled = email.value.isNotBlank() && password.value.isNotBlank()
     

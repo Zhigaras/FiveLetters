@@ -3,13 +3,15 @@ package com.zhigaras.fiveletters.di
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.zhigaras.fiveletters.feature.auth.data.AuthRepositoryImpl
+import com.zhigaras.fiveletters.feature.auth.data.ResetPasswordEmailValidatorImpl
 import com.zhigaras.fiveletters.feature.auth.data.SignInValidatorImpl
 import com.zhigaras.fiveletters.feature.auth.data.SignUpValidatorImpl
-import com.zhigaras.fiveletters.feature.auth.domain.usecases.ForgotPasswordUseCase
+import com.zhigaras.fiveletters.feature.auth.domain.usecases.ResetPasswordUseCase
 import com.zhigaras.fiveletters.feature.auth.domain.usecases.SignInAnonymouslyUseCase
 import com.zhigaras.fiveletters.feature.auth.domain.usecases.SignInWithEmailAndPasswordUseCase
-import com.zhigaras.fiveletters.feature.auth.domain.usecases.SignUpWithEmailAndPasswordUseCase
 import com.zhigaras.fiveletters.feature.auth.domain.usecases.SignInWithGoogleUseCase
+import com.zhigaras.fiveletters.feature.auth.domain.usecases.SignUpWithEmailAndPasswordUseCase
+import com.zhigaras.fiveletters.feature.auth.presentation.resetpassword.ResetPasswordViewModel
 import com.zhigaras.fiveletters.feature.auth.presentation.signin.SignInViewModel
 import com.zhigaras.fiveletters.feature.auth.presentation.signup.SignUpViewModel
 import com.zhigaras.fiveletters.feature.menu.data.RulesRepositoryImpl
@@ -59,12 +61,16 @@ class ViewModelFactory(
                 SignInWithEmailAndPasswordUseCase.Base(authRepository, SignInValidatorImpl()),
                 SignInWithGoogleUseCase.Base(authRepository),
                 SignInAnonymouslyUseCase.Base(authRepository),
-                ForgotPasswordUseCase.Base(authRepository),
                 dispatchers
             )
             
             SignUpViewModel::class.java -> SignUpViewModel(
                 SignUpWithEmailAndPasswordUseCase.Base(authRepository, SignUpValidatorImpl()),
+                dispatchers
+            )
+            
+            ResetPasswordViewModel::class.java -> ResetPasswordViewModel(
+                ResetPasswordUseCase.Base(authRepository, ResetPasswordEmailValidatorImpl()),
                 dispatchers
             )
             

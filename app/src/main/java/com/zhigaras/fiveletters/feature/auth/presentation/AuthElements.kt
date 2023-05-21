@@ -69,11 +69,8 @@ fun InputTextField(
         shape = ShapeDefaults.Medium,
         keyboardOptions = keyboardOptions,
         keyboardActions = KeyboardActions(onDone = { onDone() }),
-        placeholder = {
-            Text(
-                text = hint,
-                style = textStyle
-            )
+        label = {
+            Text(text = hint, style = textStyle)
         },
         trailingIcon = trailingIcon,
         supportingText = supportingText
@@ -85,7 +82,9 @@ fun EmailInput(
     modifier: Modifier = Modifier,
     state: InputFieldState,
     textStyle: TextStyle = MaterialTheme.typography.titleMedium,
+    imeAction: ImeAction = ImeAction.Next,
     onTextChange: (String) -> Unit,
+    onDone: () -> Unit = {},
     onClear: () -> Unit
 ) {
     val errorText: @Composable (() -> Unit)? = if (state.validity is InputFieldValidity.Invalid) {
@@ -99,11 +98,12 @@ fun EmailInput(
         hint = stringResource(R.string.email_hint),
         keyboardOptions = KeyboardOptions(
             keyboardType = KeyboardType.Email,
-            imeAction = ImeAction.Next
+            imeAction = imeAction
         ),
         isError = state.isInvalid,
         onTextChange = onTextChange,
         supportingText = errorText,
+        onDone = onDone,
         trailingIcon = {
             IconButton(
                 modifier = Modifier.padding(end = 5.dp),

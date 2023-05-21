@@ -20,6 +20,7 @@ import com.google.firebase.ktx.Firebase
 import com.zhigaras.fiveletters.app.ProvideViewModel
 import com.zhigaras.fiveletters.core.navigation.FiveLettersNavHost
 import com.zhigaras.fiveletters.core.presentation.compose.theme.FiveLettersTheme
+import com.zhigaras.fiveletters.feature.auth.presentation.resetpassword.ResetPasswordViewModel
 import com.zhigaras.fiveletters.feature.auth.presentation.signin.SignInViewModel
 import com.zhigaras.fiveletters.feature.auth.presentation.signup.SignUpViewModel
 import com.zhigaras.fiveletters.feature.menu.presentation.MenuViewModel
@@ -38,6 +39,7 @@ class MainActivity : ComponentActivity(), ProvideViewModel {
         playViewModel = provideViewModel(PlayViewModel::class.java, this)
         val signInViewModel = provideViewModel(SignInViewModel::class.java, this)
         val signUpViewModel = provideViewModel(SignUpViewModel::class.java, this)
+        val resetPasswordViewModel = provideViewModel(ResetPasswordViewModel::class.java, this)
         
         val needToShowSplash = Build.VERSION.SDK_INT <= 31
         
@@ -57,6 +59,7 @@ class MainActivity : ComponentActivity(), ProvideViewModel {
                         menuViewModel = menuViewModel,
                         signInViewModel = signInViewModel,
                         signUpViewModel = signUpViewModel,
+                        resetPasswordViewModel = resetPasswordViewModel,
                         showSnackBar = {
                             snackBarHostState.showSnackbar(
                                 message = it,

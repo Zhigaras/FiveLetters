@@ -14,6 +14,8 @@ import androidx.compose.ui.Modifier
 import com.zhigaras.fiveletters.core.presentation.compose.theme.playScreenMaxWidth
 import com.zhigaras.fiveletters.core.presentation.compose.theme.screenEdgePadding
 import com.zhigaras.fiveletters.feature.auth.domain.model.AuthScreenPage
+import com.zhigaras.fiveletters.feature.auth.presentation.resetpassword.ResetPasswordScreen
+import com.zhigaras.fiveletters.feature.auth.presentation.resetpassword.ResetPasswordViewModel
 import com.zhigaras.fiveletters.feature.auth.presentation.signin.SignInScreen
 import com.zhigaras.fiveletters.feature.auth.presentation.signin.SignInViewModel
 import com.zhigaras.fiveletters.feature.auth.presentation.signup.SignUpScreen
@@ -23,6 +25,7 @@ import com.zhigaras.fiveletters.feature.auth.presentation.signup.SignUpViewModel
 fun SharedAuthScreen(
     signInViewModel: SignInViewModel,
     signUpViewModel: SignUpViewModel,
+    resetPasswordViewModel: ResetPasswordViewModel,
     navigateToMenu: () -> Unit,
     onFinish: () -> Unit,
     showSnackBar: suspend (String) -> Unit
@@ -38,23 +41,32 @@ fun SharedAuthScreen(
         ) {
             val maxWidthModifier = Modifier.width(playScreenMaxWidth)
             
-            if (it == AuthScreenPage.SIGN_IN)
-                SignInScreen(
+            when (it) {
+                AuthScreenPage.SIGN_IN -> SignInScreen(
                     modifier = maxWidthModifier,
                     viewModel = signInViewModel,
                     navigateToSignUpScreen = { authScreenPage = AuthScreenPage.SIGN_UP },
                     navigateToMenu = navigateToMenu,
+                    navigateToResetPassword = { authScreenPage = AuthScreenPage.RESET_PASSWORD },
                     onFinish = onFinish,
                     showSnackBar = showSnackBar,
                 )
-            else
-                SignUpScreen(
+                
+                AuthScreenPage.SIGN_UP -> SignUpScreen(
                     modifier = maxWidthModifier,
                     viewModel = signUpViewModel,
                     navigateToMenu = navigateToMenu,
                     navigateToSignIn = { authScreenPage = AuthScreenPage.SIGN_IN },
                     showSnackBar = showSnackBar
                 )
+                
+                AuthScreenPage.RESET_PASSWORD -> ResetPasswordScreen(
+                    modifier = maxWidthModifier,
+                    viewModel = resetPasswordViewModel,
+                    navigateToSignIn = { authScreenPage = AuthScreenPage.SIGN_IN },
+                    showSnackBar = showSnackBar
+                )
+            }
         }
     }
 }

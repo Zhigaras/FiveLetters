@@ -2,5 +2,6 @@ package com.zhigaras.fiveletters.feature.auth.domain.model
 
 enum class AuthScreenPage {
     SIGN_IN,
-    SIGN_UP
+    SIGN_UP,
+    RESET_PASSWORD
 }

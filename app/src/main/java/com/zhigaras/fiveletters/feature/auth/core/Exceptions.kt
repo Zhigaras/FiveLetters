@@ -14,6 +14,10 @@ class NetworkException : FiveLettersException() {
 
 abstract class AuthException : FiveLettersException()
 
+class NoSuchUser : AuthException() {
+    override val messageId = R.string.no_such_user
+}
+
 abstract class RegistrationException : AuthException()
 
 class RegistrationFailed : RegistrationException() {

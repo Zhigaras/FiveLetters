@@ -13,9 +13,6 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -30,7 +27,7 @@ import com.zhigaras.fiveletters.core.presentation.compose.DoublePressBackHandler
 import com.zhigaras.fiveletters.core.presentation.compose.ErrorEffect
 import com.zhigaras.fiveletters.core.presentation.compose.theme.screenEdgePadding
 import com.zhigaras.fiveletters.feature.auth.domain.model.InputFieldType
-import com.zhigaras.fiveletters.feature.auth.domain.model.SignInResult
+import com.zhigaras.fiveletters.feature.auth.domain.model.ProcessResult
 import com.zhigaras.fiveletters.feature.auth.presentation.AuthDivider
 import com.zhigaras.fiveletters.feature.auth.presentation.EmailInput
 import com.zhigaras.fiveletters.feature.auth.presentation.PasswordInput
@@ -43,12 +40,12 @@ fun SignInScreen(
     viewModel: SignInViewModel,
     navigateToSignUpScreen: () -> Unit,
     navigateToMenu: () -> Unit,
+    navigateToResetPassword: () -> Unit,
     onFinish: () -> Unit,
     showSnackBar: suspend (String) -> Unit
 ) {
     val context = LocalContext.current
     val state by viewModel.getState().collectAsStateWithLifecycle()
-    var showResetPasswordDialog by rememberSaveable { mutableStateOf(false) }
     val signInClient = Identity.getSignInClient(context)
     val signWithGoogleLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.StartIntentSenderForResult()
@@ -61,21 +58,13 @@ fun SignInScreen(
     ErrorEffect(event = state.errorEvent, onConsumed = { viewModel.onConsumeError() }) {
         showSnackBar(state.errorEvent.message.asString(context))
     }
-    if (state.signInResult is SignInResult.Success) navigateToMenu()
+    if (state.processResult is ProcessResult.Success) navigateToMenu()
     
-    if (showResetPasswordDialog)
-        ResetPasswordDialog(
-            emailState = state.email,
-            onEmailChanged = { viewModel.onFieldChanged(InputFieldType.EMAIL, it) },
-            onClear = { viewModel.clearEmail() },
-            onDismiss = { showResetPasswordDialog = false },
-            onConfirmClick = { viewModel.resetPassword() }
-        )
     Column(
         modifier = Modifier
             .fillMaxSize()
             .verticalScroll(rememberScrollState()),
-        verticalArrangement = Arrangement.spacedBy(16.dp, Alignment.Bottom),
+        verticalArrangement = Arrangement.spacedBy(16.dp, Alignment.CenterVertically),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         EmailInput(
@@ -96,7 +85,7 @@ fun SignInScreen(
             modifier = modifier,
             contentAlignment = Alignment.CenterEnd
         ) {
-            TextButton(onClick = { showResetPasswordDialog = true }) {
+            TextButton(onClick = navigateToResetPassword) {
                 Text(
                     text = stringResource(R.string.forgot_password),
                     textDecoration = TextDecoration.Underline

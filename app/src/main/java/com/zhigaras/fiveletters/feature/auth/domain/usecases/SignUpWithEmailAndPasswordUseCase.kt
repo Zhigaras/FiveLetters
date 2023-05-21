@@ -2,7 +2,7 @@ package com.zhigaras.fiveletters.feature.auth.domain.usecases
 
 import com.zhigaras.fiveletters.feature.auth.domain.AuthRepository
 import com.zhigaras.fiveletters.feature.auth.domain.CredentialsValidator
-import com.zhigaras.fiveletters.feature.auth.domain.model.SignInResult
+import com.zhigaras.fiveletters.feature.auth.domain.model.ProcessResult
 import com.zhigaras.fiveletters.feature.auth.domain.model.SignUpState
 
 interface SignUpWithEmailAndPasswordUseCase {
@@ -21,7 +21,7 @@ interface SignUpWithEmailAndPasswordUseCase {
                         state.email.value,
                         state.password.value
                     )
-                    return it.copy(signInResult = SignInResult.Success)
+                    return it.copy(processResult = ProcessResult.Success)
                 } else return it
             }
         }

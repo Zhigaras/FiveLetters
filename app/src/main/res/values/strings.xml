@@ -35,8 +35,8 @@ In order to guess it, enter words of 5 letters into the field, and we will give 
     <string name="still_not_registered">Still not registered?</string>
     <string name="ad_mob_banner_id" translatable="false">ca-app-pub-1332033107151527/3031627834</string>
     <string name="ad_mob_test_banner_id" translatable="false">ca-app-pub-3940256099942544/6300978111</string>
-    <string name="email_hint" translatable="false">example@domain.com</string>
-    <string name="password">password</string>
+    <string name="email_hint" translatable="false">Email</string>
+    <string name="password" translatable="false">Password</string>
     <string name="forgot_password">Forgot password?</string>
     <string name="or">OR</string>
     <string name="continue_with_google">Continue with Google</string>
@@ -62,4 +62,5 @@ In order to guess it, enter words of 5 letters into the field, and we will give 
     <string name="accaunt_disabled">Access to this account has been temporarily disabled due to many failed login attempts. You can immediately restore it by resetting your password or you can try again later</string>
     <string name="enter_email_for_password_reset">No problem! Just enter the email address that you signed up with to reset it.</string>
     <string name="send_reset_instruction">Send reset instruction</string>
+    <string name="no_such_user">There is no user corresponding to the given email address</string>
 </resources>

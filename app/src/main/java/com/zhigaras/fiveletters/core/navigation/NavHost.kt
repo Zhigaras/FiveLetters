@@ -15,6 +15,7 @@ import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 import com.zhigaras.fiveletters.feature.auth.presentation.SharedAuthScreen
+import com.zhigaras.fiveletters.feature.auth.presentation.resetpassword.ResetPasswordViewModel
 import com.zhigaras.fiveletters.feature.auth.presentation.signin.SignInViewModel
 import com.zhigaras.fiveletters.feature.auth.presentation.signup.SignUpViewModel
 import com.zhigaras.fiveletters.feature.menu.presentation.MenuScreen
@@ -33,6 +34,7 @@ fun FiveLettersNavHost(
     menuViewModel: MenuViewModel,
     signInViewModel: SignInViewModel,
     signUpViewModel: SignUpViewModel,
+    resetPasswordViewModel: ResetPasswordViewModel,
     showSnackBar: suspend (String) -> Unit,
     onFinish: () -> Unit
 ) {
@@ -91,6 +93,7 @@ fun FiveLettersNavHost(
             SharedAuthScreen(
                 signInViewModel = signInViewModel,
                 signUpViewModel = signUpViewModel,
+                resetPasswordViewModel = resetPasswordViewModel,
                 navigateToMenu = { navController.navigateWithClearBackStack(Destination.Menu.route) },
                 onFinish = onFinish,
                 showSnackBar = showSnackBar

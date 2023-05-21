@@ -20,7 +20,7 @@ import com.zhigaras.fiveletters.core.presentation.compose.CircleProgressBar
 import com.zhigaras.fiveletters.core.presentation.compose.ErrorEffect
 import com.zhigaras.fiveletters.core.presentation.compose.theme.screenEdgePadding
 import com.zhigaras.fiveletters.feature.auth.domain.model.InputFieldType
-import com.zhigaras.fiveletters.feature.auth.domain.model.SignInResult
+import com.zhigaras.fiveletters.feature.auth.domain.model.ProcessResult
 import com.zhigaras.fiveletters.feature.auth.presentation.EmailInput
 import com.zhigaras.fiveletters.feature.auth.presentation.PasswordInput
 import com.zhigaras.fiveletters.feature.menu.presentation.CommonButton
@@ -44,12 +44,12 @@ fun SignUpScreen(
         showSnackBar(it.asString(context))
     }
     
-    if (state.signInResult is SignInResult.Success) navigateToMenu()
+    if (state.processResult is ProcessResult.Success) navigateToMenu()
     Column(
         modifier = Modifier
             .fillMaxSize()
             .verticalScroll(rememberScrollState()),
-        verticalArrangement = Arrangement.spacedBy(16.dp, Alignment.Bottom),
+        verticalArrangement = Arrangement.spacedBy(16.dp, Alignment.CenterVertically),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         EmailInput(
