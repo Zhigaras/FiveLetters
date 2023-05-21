@@ -55,8 +55,11 @@ fun MenuScreen(
     
     if (showAlertDialog) {
         ConfirmationDialog(
-            startNewGame = newGame,
-            continueGame = continueGame,
+            message = R.string.new_game_confirmation,
+            approveText = R.string.continue_whatever,
+            declineText = R.string.new_game,
+            onApprove = continueGame,
+            onDecline = newGame,
             onDismiss = { showAlertDialog = false }
         )
     }

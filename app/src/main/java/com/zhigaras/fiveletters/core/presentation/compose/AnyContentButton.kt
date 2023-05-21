@@ -27,7 +27,7 @@ fun AnyContentButton(
         shape = ShapeDefaults.Medium,
         enabled = enabled,
         colors = ButtonDefaults.buttonColors(
-            containerColor = if (isAlternative) black else yellow,
+            containerColor = if (isAlternative) Color.Transparent else yellow,
             disabledContainerColor = gray
         ),
         border = if (isAlternative) BorderStroke(width = 2.dp, color = yellow) else null

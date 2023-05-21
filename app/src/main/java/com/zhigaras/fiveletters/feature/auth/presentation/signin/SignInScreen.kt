@@ -9,10 +9,14 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -33,6 +37,7 @@ import com.zhigaras.fiveletters.feature.auth.presentation.AuthDivider
 import com.zhigaras.fiveletters.feature.auth.presentation.EmailInput
 import com.zhigaras.fiveletters.feature.auth.presentation.PasswordInput
 import com.zhigaras.fiveletters.feature.auth.presentation.SignInWithGoogleButton
+import com.zhigaras.fiveletters.feature.menu.presentation.ConfirmationDialog
 
 @Composable
 fun SignInScreen(
@@ -46,6 +51,7 @@ fun SignInScreen(
 ) {
     val context = LocalContext.current
     val state by viewModel.getState().collectAsStateWithLifecycle()
+    var showAnonymousLoginDialog by rememberSaveable { mutableStateOf(false) }
     val signInClient = Identity.getSignInClient(context)
     val signWithGoogleLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.StartIntentSenderForResult()
@@ -58,7 +64,19 @@ fun SignInScreen(
     ErrorEffect(event = state.errorEvent, onConsumed = { viewModel.onConsumeError() }) {
         showSnackBar(state.errorEvent.message.asString(context))
     }
+    
     if (state.processResult is ProcessResult.Success) navigateToMenu()
+    
+    if (showAnonymousLoginDialog)
+        ConfirmationDialog(
+            message = R.string.anonymous_login_warning,
+            approveText = R.string.continue_whatever,
+            declineText = R.string.sign_up,
+            messageTextStyle = MaterialTheme.typography.titleMedium,
+            onApprove = { viewModel.signInAnonymously() },
+            onDecline = { showAnonymousLoginDialog = false },
+            onDismiss = { showAnonymousLoginDialog = false }
+        )
     
     Column(
         modifier = Modifier
@@ -107,7 +125,7 @@ fun SignInScreen(
         CommonTextButton(
             modifier = modifier,
             text = stringResource(id = R.string.log_in_as_a_guest),
-            onClick = { viewModel.signInAnonymously() }
+            onClick = { showAnonymousLoginDialog = true }
         )
         AuthDivider(modifier = modifier, textId = R.string.still_not_registered)
         CommonTextButton(
