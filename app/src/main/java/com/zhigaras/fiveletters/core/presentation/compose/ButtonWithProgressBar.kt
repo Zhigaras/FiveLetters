@@ -13,7 +13,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.zhigaras.fiveletters.core.presentation.compose.theme.black
 
 @Composable
 fun ButtonWithProgressBar(
@@ -32,7 +31,7 @@ fun ButtonWithProgressBar(
         Box(modifier = Modifier.fillMaxSize()) {
             Text(
                 text = text,
-                style = textStyle,
+                style = textStyle.copy(color = it),
                 modifier = Modifier
                     .padding(horizontal = 16.dp)
                     .align(Alignment.Center),
@@ -42,7 +41,7 @@ fun ButtonWithProgressBar(
                 modifier = Modifier
                     .size((textStyle.fontSize.value * 1.4).dp)
                     .align(Alignment.CenterEnd),
-                color = black,
+                color = it,
                 strokeWidth = 2.dp
             )
         }

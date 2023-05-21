@@ -12,8 +12,6 @@ import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Clear
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.IconToggleButton
@@ -38,9 +36,8 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.zhigaras.fiveletters.R
-import com.zhigaras.fiveletters.core.presentation.compose.theme.black
+import com.zhigaras.fiveletters.core.presentation.compose.AnyContentButton
 import com.zhigaras.fiveletters.core.presentation.compose.theme.white
-import com.zhigaras.fiveletters.core.presentation.compose.theme.yellow
 import com.zhigaras.fiveletters.feature.auth.domain.model.InputFieldState
 import com.zhigaras.fiveletters.feature.auth.domain.model.InputFieldValidity
 
@@ -202,24 +199,24 @@ fun AuthDividerSpacer(
 @Composable
 fun SignInWithGoogleButton(
     modifier: Modifier = Modifier,
+    enabled: Boolean = true,
+    isAlternative: Boolean = false,
     onClick: () -> Unit
 ) {
-    Button(
-        onClick = onClick,
-        shape = ShapeDefaults.Medium,
-        colors = ButtonDefaults.buttonColors(
-            containerColor = yellow
-        ),
-        modifier = modifier
+    AnyContentButton(
+        modifier = modifier,
+        enabled = enabled,
+        isAlternative = isAlternative,
+        onClick = onClick
     ) {
         Image(
-            modifier = Modifier.size(30.dp),
+            modifier = Modifier.size(24.dp),
             painter = painterResource(id = R.drawable.google_icon),
             contentDescription = null
         )
         Text(
             text = stringResource(R.string.continue_with_google),
-            style = MaterialTheme.typography.titleMedium.copy(color = black),
+            style = MaterialTheme.typography.titleMedium.copy(color = it),
             modifier = Modifier.padding(horizontal = 16.dp),
             textAlign = TextAlign.Center
         )
