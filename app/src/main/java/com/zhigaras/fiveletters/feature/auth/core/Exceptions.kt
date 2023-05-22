@@ -67,3 +67,7 @@ class TokenNotReceived : OneTapSignInException() {
 class OneTapSignInCanceled : OneTapSignInException() {
     override val messageId: Int = R.string.signing_in_with_google_canceled
 }
+
+class TooManyOneTapRequests : OneTapSignInException() {
+    override val messageId: Int = R.string.too_many_google_signIn_requests
+}

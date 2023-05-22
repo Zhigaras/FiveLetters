@@ -7,12 +7,14 @@ import com.google.android.gms.auth.api.identity.BeginSignInRequest
 import com.google.android.gms.auth.api.identity.SignInClient
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.common.api.CommonStatusCodes
+import com.google.android.play.core.integrity.model.IntegrityErrorCode.TOO_MANY_REQUESTS
 import com.zhigaras.fiveletters.feature.auth.core.CouldNotGetCredentials
 import com.zhigaras.fiveletters.feature.auth.core.CouldNotStartOneTapSignIn
 import com.zhigaras.fiveletters.feature.auth.core.NetworkException
 import com.zhigaras.fiveletters.feature.auth.core.NoGoogleAccountsFound
 import com.zhigaras.fiveletters.feature.auth.core.OneTapSignInCanceled
 import com.zhigaras.fiveletters.feature.auth.core.TokenNotReceived
+import com.zhigaras.fiveletters.feature.auth.core.TooManyOneTapRequests
 import com.zhigaras.fiveletters.feature.auth.domain.AuthRepository
 import kotlinx.coroutines.tasks.await
 
@@ -43,8 +45,11 @@ interface SignInWithGoogleUseCase {
                 } catch (e: Exception) {
                     throw CouldNotStartOneTapSignIn()
                 }
-            } catch (e: Exception) {
+            } catch (e: ApiException) {
+                if (e.statusCode == TOO_MANY_REQUESTS) throw TooManyOneTapRequests()
                 throw NoGoogleAccountsFound()
+            } catch (e: Exception) {
+                throw CouldNotStartOneTapSignIn()
             }
         }
         

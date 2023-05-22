@@ -66,4 +66,5 @@ In order to guess it, enter words of 5 letters into the field, and we will give 
     <string name="successful_resetting_password">The letter was successfully sent to %1$s. Follow the instructions in it and come back to log in with a new password.</string>
     <string name="back">Back</string>
     <string name="anonymous_login_warning">By continuing to log in as an anonymous player, you assume the risk of losing game progress and achievements. To avoid this, register using one of the methods indicated on the previous screen. You can also do this later in your account.</string>
+    <string name="too_many_google_signIn_requests">Too many authorization cancellations via Google, the system blocked them for 24h. To restore dial the combination *#*#66382723#*#* in your phone.</string>
 </resources>
