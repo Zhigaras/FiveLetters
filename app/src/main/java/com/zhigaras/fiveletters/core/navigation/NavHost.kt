@@ -22,13 +22,11 @@ import com.zhigaras.fiveletters.feature.menu.presentation.MenuScreen
 import com.zhigaras.fiveletters.feature.menu.presentation.MenuViewModel
 import com.zhigaras.fiveletters.feature.play.presentation.PlayScreen
 import com.zhigaras.fiveletters.feature.play.presentation.PlayViewModel
-import com.zhigaras.fiveletters.feature.splash.presentation.SplashScreen
 
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun FiveLettersNavHost(
     modifier: Modifier = Modifier,
-    needToShowSplash: Boolean,
     needToAuth: Boolean,
     playViewModel: PlayViewModel,
     menuViewModel: MenuViewModel,
@@ -38,51 +36,24 @@ fun FiveLettersNavHost(
     showSnackBar: suspend (String) -> Unit,
     onFinish: () -> Unit
 ) {
-    val isExpanded = LocalConfiguration.current.orientation == Configuration.ORIENTATION_LANDSCAPE
+    val isLandscape = LocalConfiguration.current.orientation == Configuration.ORIENTATION_LANDSCAPE
     val navController = rememberAnimatedNavController()
     val gameState by playViewModel.getState().collectAsStateWithLifecycle()
-    val animationDuration = 700
-    val splashAnim = EaseInExpo
+    val animationDuration = 800
     
     AnimatedNavHost(
         navController = navController,
-//        startDestination =
-//        if (needToShowSplash) Destination.Splash.route
-//        else if (needToAuth) Destination.SignIn.route
-//        else Destination.Menu.route,
-        startDestination = Destination.Splash.route,
-        modifier = modifier.fillMaxSize()
+//        startDestination = if (needToAuth) Destination.Auth.route else Destination.Menu.route,
+        startDestination = Destination.Auth.route,
+        modifier = modifier.fillMaxSize(),
     ) {
-        composable(
-            route = Destination.Splash.route,
-            enterTransition = { fadeIn(animationSpec = tween(animationDuration)) }, //todo seems to be not working
-            exitTransition = {
-                scaleOut(
-                    animationSpec = tween(
-                        durationMillis = animationDuration,
-                        easing = splashAnim
-                    ), targetScale = 30f
-                ) + fadeOut(
-                    tween(durationMillis = animationDuration)
-                )
-            }
-        ) {
-            SplashScreen(
-                navigateToNext = {
-                    navController.navigateWithClearBackStack(
-//                        if (needToAuth) Destination.SignIn.route else Destination.Menu.route
-                        Destination.Auth.route
-                    )
-                }
-            )
-        }
         composable(
             route = Destination.Auth.route,
             enterTransition = {
                 scaleIn(
                     animationSpec = tween(
                         durationMillis = animationDuration,
-                        easing = splashAnim
+                        easing = EaseInExpo
                     )
                 )
             },
@@ -106,7 +77,7 @@ fun FiveLettersNavHost(
         ) {
             MenuScreen(
                 viewModel = menuViewModel,
-                isExpanded = isExpanded,
+                isExpanded = isLandscape,
                 progressState = gameState.progressState,
                 newGame = {
                     playViewModel.startNewGame()

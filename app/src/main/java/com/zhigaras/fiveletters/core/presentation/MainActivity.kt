@@ -1,6 +1,5 @@
 package com.zhigaras.fiveletters.core.presentation
 
-import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
@@ -14,6 +13,7 @@ import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelStoreOwner
 import com.google.firebase.auth.ktx.auth
@@ -33,6 +33,9 @@ class MainActivity : ComponentActivity(), ProvideViewModel {
     
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        
+        installSplashScreen()
+        
         val auth = Firebase.auth //TODO maybe remain that way
         val needToAuth = auth.currentUser == null
         Log.d("AAA", auth.currentUser?.email.toString()) //TODO remove
@@ -41,8 +44,6 @@ class MainActivity : ComponentActivity(), ProvideViewModel {
         val signInViewModel = provideViewModel(SignInViewModel::class.java, this)
         val signUpViewModel = provideViewModel(SignUpViewModel::class.java, this)
         val resetPasswordViewModel = provideViewModel(ResetPasswordViewModel::class.java, this)
-        
-        val needToShowSplash = Build.VERSION.SDK_INT <= 31
         
         setContent {
             val snackBarHostState = remember { SnackbarHostState() }
@@ -54,7 +55,6 @@ class MainActivity : ComponentActivity(), ProvideViewModel {
                 ) { innerPaddings ->
                     FiveLettersNavHost(
                         modifier = Modifier.padding(innerPaddings),
-                        needToShowSplash = needToShowSplash,
                         needToAuth = needToAuth,
                         playViewModel = playViewModel,
                         menuViewModel = menuViewModel,
