@@ -9,7 +9,7 @@ plugins {
 android {
     signingConfigs {
         release {
-        storeFile file('D:\\github\\KEYSTORE\\zhigaras_keystore.jks')
+            storeFile file('D:\\github\\KEYSTORE\\zhigaras_keystore.jks')
             storePassword 'zhigaras'
             keyAlias 'zhigaras'
             keyPassword 'zhigaras'
@@ -73,12 +73,12 @@ tasks.withType(org.jetbrains.kotlin.gradle.tasks.KaptGenerateStubs).configureEac
 
 dependencies {
 
-    implementation 'androidx.core:core-ktx:1.10.0'
+    implementation 'androidx.core:core-ktx:1.10.1'
     implementation 'androidx.lifecycle:lifecycle-runtime-compose:2.6.1'
     implementation 'androidx.activity:activity-compose:1.7.1'
     implementation "androidx.compose.ui:ui:$compose_version"
     implementation "androidx.compose.ui:ui-tooling-preview:$compose_version"
-    implementation 'androidx.compose.material3:material3:1.1.0-rc01'
+    implementation 'androidx.compose.material3:material3:1.2.0-alpha01'
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
@@ -109,9 +109,13 @@ dependencies {
     implementation "com.airbnb.android:lottie-compose:6.0.0"
 
     //Firebase
-    implementation platform('com.google.firebase:firebase-bom:31.5.0')
+    implementation platform('com.google.firebase:firebase-bom:32.0.0')
     implementation 'com.google.firebase:firebase-analytics-ktx'
     implementation 'com.google.firebase:firebase-crashlytics-ktx'
+
+    //Auth
+    implementation 'com.google.firebase:firebase-auth-ktx'
+    implementation 'com.google.android.gms:play-services-auth:20.5.0'
 
     //AdMob
     implementation 'com.google.android.gms:play-services-ads:22.0.0'

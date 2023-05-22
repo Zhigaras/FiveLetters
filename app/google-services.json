@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "470265061278",
+    "firebase_url": "https://fiveletters-a24e6-default-rtdb.europe-west1.firebasedatabase.app",
     "project_id": "fiveletters-a24e6",
     "storage_bucket": "fiveletters-a24e6.appspot.com"
   },
@@ -14,7 +15,7 @@
       },
       "oauth_client": [
         {
-          "client_id": "470265061278-obop8mbghkmmneetm4mjqq10qct2gkgp.apps.googleusercontent.com",
+          "client_id": "470265061278-l6757bt5k9q6eh7bls1hs2vs9m1a93si.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
@@ -27,12 +28,13 @@
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "470265061278-obop8mbghkmmneetm4mjqq10qct2gkgp.apps.googleusercontent.com",
+              "client_id": "470265061278-l6757bt5k9q6eh7bls1hs2vs9m1a93si.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
         }
-      }
+      },
+      "admob_app_id": "ca-app-pub-1332033107151527~9102158261"
     }
   ],
   "configuration_version": "1"
