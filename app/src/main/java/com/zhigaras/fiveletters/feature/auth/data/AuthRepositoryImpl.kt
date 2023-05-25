@@ -5,7 +5,6 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.google.firebase.auth.FirebaseAuthInvalidUserException
 import com.google.firebase.auth.FirebaseAuthUserCollisionException
-import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
 import com.zhigaras.fiveletters.feature.auth.core.EmailIsUsed
 import com.zhigaras.fiveletters.feature.auth.core.InvalidCredentials
@@ -68,7 +67,4 @@ class AuthRepositoryImpl(private val auth: FirebaseAuth) : AuthRepository {
             throw NoSuchUser()
         }
     }
-    
-    override fun getCurrentUser(): FirebaseUser? = auth.currentUser //TODO move to needed layer
-    
 }

@@ -15,8 +15,9 @@ import com.zhigaras.fiveletters.feature.auth.presentation.resetpassword.ResetPas
 import com.zhigaras.fiveletters.feature.auth.presentation.signin.SignInViewModel
 import com.zhigaras.fiveletters.feature.auth.presentation.signup.SignUpViewModel
 import com.zhigaras.fiveletters.feature.menu.data.RulesRepositoryImpl
+import com.zhigaras.fiveletters.feature.menu.data.UserRepositoryImpl
+import com.zhigaras.fiveletters.feature.menu.domain.usecases.GetCurrentUserUseCase
 import com.zhigaras.fiveletters.feature.menu.domain.usecases.GetRulesUseCase
-import com.zhigaras.fiveletters.feature.menu.domain.usecases.GetUserInfoUseCase
 import com.zhigaras.fiveletters.feature.menu.domain.usecases.GetUserStatUseCase
 import com.zhigaras.fiveletters.feature.menu.presentation.MenuViewModel
 import com.zhigaras.fiveletters.feature.menu.presentation.rules.RulesViewModel
@@ -52,7 +53,7 @@ class ViewModelFactory(
                 )
             
             MenuViewModel::class.java -> MenuViewModel(
-                GetUserInfoUseCase.Base(authRepository),
+                GetCurrentUserUseCase.Base(UserRepositoryImpl(core.provideFirebaseAuth())),
                 GetUserStatUseCase.Base(core.provideUserStatRepository()),
                 dispatchers
             )

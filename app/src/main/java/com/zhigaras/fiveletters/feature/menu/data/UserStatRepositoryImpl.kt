@@ -1,30 +1,38 @@
 package com.zhigaras.fiveletters.feature.menu.data
 
-import com.zhigaras.fiveletters.database.UserStatDao
+import com.google.firebase.database.DatabaseReference
+import com.zhigaras.fiveletters.feature.menu.data.model.AttemptsDto
+import com.zhigaras.fiveletters.feature.menu.data.model.UserStatDto
 import com.zhigaras.fiveletters.feature.menu.domain.UserStatRepository
-import com.zhigaras.fiveletters.feature.menu.domain.model.UserStat
-import com.zhigaras.fiveletters.feature.play.domain.UserStatInteract
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.combine
+import com.zhigaras.fiveletters.feature.menu.domain.model.Achievement
+import com.zhigaras.fiveletters.feature.menu.domain.model.Rank
+import kotlinx.coroutines.tasks.await
 
-class UserStatRepositoryImpl(
-    private val wordDao: UserStatDao,
-    private val userStat: UserStatInteract.Read
-) : UserStatRepository {
+class UserStatRepositoryImpl(private val database: DatabaseReference) : UserStatRepository {
     
-    override suspend fun getUserStatFlow(): Flow<UserStat> {
-        val dictionarySize = wordDao.getDictionarySize()
-        return combine(
-            wordDao.getSolvedWordsCount(),
-            userStat.getGamesCount(),
-            wordDao.getAverageAttempt()
-        ) { words, games, attempts ->
-            UserStat.Base(
-                wins = words,
-                progress = words.toFloat() / dictionarySize,
-                games = games,
-                averageAttempts = attempts ?: 0f
-            )
-        }
+    override suspend fun getUserStatFlow(userId: String): UserStatDto? {
+        return database
+            .child("users")
+            .child(userId)
+            .child("stat")
+            .get()
+            .await()
+            .getValue(UserStatDto::class.java)
+    }
+    
+    override suspend fun tempPutUserStat(userId: String) {
+        database
+            .child("users")
+            .child(userId)
+            .child("stat")
+            .setValue(
+                UserStatDto(
+                    gamesPlayed = 3,
+                    wins = 2,
+                    rank = Rank.BEGINNER,
+                    achievements = listOf(Achievement.FIRST_WIN, Achievement.SECOND_WIN),
+                    attempts = AttemptsDto(0, 0, 3, 4, 5, 6)
+                )
+            ).await()
     }
 }

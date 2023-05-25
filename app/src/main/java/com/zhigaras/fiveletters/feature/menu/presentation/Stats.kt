@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.Text
@@ -17,16 +16,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.zhigaras.fiveletters.core.presentation.compose.theme.black
-import com.zhigaras.fiveletters.core.presentation.compose.theme.white
 import com.zhigaras.fiveletters.core.presentation.compose.theme.yellow
-
 
 @Composable
 fun StatCard(
     modifier: Modifier = Modifier,
-    content: Pair<Int, String>,
-    progressFlag: Boolean,
-    progress: Float
+    content: Pair<Int, String>
 ) {
     OutlinedCard(
         shape = RoundedCornerShape(20.dp),
@@ -43,7 +38,7 @@ fun StatCard(
                 .fillMaxSize()
                 .padding(4.dp)
         ) {
-            StatCardContent(content = content, progressFlag = progressFlag, progress = progress)
+            StatCardContent(content = content)
         }
     }
 }
@@ -52,21 +47,10 @@ fun StatCard(
 fun StatCardContent(
     modifier: Modifier = Modifier,
     content: Pair<Int, String>,
-    progressFlag: Boolean,
-    progress: Float
 ) {
     Box {
         StatHeader(str = content.first, modifier = modifier.align(Alignment.TopCenter))
         StatBody(modifier = modifier.align(Alignment.Center), str = content.second)
-        if (progressFlag)
-            LinearProgressIndicator(
-                progress = progress,
-                trackColor = white,
-                color = black,
-                modifier = modifier
-                    .align(Alignment.BottomCenter)
-                    .padding(horizontal = 16.dp, vertical = 8.dp)
-            )
     }
 }
 

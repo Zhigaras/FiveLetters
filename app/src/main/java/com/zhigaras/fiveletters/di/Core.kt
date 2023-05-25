@@ -5,6 +5,7 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.ktx.Firebase
 import com.zhigaras.fiveletters.core.data.ProvideInstance
 import com.zhigaras.fiveletters.database.WordDatabase
@@ -55,11 +56,12 @@ interface Core : ProvideRepository {
             MainRepositoryImpl(databaseModule.provideDatabase().getWordDao(), datastoreManager)
         
         override fun provideUserStatRepository(): UserStatRepository =
-            UserStatRepositoryImpl(provideDatabase().getWordDao(), datastoreManager)
+//            UserStatRepositoryImpl(provideDatabase().getWordDao(), datastoreManager)
+            UserStatRepositoryImpl(FirebaseDatabase.getInstance().reference)
         
         override fun provideStateSaver(): GameStateRepository =
             GameStateRepositoryImpl(datastoreManager, MoshiSerializer.Base())
-    
+        
         override fun provideFirebaseAuth(): FirebaseAuth = Firebase.auth
         
     }

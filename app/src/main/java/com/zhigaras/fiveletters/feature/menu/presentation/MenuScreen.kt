@@ -4,7 +4,6 @@ import androidx.compose.animation.core.animateFloat
 import androidx.compose.animation.core.infiniteRepeatable
 import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.animation.core.tween
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -56,8 +55,7 @@ fun MenuScreen(
     continueGame: () -> Unit,
     onFinish: () -> Unit
 ) {
-    
-    val userStat by viewModel.userStatFlow().collectAsStateWithLifecycle(UserStat.Empty())
+    val userStat by viewModel.getState().collectAsStateWithLifecycle()
     var showAlertDialog by rememberSaveable { mutableStateOf(false) }
     var showRulesDialog by rememberSaveable { mutableStateOf(false) }
     
@@ -82,8 +80,7 @@ fun MenuScreen(
             UserStatistics(
                 modifier = it,
                 userStat = userStat,
-                isExpanded = isExpanded,
-                getUser = { viewModel.getUser() } //TODO remove after debugging
+                isExpanded = isExpanded
             )
         },
         {
@@ -102,8 +99,7 @@ fun MenuScreen(
 fun UserStatistics(
     modifier: Modifier = Modifier,
     userStat: UserStat,
-    isExpanded: Boolean,
-    getUser: () -> Unit
+    isExpanded: Boolean
 ) {
     Box(
         modifier = modifier
@@ -125,7 +121,6 @@ fun UserStatistics(
                         modifier = Modifier
                             .align(Alignment.CenterHorizontally)
                             .padding(16.dp)
-                            .clickable { getUser() }
                     )
                 Column(
                     verticalArrangement = Arrangement.spacedBy(8.dp),
@@ -135,10 +130,10 @@ fun UserStatistics(
                 ) {
                     listOf(
                         listOf(R.string.games_played, R.string.wins).zip(
-                            listOf(userStat.games.toString(), userStat.wins.toString())
-                        ),
-                        listOf(R.string.progress, R.string.average_attempts).zip(
-                            listOf(userStat.formattedProgress, userStat.formattedAttempts)
+                            listOf(userStat.gamesPlayed.toString(), userStat.wins.toString())
+//                        ),
+//                        listOf(R.string.progress, R.string.average_attempts).zip(
+//                            listOf(userStat.formattedProgress, userStat.formattedAttempts)
                         )
                     ).forEachIndexed { columnIndex, row ->
                         Row(
@@ -151,8 +146,6 @@ fun UserStatistics(
                                         .weight(1f)
                                         .fillMaxHeight(),
                                     content = item,
-                                    progressFlag = columnIndex == 1 && rowIndex == 0,
-                                    progress = userStat.progress
                                 )
                             }
                         }
