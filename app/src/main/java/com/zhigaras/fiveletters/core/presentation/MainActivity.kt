@@ -25,6 +25,7 @@ import com.zhigaras.fiveletters.feature.auth.presentation.resetpassword.ResetPas
 import com.zhigaras.fiveletters.feature.auth.presentation.signin.SignInViewModel
 import com.zhigaras.fiveletters.feature.auth.presentation.signup.SignUpViewModel
 import com.zhigaras.fiveletters.feature.menu.presentation.MenuViewModel
+import com.zhigaras.fiveletters.feature.menu.presentation.rules.RulesViewModel
 import com.zhigaras.fiveletters.feature.play.presentation.PlayViewModel
 
 class MainActivity : ComponentActivity(), ProvideViewModel {
@@ -44,6 +45,7 @@ class MainActivity : ComponentActivity(), ProvideViewModel {
         val signInViewModel = provideViewModel(SignInViewModel::class.java, this)
         val signUpViewModel = provideViewModel(SignUpViewModel::class.java, this)
         val resetPasswordViewModel = provideViewModel(ResetPasswordViewModel::class.java, this)
+        val rulesViewModel = provideViewModel(RulesViewModel::class.java, this)
         
         setContent {
             val snackBarHostState = remember { SnackbarHostState() }
@@ -61,6 +63,7 @@ class MainActivity : ComponentActivity(), ProvideViewModel {
                         signInViewModel = signInViewModel,
                         signUpViewModel = signUpViewModel,
                         resetPasswordViewModel = resetPasswordViewModel,
+                        rulesViewModel = rulesViewModel,
                         showSnackBar = {
                             snackBarHostState.showSnackbar(
                                 message = it,

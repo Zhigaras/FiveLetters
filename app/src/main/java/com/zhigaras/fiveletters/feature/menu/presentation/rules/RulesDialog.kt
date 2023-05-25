@@ -1,4 +1,4 @@
-package com.zhigaras.fiveletters.feature.menu.presentation
+package com.zhigaras.fiveletters.feature.menu.presentation.rules
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -19,6 +19,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.ShapeDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -26,6 +27,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.zhigaras.fiveletters.R
 import com.zhigaras.fiveletters.core.presentation.compose.theme.gray100
 import com.zhigaras.fiveletters.core.presentation.compose.theme.yellow10
@@ -36,9 +38,10 @@ import com.zhigaras.fiveletters.feature.play.presentation.LetterRow
 @Composable
 fun RulesDialog(
     modifier: Modifier = Modifier,
-    rulesRowsList: List<RowState>,
+    viewModel: RulesViewModel,
     onDismiss: () -> Unit
 ) {
+    val rulesRowsList by viewModel.getState().collectAsStateWithLifecycle()
     Dialog(
         onDismissRequest = { onDismiss() },
         properties = DialogProperties(dismissOnBackPress = true, dismissOnClickOutside = true)

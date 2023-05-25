@@ -20,6 +20,7 @@ import com.zhigaras.fiveletters.feature.auth.presentation.signin.SignInViewModel
 import com.zhigaras.fiveletters.feature.auth.presentation.signup.SignUpViewModel
 import com.zhigaras.fiveletters.feature.menu.presentation.MenuScreen
 import com.zhigaras.fiveletters.feature.menu.presentation.MenuViewModel
+import com.zhigaras.fiveletters.feature.menu.presentation.rules.RulesViewModel
 import com.zhigaras.fiveletters.feature.play.presentation.PlayScreen
 import com.zhigaras.fiveletters.feature.play.presentation.PlayViewModel
 
@@ -33,6 +34,7 @@ fun FiveLettersNavHost(
     signInViewModel: SignInViewModel,
     signUpViewModel: SignUpViewModel,
     resetPasswordViewModel: ResetPasswordViewModel,
+    rulesViewModel: RulesViewModel,
     showSnackBar: suspend (String) -> Unit,
     onFinish: () -> Unit
 ) {
@@ -78,6 +80,7 @@ fun FiveLettersNavHost(
             MenuScreen(
                 viewModel = menuViewModel,
                 isExpanded = isLandscape,
+                rulesViewModel = rulesViewModel,
                 progressState = gameState.progressState,
                 newGame = {
                     playViewModel.startNewGame()

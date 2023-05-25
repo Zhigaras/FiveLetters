@@ -42,11 +42,14 @@ import com.zhigaras.fiveletters.core.presentation.compose.SingleClickButton
 import com.zhigaras.fiveletters.core.presentation.compose.theme.black
 import com.zhigaras.fiveletters.core.presentation.compose.theme.yellow
 import com.zhigaras.fiveletters.feature.menu.domain.model.UserStat
+import com.zhigaras.fiveletters.feature.menu.presentation.rules.RulesDialog
+import com.zhigaras.fiveletters.feature.menu.presentation.rules.RulesViewModel
 import com.zhigaras.fiveletters.feature.play.domain.model.ProgressState
 
 @Composable
 fun MenuScreen(
     viewModel: MenuViewModel,
+    rulesViewModel: RulesViewModel,
     isExpanded: Boolean,
     progressState: ProgressState,
     newGame: () -> Unit,
@@ -57,7 +60,6 @@ fun MenuScreen(
     val userStat by viewModel.userStatFlow().collectAsStateWithLifecycle(UserStat.Empty())
     var showAlertDialog by rememberSaveable { mutableStateOf(false) }
     var showRulesDialog by rememberSaveable { mutableStateOf(false) }
-    val rulesRowsList by viewModel.getState().collectAsStateWithLifecycle()
     
     DoublePressBackHandler(onFinish = onFinish)
     
@@ -72,7 +74,7 @@ fun MenuScreen(
         )
     }
     if (showRulesDialog) {
-        RulesDialog(rulesRowsList = rulesRowsList, onDismiss = { showRulesDialog = false })
+        RulesDialog(viewModel = rulesViewModel, onDismiss = { showRulesDialog = false })
     }
     
     OrientationSwapper(modifier = Modifier.fillMaxSize(), isExpanded = isExpanded, content = listOf(

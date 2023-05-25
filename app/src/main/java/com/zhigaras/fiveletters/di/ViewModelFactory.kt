@@ -19,6 +19,7 @@ import com.zhigaras.fiveletters.feature.menu.domain.usecases.GetRulesUseCase
 import com.zhigaras.fiveletters.feature.menu.domain.usecases.GetUserInfoUseCase
 import com.zhigaras.fiveletters.feature.menu.domain.usecases.GetUserStatUseCase
 import com.zhigaras.fiveletters.feature.menu.presentation.MenuViewModel
+import com.zhigaras.fiveletters.feature.menu.presentation.rules.RulesViewModel
 import com.zhigaras.fiveletters.feature.play.domain.model.Alphabet
 import com.zhigaras.fiveletters.feature.play.domain.usecases.GameStateController
 import com.zhigaras.fiveletters.feature.play.domain.usecases.KeyboardStateController
@@ -53,8 +54,7 @@ class ViewModelFactory(
             MenuViewModel::class.java -> MenuViewModel(
                 GetUserInfoUseCase.Base(authRepository),
                 GetUserStatUseCase.Base(core.provideUserStatRepository()),
-                dispatchers,
-                GetRulesUseCase.Base(RulesRepositoryImpl(rowStateController))
+                dispatchers
             )
             
             SignInViewModel::class.java -> SignInViewModel(
@@ -72,6 +72,10 @@ class ViewModelFactory(
             ResetPasswordViewModel::class.java -> ResetPasswordViewModel(
                 ResetPasswordUseCase.Base(authRepository, ResetPasswordEmailValidatorImpl()),
                 dispatchers
+            )
+            
+            RulesViewModel::class.java -> RulesViewModel(
+                GetRulesUseCase.Base(RulesRepositoryImpl(rowStateController))
             )
             
             else -> throw IllegalArgumentException("Unknown class name: $modelClass")
