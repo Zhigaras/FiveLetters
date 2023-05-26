@@ -11,7 +11,7 @@ data class UserStatDto(
     val achievements: List<Achievement> = emptyList(),
     val attempts: List<Int> = List(6) { 0 }
 ) {
-    fun map() = UserStat(
+    fun map() = UserStat.Base(
         gamesPlayed = gamesPlayed,
         wins = wins,
         rank = rank,

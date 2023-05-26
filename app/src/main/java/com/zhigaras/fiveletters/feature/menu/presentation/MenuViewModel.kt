@@ -11,7 +11,7 @@ class MenuViewModel(
     private val getCurrentUserUseCase: GetCurrentUserUseCase,
     private val getUserStatUseCase: GetUserStatUseCase,
     private val dispatchers: DispatchersModule
-) : BaseViewModel<UserStat>(UserStat.initial) {
+) : BaseViewModel<UserStat>(UserStat.Base.initial) {
     
     //todo либо завести переменную currentUser, либо запрос юзкра перенести в юзкейс
     
@@ -19,7 +19,7 @@ class MenuViewModel(
         getUserStat()
     }
     
-    fun getUserStat() {
+    private fun getUserStat() {
         scopeLaunch(context = dispatchers.io()) {
             state = getUserStatUseCase.getUserStat()
             getUserStatUseCase.tempPutUserStat() //todo remove
