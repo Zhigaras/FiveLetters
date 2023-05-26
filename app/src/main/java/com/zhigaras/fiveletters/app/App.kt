@@ -5,7 +5,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelStoreOwner
 import com.google.android.gms.ads.MobileAds
-import com.zhigaras.fiveletters.core.data.ProvideInstance
 import com.zhigaras.fiveletters.di.Core
 import com.zhigaras.fiveletters.di.ViewModelFactory
 
@@ -17,10 +16,10 @@ class App : Application(), ProvideViewModel {
         super.onCreate()
         
         MobileAds.initialize(this)
-    
-        val provideInstance = ProvideInstance.Release(this)
+
+//        val provideInstance = ProvideInstance.Release(this)
         
-        val core = Core.Base(this, provideInstance)
+        val core = Core.Base(this)
         
         viewModelFactory = ViewModelFactory(core)
     }

@@ -1,12 +1,10 @@
 package com.zhigaras.fiveletters.feature.play.domain.usecases.gamelogic
 
 import com.zhigaras.fiveletters.core.Constants
-import com.zhigaras.fiveletters.feature.play.domain.MainRepository
 import com.zhigaras.fiveletters.feature.play.domain.model.GameState
 import com.zhigaras.fiveletters.feature.play.domain.model.LetterFieldState
 import com.zhigaras.fiveletters.feature.play.domain.model.ProgressState
 import com.zhigaras.fiveletters.feature.play.domain.model.RowState
-import com.zhigaras.fiveletters.feature.play.domain.model.Word
 
 interface GameStateController {
     
@@ -16,17 +14,17 @@ interface GameStateController {
     
     suspend fun confirmWord(
         gameState: GameState,
+        checkWord: suspend (String) -> Boolean,
         incrementAttempts: suspend (Int) -> Unit,
         incrementGamesCounter: suspend () -> Unit,
         incrementWinsCount: suspend () -> Unit
     ): GameState
     
-    fun newGame(origin: Word = Word.mock): GameState
+    fun newGame(origin: String = ""): GameState
     
     class Base(
         private val rowStateController: RowStateController.Overall,
         private val keyboardStateController: KeyboardStateController,
-        private val mainRepository: MainRepository
     ) : GameStateController {
         
         override fun inputLetter(gameState: GameState, char: Char): GameState {
@@ -58,15 +56,15 @@ interface GameStateController {
         
         override suspend fun confirmWord(
             gameState: GameState,
+            checkWord: suspend (String) -> Boolean,
             incrementAttempts: suspend (Int) -> Unit,
             incrementGamesCounter: suspend () -> Unit,
             incrementWinsCount: suspend () -> Unit
         ): GameState {
             val snapshot = gameState.letterFieldState.result.toMutableList()
             val currentRow = snapshot[gameState.rowCursor]
-            val isWordValid =
-                mainRepository.isWordExist(currentRow.row.map { it.char.lowercaseChar() }
-                    .joinToString(""))
+            val isWordValid = checkWord(currentRow.row.map { it.char.lowercaseChar() }
+                .joinToString(""))
             snapshot[gameState.rowCursor] =
                 rowStateController.confirmWord(isWordValid, gameState.origin, currentRow)
             if (snapshot[gameState.rowCursor] is RowState.InvalidWord)
@@ -100,7 +98,7 @@ interface GameStateController {
             )
         }
         
-        override fun newGame(origin: Word): GameState {
+        override fun newGame(origin: String): GameState {
             return GameState(
                 letterFieldState = LetterFieldState.Start(),
                 keyboard = keyboardStateController.getDefaultKeyboard(),

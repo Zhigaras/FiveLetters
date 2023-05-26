@@ -61,7 +61,7 @@ fun PlayScreen(
     
     if (showEndGameDialog) {
         EndGameDialog(
-            origin = gameState.origin.word,
+            origin = gameState.origin,
             scale = dialogScaleValue,
             onDismiss = { showEndGameDialog = false },
             toMenuClick = { showEndGameDialog = false; toMenuClick() },

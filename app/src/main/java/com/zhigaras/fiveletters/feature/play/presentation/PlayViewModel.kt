@@ -4,17 +4,17 @@ import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.zhigaras.fiveletters.core.presentation.BaseViewModel
 import com.zhigaras.fiveletters.di.DispatchersModule
-import com.zhigaras.fiveletters.feature.play.domain.MainRepository
 import com.zhigaras.fiveletters.feature.play.domain.model.GameState
 import com.zhigaras.fiveletters.feature.play.domain.usecases.gamelogic.GameStateController
 import com.zhigaras.fiveletters.feature.play.domain.usecases.SaveStateUseCase
 import com.zhigaras.fiveletters.feature.play.domain.usecases.UpdateUserStateUseCase
+import com.zhigaras.fiveletters.feature.play.domain.usecases.WordsUseCase
 import kotlinx.coroutines.launch
 
 class PlayViewModel(
     private val gameStateController: GameStateController,
     private val updateUserStateUseCase: UpdateUserStateUseCase,
-    private val mainRepository: MainRepository,
+    private val wordsUseCase: WordsUseCase,
     private val dispatchers: DispatchersModule,
     private val saveStateUseCase: SaveStateUseCase
 ) : BaseViewModel<GameState>(gameStateController.newGame()) {
@@ -36,6 +36,7 @@ class PlayViewModel(
             state =
                 gameStateController.confirmWord(
                     gameState = state,
+                    checkWord = { wordsUseCase.isWordValid(it) },
                     incrementAttempts = { line -> updateUserStateUseCase.incrementAttempt(line) },
                     incrementGamesCounter = { updateUserStateUseCase.incrementGamesCount() },
                     incrementWinsCount = { updateUserStateUseCase.incrementWinsCount() }
@@ -45,8 +46,8 @@ class PlayViewModel(
     
     fun startNewGame() {
         viewModelScope.launch(dispatchers.io()) {
-            val origin = mainRepository.getUnsolvedWord()
-            Log.d("AAA word", origin.word)
+            val origin = wordsUseCase.getNewWord() // todo replace with new repo
+            Log.d("AAA word", origin)
             state = gameStateController.newGame(origin)
         }
     }

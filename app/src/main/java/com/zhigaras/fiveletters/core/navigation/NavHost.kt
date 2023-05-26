@@ -45,8 +45,8 @@ fun FiveLettersNavHost(
     
     AnimatedNavHost(
         navController = navController,
-//        startDestination = if (needToAuth) Destination.Auth.route else Destination.Menu.route,
-        startDestination = Destination.Auth.route,
+        startDestination = if (needToAuth) Destination.Auth.route else Destination.Menu.route,
+//        startDestination = Destination.Auth.route,
         modifier = modifier.fillMaxSize(),
     ) {
         composable(

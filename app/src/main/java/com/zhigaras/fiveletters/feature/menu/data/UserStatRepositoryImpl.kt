@@ -2,6 +2,7 @@ package com.zhigaras.fiveletters.feature.menu.data
 
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.ServerValue
 import com.zhigaras.fiveletters.feature.menu.data.model.UserStatDto
 import com.zhigaras.fiveletters.feature.menu.domain.UserStatRepository
 import com.zhigaras.fiveletters.feature.menu.domain.model.Achievement
@@ -35,19 +36,23 @@ class UserStatRepositoryImpl(
         ).await()
     }
     
-    override suspend fun incrementGamesCount() {
+    override suspend fun incrementGamesCount() {//todo may be synchronously
         incrementField(UserStatDto::gamesPlayed.name)
     }
     
-    override suspend fun incrementWinsCount() {
+    override suspend fun incrementWinsCount() { //todo may be synchronously
         incrementField(UserStatDto::wins.name)
     }
     
-    private suspend inline fun incrementField(field: String) {
-        statReference.child(field).let {
-            val currentValue = it.get().await().value as Long
-            it.setValue(currentValue + 1)
-        }
+    private fun incrementField(field: String) {
+        
+        val updates: MutableMap<String, Any> = hashMapOf(field to ServerValue.increment(1))
+        statReference.updateChildren(updates)
+
+//        statReference.child(field).let {
+//            val currentValue = it.get().await().value as Long
+//            it.setValue(currentValue + 1)
+//        }
     }
     
     override suspend fun incrementAttempt(lineNumber: Int) {

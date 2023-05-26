@@ -4,7 +4,6 @@ import com.zhigaras.fiveletters.feature.play.domain.model.GameState
 import com.zhigaras.fiveletters.feature.play.domain.model.LetterState
 import com.zhigaras.fiveletters.feature.play.domain.model.LetterType
 import com.zhigaras.fiveletters.feature.play.domain.model.RowState
-import com.zhigaras.fiveletters.feature.play.domain.model.Word
 
 interface RowStateController {
     
@@ -20,7 +19,7 @@ interface RowStateController {
         
         fun confirmWord(
             isWordValid: Boolean,
-            origin: Word,
+            origin: String,
             currentRow: RowState
         ): RowState
         
@@ -52,13 +51,13 @@ interface RowStateController {
         
         override fun confirmWord(
             isWordValid: Boolean,
-            origin: Word,
+            origin: String,
             currentRow: RowState
         ): RowState {
             return wordCheckable.checkWord(
                 isWordValid,
                 currentRow.row.map { it.char },
-                origin.word.uppercase()
+                origin.uppercase()
             )
         }
     }
