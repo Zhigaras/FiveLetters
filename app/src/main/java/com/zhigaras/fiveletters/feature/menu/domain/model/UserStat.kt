@@ -5,9 +5,11 @@ data class UserStat(
     val wins: Int,
     val rank: Rank,
     val achievements: List<Achievement>,
-    val attempts: Attempts
+    val attempts: List<Int>
 ) {
     val winRate get() = String.format("%.1f", (wins * 100 / gamesPlayed)) + "%"
+    
+    val averageAttempts = String.format("%.1f", attempts.sum().toFloat() / attempts.size)
     
     companion object {
         val initial = UserStat(
@@ -15,7 +17,7 @@ data class UserStat(
             wins = 0,
             rank = Rank.BEGINNER,
             achievements = emptyList(),
-            attempts = Attempts.initial
+            attempts = List(6) { 0 }
         )
     }
 }

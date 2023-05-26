@@ -5,12 +5,18 @@ import com.zhigaras.fiveletters.feature.menu.domain.model.UserStat
 
 interface GetUserStatUseCase {
     
-    suspend fun getUserStat(userId: String): UserStat
+    suspend fun getUserStat(): UserStat
+    
+    suspend fun tempPutUserStat()
     
     class Base(private val userStatRepository: UserStatRepository) : GetUserStatUseCase {
         
-        override suspend fun getUserStat(userId: String): UserStat {
-            return userStatRepository.getUserStatFlow(userId)?.map() ?: UserStat.initial
+        override suspend fun getUserStat(): UserStat {
+            return userStatRepository.getUserStat()?.map() ?: UserStat.initial
+        }
+        
+        override suspend fun tempPutUserStat() {
+            userStatRepository.tempPutUserStat()
         }
     }
 }

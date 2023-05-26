@@ -3,13 +3,13 @@ package com.zhigaras.fiveletters.domain
 import com.zhigaras.fiveletters.feature.play.domain.model.LetterState
 import com.zhigaras.fiveletters.feature.play.domain.model.LetterType
 import com.zhigaras.fiveletters.feature.play.domain.model.RowState
-import com.zhigaras.fiveletters.feature.play.domain.usecases.WordCheckable
+import com.zhigaras.fiveletters.feature.play.domain.usecases.gamelogic.WordCheckable
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert.assertEquals
 import org.junit.Test
 
 class WordCheckableTest {
-
+    
     @Test
     fun `test word checking 1`() = runBlocking {
         val wordCheckable = WordCheckable.Base()
@@ -26,7 +26,7 @@ class WordCheckableTest {
         )
         assertEquals(expected, actual)
     }
-
+    
     @Test
     fun `test word checking 2`() = runBlocking {
         val wordCheckable = WordCheckable.Base()
@@ -43,7 +43,7 @@ class WordCheckableTest {
         )
         assertEquals(expected, actual)
     }
-
+    
     @Test
     fun `test word checking 3`() = runBlocking {
         val wordCheckable = WordCheckable.Base()
@@ -60,7 +60,7 @@ class WordCheckableTest {
         )
         assertEquals(expected, actual)
     }
-
+    
     @Test
     fun `test word checking 4`() = runBlocking {
         val wordCheckable = WordCheckable.Base()
@@ -77,7 +77,7 @@ class WordCheckableTest {
         )
         assertEquals(expected, actual)
     }
-
+    
     @Test
     fun `test word checking 5`() = runBlocking {
         val wordCheckable = WordCheckable.Base()
@@ -94,7 +94,7 @@ class WordCheckableTest {
         )
         assertEquals(expected, actual)
     }
-
+    
     @Test
     fun `test word checking 6`() = runBlocking {
         val wordCheckable = WordCheckable.Base()
@@ -111,7 +111,7 @@ class WordCheckableTest {
         )
         assertEquals(expected, actual)
     }
-
+    
     @Test
     fun `test word checking 7`() = runBlocking {
         val wordCheckable = WordCheckable.Base()
@@ -128,12 +128,12 @@ class WordCheckableTest {
         )
         assertEquals(expected, actual)
     }
-
+    
     @Test
     fun `test word checking 8`() = runBlocking {
         val wordCheckable = WordCheckable.Base()
         val wordToCheck = "ОЛОВО".toList()
-        val actual = wordCheckable.checkWord(true,wordToCheck, "СЛОВО")
+        val actual = wordCheckable.checkWord(true, wordToCheck, "СЛОВО")
         val expected = RowState.Wrong(
             listOf(
                 LetterState.Wrong(LetterType.Card(), 'О'),
@@ -145,7 +145,7 @@ class WordCheckableTest {
         )
         assertEquals(expected, actual)
     }
-
+    
     @Test
     fun `test word checking 9`() = runBlocking {
         val wordCheckable = WordCheckable.Base()
@@ -162,7 +162,7 @@ class WordCheckableTest {
         )
         assertEquals(expected, actual)
     }
-
+    
     @Test
     fun `test word checking 10`() = runBlocking {
         val wordCheckable = WordCheckable.Base()
@@ -179,7 +179,7 @@ class WordCheckableTest {
         )
         assertEquals(expected, actual)
     }
-
+    
     @Test
     fun `test word checking 11`() = runBlocking {
         val wordCheckable = WordCheckable.Base()
@@ -196,7 +196,7 @@ class WordCheckableTest {
         )
         assertEquals(expected, actual)
     }
-
+    
     @Test
     fun `test word checking 12`() = runBlocking {
         val wordCheckable = WordCheckable.Base()
@@ -213,7 +213,7 @@ class WordCheckableTest {
         )
         assertEquals(expected, actual)
     }
-
+    
     @Test
     fun `test word checking 13`() = runBlocking {
         val wordCheckable = WordCheckable.Base()
@@ -230,7 +230,7 @@ class WordCheckableTest {
         )
         assertEquals(expected, actual)
     }
-
+    
     @Test
     fun `test word checking 14`() = runBlocking {
         val wordCheckable = WordCheckable.Base()

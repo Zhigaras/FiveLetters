@@ -1,4 +1,4 @@
-package com.zhigaras.fiveletters.feature.play.domain.usecases
+package com.zhigaras.fiveletters.feature.play.domain.usecases.gamelogic
 
 import com.zhigaras.fiveletters.core.Constants
 import com.zhigaras.fiveletters.feature.play.domain.MainRepository
@@ -16,8 +16,9 @@ interface GameStateController {
     
     suspend fun confirmWord(
         gameState: GameState,
-        saveAttempts: suspend (Word) -> Unit,
-        incrementGamesCounter: suspend () -> Unit
+        incrementAttempts: suspend (Int) -> Unit,
+        incrementGamesCounter: suspend () -> Unit,
+        incrementWinsCount: suspend () -> Unit
     ): GameState
     
     fun newGame(origin: Word = Word.mock): GameState
@@ -57,8 +58,9 @@ interface GameStateController {
         
         override suspend fun confirmWord(
             gameState: GameState,
-            saveAttempts: suspend (Word) -> Unit,
-            incrementGamesCounter: suspend () -> Unit
+            incrementAttempts: suspend (Int) -> Unit,
+            incrementGamesCounter: suspend () -> Unit,
+            incrementWinsCount: suspend () -> Unit
         ): GameState {
             val snapshot = gameState.letterFieldState.result.toMutableList()
             val currentRow = snapshot[gameState.rowCursor]
@@ -76,11 +78,10 @@ interface GameStateController {
                 letterField = LetterFieldState.Failed(snapshot.toList())
             }
             
-            if (snapshot.any { it is RowState.Right }) {
-                saveAttempts(
-                    gameState.origin.copy(solvedByUser = true, attempts = gameState.rowCursor + 1)
-                )
+            if (snapshot.any { it is RowState.Right }) { //todo вместо any проверять currentRow??
                 letterField = LetterFieldState.Win(snapshot.toList())
+                incrementAttempts(gameState.rowCursor) //todo объединить increment attempts and wins??
+                incrementWinsCount()
             }
             
             if (letterField.progressState == ProgressState.ENDED) incrementGamesCounter()

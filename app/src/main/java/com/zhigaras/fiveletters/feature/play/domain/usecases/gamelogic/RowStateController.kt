@@ -1,4 +1,4 @@
-package com.zhigaras.fiveletters.feature.play.domain.usecases
+package com.zhigaras.fiveletters.feature.play.domain.usecases.gamelogic
 
 import com.zhigaras.fiveletters.feature.play.domain.model.GameState
 import com.zhigaras.fiveletters.feature.play.domain.model.LetterState

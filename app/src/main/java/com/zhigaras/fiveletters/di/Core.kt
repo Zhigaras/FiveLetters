@@ -56,8 +56,8 @@ interface Core : ProvideRepository {
             MainRepositoryImpl(databaseModule.provideDatabase().getWordDao(), datastoreManager)
         
         override fun provideUserStatRepository(): UserStatRepository =
-//            UserStatRepositoryImpl(provideDatabase().getWordDao(), datastoreManager)
-            UserStatRepositoryImpl(FirebaseDatabase.getInstance().reference)
+//            UserStatRepositoryImpl(provideDatabase().getWordDao(), datastoreManager) //todo refactor core
+            UserStatRepositoryImpl(FirebaseDatabase.getInstance().reference, provideFirebaseAuth())
         
         override fun provideStateSaver(): GameStateRepository =
             GameStateRepositoryImpl(datastoreManager, MoshiSerializer.Base())

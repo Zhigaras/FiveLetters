@@ -22,11 +22,12 @@ import com.zhigaras.fiveletters.feature.menu.domain.usecases.GetUserStatUseCase
 import com.zhigaras.fiveletters.feature.menu.presentation.MenuViewModel
 import com.zhigaras.fiveletters.feature.menu.presentation.rules.RulesViewModel
 import com.zhigaras.fiveletters.feature.play.domain.model.Alphabet
-import com.zhigaras.fiveletters.feature.play.domain.usecases.GameStateController
-import com.zhigaras.fiveletters.feature.play.domain.usecases.KeyboardStateController
-import com.zhigaras.fiveletters.feature.play.domain.usecases.RowStateController
 import com.zhigaras.fiveletters.feature.play.domain.usecases.SaveStateUseCase
-import com.zhigaras.fiveletters.feature.play.domain.usecases.WordCheckable
+import com.zhigaras.fiveletters.feature.play.domain.usecases.UpdateUserStateUseCase
+import com.zhigaras.fiveletters.feature.play.domain.usecases.gamelogic.GameStateController
+import com.zhigaras.fiveletters.feature.play.domain.usecases.gamelogic.KeyboardStateController
+import com.zhigaras.fiveletters.feature.play.domain.usecases.gamelogic.RowStateController
+import com.zhigaras.fiveletters.feature.play.domain.usecases.gamelogic.WordCheckable
 import com.zhigaras.fiveletters.feature.play.presentation.PlayViewModel
 
 class ViewModelFactory(
@@ -37,6 +38,7 @@ class ViewModelFactory(
         val dispatchers = core.provideDispatchers()
         val mainRepository = core.provideMainRepository()
         val stateSaver = core.provideStateSaver()
+        val userStatRepository = core.provideUserStatRepository()
         val authRepository = AuthRepositoryImpl(core.provideFirebaseAuth())
         val rowStateController = RowStateController.Base(WordCheckable.Base())
         val viewModel = when (modelClass) {
@@ -47,6 +49,7 @@ class ViewModelFactory(
                         KeyboardStateController.Base(Alphabet.Ru()),
                         mainRepository
                     ),
+                    UpdateUserStateUseCase.Base(userStatRepository),
                     mainRepository,
                     dispatchers,
                     SaveStateUseCase.Base(stateSaver)
@@ -54,7 +57,7 @@ class ViewModelFactory(
             
             MenuViewModel::class.java -> MenuViewModel(
                 GetCurrentUserUseCase.Base(UserRepositoryImpl(core.provideFirebaseAuth())),
-                GetUserStatUseCase.Base(core.provideUserStatRepository()),
+                GetUserStatUseCase.Base(userStatRepository),
                 dispatchers
             )
             

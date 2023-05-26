@@ -1,16 +1,19 @@
 package com.zhigaras.fiveletters.feature.play.presentation
 
+import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.zhigaras.fiveletters.core.presentation.BaseViewModel
 import com.zhigaras.fiveletters.di.DispatchersModule
 import com.zhigaras.fiveletters.feature.play.domain.MainRepository
 import com.zhigaras.fiveletters.feature.play.domain.model.GameState
-import com.zhigaras.fiveletters.feature.play.domain.usecases.GameStateController
+import com.zhigaras.fiveletters.feature.play.domain.usecases.gamelogic.GameStateController
 import com.zhigaras.fiveletters.feature.play.domain.usecases.SaveStateUseCase
+import com.zhigaras.fiveletters.feature.play.domain.usecases.UpdateUserStateUseCase
 import kotlinx.coroutines.launch
 
 class PlayViewModel(
     private val gameStateController: GameStateController,
+    private val updateUserStateUseCase: UpdateUserStateUseCase,
     private val mainRepository: MainRepository,
     private val dispatchers: DispatchersModule,
     private val saveStateUseCase: SaveStateUseCase
@@ -20,39 +23,41 @@ class PlayViewModel(
         restoreState()
     }
     
-     fun inputLetter(char: Char) {
+    fun inputLetter(char: Char) {
         state = gameStateController.inputLetter(state, char)
     }
     
-     fun removeLetter() {
+    fun removeLetter() {
         state = gameStateController.removeLetter(state)
     }
     
-     fun confirmWord() {
+    fun confirmWord() {
         viewModelScope.launch(dispatchers.io()) {
             state =
                 gameStateController.confirmWord(
                     gameState = state,
-                    saveAttempts = { word -> mainRepository.update(word) },
-                    incrementGamesCounter = { mainRepository.incrementGamesCounter() }
+                    incrementAttempts = { line -> updateUserStateUseCase.incrementAttempt(line) },
+                    incrementGamesCounter = { updateUserStateUseCase.incrementGamesCount() },
+                    incrementWinsCount = { updateUserStateUseCase.incrementWinsCount() }
                 )
         }
     }
     
-     fun startNewGame() {
+    fun startNewGame() {
         viewModelScope.launch(dispatchers.io()) {
             val origin = mainRepository.getUnsolvedWord()
+            Log.d("AAA word", origin.word)
             state = gameStateController.newGame(origin)
         }
     }
     
-     fun saveState() {
+    fun saveState() {
         viewModelScope.launch(dispatchers.io()) {
             saveStateUseCase.saveState(state)
         }
     }
     
-     fun restoreState() {
+    private fun restoreState() {
         viewModelScope.launch(dispatchers.io()) {
             val restoredState = saveStateUseCase.restoreState()
             if (restoredState != null) state = restoredState

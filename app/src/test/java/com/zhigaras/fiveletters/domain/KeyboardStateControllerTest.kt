@@ -3,7 +3,7 @@ package com.zhigaras.fiveletters.domain
 import com.zhigaras.fiveletters.feature.play.domain.model.Alphabet
 import com.zhigaras.fiveletters.feature.play.domain.model.LetterState
 import com.zhigaras.fiveletters.feature.play.domain.model.LetterType
-import com.zhigaras.fiveletters.feature.play.domain.usecases.KeyboardStateController
+import com.zhigaras.fiveletters.feature.play.domain.usecases.gamelogic.KeyboardStateController
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test

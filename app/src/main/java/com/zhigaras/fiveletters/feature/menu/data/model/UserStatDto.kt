@@ -9,13 +9,13 @@ data class UserStatDto(
     val wins: Int = 0,
     val rank: Rank = Rank.BEGINNER,
     val achievements: List<Achievement> = emptyList(),
-    val attempts: AttemptsDto = AttemptsDto()
+    val attempts: List<Int> = List(6) { 0 }
 ) {
     fun map() = UserStat(
         gamesPlayed = gamesPlayed,
         wins = wins,
         rank = rank,
         achievements = achievements,
-        attempts = attempts.map()
+        attempts = attempts
     )
 }

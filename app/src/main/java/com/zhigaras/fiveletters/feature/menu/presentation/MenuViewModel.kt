@@ -13,14 +13,17 @@ class MenuViewModel(
     private val dispatchers: DispatchersModule
 ) : BaseViewModel<UserStat>(UserStat.initial) {
     
+    //todo либо завести переменную currentUser, либо запрос юзкра перенести в юзкейс
+    
     init {
         getUserStat()
     }
     
     fun getUserStat() {
         scopeLaunch(context = dispatchers.io()) {
-            state = getUserStatUseCase.getUserStat(getCurrentUserUseCase.getUser().id)
-            Log.d("AAA get", state.toString())
+            state = getUserStatUseCase.getUserStat()
+            getUserStatUseCase.tempPutUserStat() //todo remove
+            Log.d("AAA get", state.toString()) //todo remove
         }
     }
 }

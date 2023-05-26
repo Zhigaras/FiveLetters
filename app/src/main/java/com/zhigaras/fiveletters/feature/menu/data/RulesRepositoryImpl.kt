@@ -4,7 +4,7 @@ import com.zhigaras.fiveletters.feature.menu.domain.RulesRepository
 import com.zhigaras.fiveletters.feature.play.domain.model.LetterState
 import com.zhigaras.fiveletters.feature.play.domain.model.RowState
 import com.zhigaras.fiveletters.feature.play.domain.model.Word
-import com.zhigaras.fiveletters.feature.play.domain.usecases.RowStateController
+import com.zhigaras.fiveletters.feature.play.domain.usecases.gamelogic.RowStateController
 
 class RulesRepositoryImpl(
     private val rowStateController: RowStateController.Confirm
