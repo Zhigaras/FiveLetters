@@ -130,7 +130,10 @@ fun UserStatistics(
                 ) {
                     listOf(
                         listOf(R.string.games_played, R.string.wins).zip(
-                            listOf(userStat.gamesPlayed.toString(), userStat.wins.toString())
+                            listOf(
+                                userStat.gamesPlayed.toString(),
+                                userStat.formattedAverageAttempts()
+                            )
 //                        ),
 //                        listOf(R.string.progress, R.string.average_attempts).zip(
 //                            listOf(userStat.formattedProgress, userStat.formattedAttempts)

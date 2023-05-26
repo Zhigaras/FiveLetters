@@ -7,16 +7,10 @@ interface GetUserStatUseCase {
     
     suspend fun getUserStat(): UserStat
     
-    suspend fun tempPutUserStat()
-    
     class Base(private val userStatRepository: UserStatRepository) : GetUserStatUseCase {
         
         override suspend fun getUserStat(): UserStat {
             return userStatRepository.getUserStat()?.map() ?: UserStat.Base.initial
-        }
-        
-        override suspend fun tempPutUserStat() {
-            userStatRepository.tempPutUserStat()
         }
     }
 }

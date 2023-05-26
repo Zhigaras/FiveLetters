@@ -1,5 +1,7 @@
 package com.zhigaras.fiveletters.feature.menu.domain.model
 
+import android.util.Log
+
 abstract class UserStat {
     abstract val attempts: List<Int>
     abstract val gamesPlayed: Int
@@ -7,11 +9,13 @@ abstract class UserStat {
     abstract val rank: Rank
     abstract val achievements: List<Achievement>
     
-    val averageAttempts
-        get() =
-            if (attempts.sum() == 0) 0f
+    val averageAttempts: Float
+        get() {
+            Log.d("AAA attempts", attempts.toString())
+            return if (attempts.sum() == 0) 0f
             else attempts.mapIndexed { index, i -> i * (index + 1) }.sum()
                 .toFloat() / attempts.sum()
+        }
     
     fun formattedAverageAttempts() = String.format("%.1f", averageAttempts)
     

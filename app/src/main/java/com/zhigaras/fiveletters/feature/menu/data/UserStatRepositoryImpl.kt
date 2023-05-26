@@ -5,8 +5,6 @@ import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ServerValue
 import com.zhigaras.fiveletters.feature.menu.data.model.UserStatDto
 import com.zhigaras.fiveletters.feature.menu.domain.UserStatRepository
-import com.zhigaras.fiveletters.feature.menu.domain.model.Achievement
-import com.zhigaras.fiveletters.feature.menu.domain.model.Rank
 import kotlinx.coroutines.tasks.await
 
 class UserStatRepositoryImpl(
@@ -25,15 +23,7 @@ class UserStatRepositoryImpl(
     }
     
     override suspend fun tempPutUserStat() {
-        statReference.setValue(
-            UserStatDto(
-                gamesPlayed = 3,
-                wins = 2,
-                rank = Rank.BEGINNER,
-                achievements = listOf(Achievement.FIRST_WIN, Achievement.SECOND_WIN),
-                attempts = listOf(0, 0, 3, 4, 5, 6)
-            )
-        ).await()
+        statReference.setValue(UserStatDto()).await()
     }
     
     override suspend fun incrementGamesCount() {//todo may be synchronously
@@ -45,23 +35,14 @@ class UserStatRepositoryImpl(
     }
     
     private fun incrementField(field: String) {
-        
-        val updates: MutableMap<String, Any> = hashMapOf(field to ServerValue.increment(1))
-        statReference.updateChildren(updates)
-
-//        statReference.child(field).let {
-//            val currentValue = it.get().await().value as Long
-//            it.setValue(currentValue + 1)
-//        }
+        val update: MutableMap<String, Any> = hashMapOf(field to ServerValue.increment(1))
+        statReference.updateChildren(update)
     }
     
     override suspend fun incrementAttempt(lineNumber: Int) {
-        statReference.child(UserStatDto::attempts.name).let {
-            val currentValue = it.get().await().value as MutableList<Int>
-            val thisLineAttempts = currentValue[lineNumber]
-            currentValue[lineNumber] = thisLineAttempts + 1
-            it.setValue(currentValue)
-        }
+        val update: MutableMap<String, Any> =
+            hashMapOf(lineNumber.toString() to ServerValue.increment(1))
+        statReference.child(UserStatDto::attempts.name).updateChildren(update)
     }
     
     companion object {
