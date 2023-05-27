@@ -3,7 +3,7 @@ package com.zhigaras.fiveletters.feature.menu.domain.usecases
 import com.zhigaras.fiveletters.feature.menu.domain.UserRepository
 import com.zhigaras.fiveletters.feature.menu.domain.model.UserEntity
 
-interface GetCurrentUserUseCase {
+interface GetCurrentUserUseCase { //todo remove if not needed
     
     suspend fun getUser(): UserEntity
     

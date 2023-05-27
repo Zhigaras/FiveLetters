@@ -5,6 +5,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelStoreOwner
 import com.google.android.gms.ads.MobileAds
+import com.google.firebase.crashlytics.ktx.crashlytics
+import com.google.firebase.database.ktx.database
+import com.google.firebase.ktx.Firebase
+import com.zhigaras.fiveletters.BuildConfig
 import com.zhigaras.fiveletters.di.Core
 import com.zhigaras.fiveletters.di.ViewModelFactory
 
@@ -14,7 +18,9 @@ class App : Application(), ProvideViewModel {
     
     override fun onCreate() {
         super.onCreate()
-        
+        val isDebug = BuildConfig.DEBUG
+        Firebase.crashlytics.setCrashlyticsCollectionEnabled(!isDebug) //todo maybe remove?
+        Firebase.database.setPersistenceEnabled(true)
         MobileAds.initialize(this)
 
 //        val provideInstance = ProvideInstance.Release(this)

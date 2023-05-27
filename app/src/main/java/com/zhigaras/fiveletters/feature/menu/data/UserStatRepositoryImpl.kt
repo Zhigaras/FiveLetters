@@ -3,8 +3,11 @@ package com.zhigaras.fiveletters.feature.menu.data
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ServerValue
+import com.kpstv.firebase.ValueEventResponse
+import com.kpstv.firebase.extensions.valueEventFlow
 import com.zhigaras.fiveletters.feature.menu.data.model.UserStatDto
 import com.zhigaras.fiveletters.feature.menu.domain.UserStatRepository
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.tasks.await
 
 class UserStatRepositoryImpl(
@@ -20,6 +23,10 @@ class UserStatRepositoryImpl(
             .get()
             .await()
             .getValue(UserStatDto::class.java)
+    }
+    
+    override suspend fun getUserStatFlow(): Flow<ValueEventResponse> {
+        return statReference.valueEventFlow()
     }
     
     override suspend fun tempPutUserStat() {

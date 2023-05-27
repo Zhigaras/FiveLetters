@@ -117,4 +117,7 @@ dependencies {
 
     //SplashScreen
     implementation 'androidx.core:core-splashscreen:1.0.1'
+
+    //Firebase realtimeDatabase extensions
+    implementation "io.github.kaustubhpatange:realtime-extensions:0.1.4"
 }
