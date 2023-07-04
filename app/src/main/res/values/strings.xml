@@ -16,7 +16,7 @@
     <string name="average_attempts">Attempts on average</string>
     <string name="press_back_again">Press \"back\" again to exit</string>
     <string name="the_word_is">The word is:</string>
-    <string name="continue_game">Continue</string>
+    <string name="continue_whatever">Continue</string>
     <string name="new_game_confirmation">You didn\'t finish the last game. Want to continue?</string>
     <string name="start">Start!</string>
     <string name="rules1">In each game, a noun of 5 letters is guessed.
@@ -29,6 +29,42 @@ In order to guess it, enter words of 5 letters into the field, and we will give 
     <string name="rules6">Some words may seem complex or fictional. In the next update, we will add the ability to find out the meaning of the hidden word.</string>
     <string name="close">Close</string>
     <string name="show_rules">Show rules</string>
+    <string name="sign_in">Sign in</string>
+    <string name="sign_up">Sign up</string>
+    <string name="log_in_as_a_guest">Log in as a guest</string>
+    <string name="still_not_registered">Still not registered?</string>
     <string name="ad_mob_banner_id" translatable="false">ca-app-pub-1332033107151527/3031627834</string>
     <string name="ad_mob_test_banner_id" translatable="false">ca-app-pub-3940256099942544/6300978111</string>
+    <string name="email_hint" translatable="false">Email</string>
+    <string name="password">Password</string>
+    <string name="forgot_password">Forgot password?</string>
+    <string name="or">OR</string>
+    <string name="continue_with_google">Continue with Google</string>
+    <string name="repeat_password">Repeat password</string>
+    <string name="registration_failed">Registration failed. Check internet connection.</string>
+    <string name="signing_in_failed">Signing in failed. Check internet connection.</string>
+    <string name="email_is_invalid">Email is invalid</string>
+    <string name="password_is_invalid">Password is invalid</string>
+    <string name="password_mismatch">Password mismatch</string>
+    <string name="password_support_text">Password must be at least 6 characters long.</string>
+    <string name="something_went_wrong">Something went wrong.</string>
+    <string name="couldn_t_get_credentials">Couldn`t get credentials.</string>
+    <string name="check_internet_connection">Check internet connection.</string>
+    <string name="couldn_t_start_signing_in_with_google">Couldn`t start signing in with Google.</string>
+    <string name="no_google_accounts_found">No Google Accounts found. Check internet.</string>
+    <string name="token_not_received">Token not received.</string>
+    <string name="clear">Clear</string>
+    <string name="signing_in_with_google_canceled">Signing in with Google canceled by user.</string>
+    <string name="unnamed">Unnamed</string>
+    <string name="invalid_credentials">There is no user with this email address. Register or login using one of the methods below.</string>
+    <string name="invalid_password">The password is invalid or you does not have a password. Press \"Forgot password?\"</string>
+    <string name="email_is_used">The email address is already in use by another account.</string>
+    <string name="account_disabled">Access to this account has been temporarily disabled due to many failed login attempts. You can immediately restore it by resetting your password or you can try again later.</string>
+    <string name="enter_email_for_password_reset">No problem! Just enter the email address that you signed up with to reset it.</string>
+    <string name="send_reset_instruction">Reset password</string>
+    <string name="no_such_user">There is no user corresponding to the given email address.</string>
+    <string name="successful_resetting_password">The letter was successfully sent to %1$s. Follow the instructions in it and come back to log in with a new password.</string>
+    <string name="back">Back</string>
+    <string name="anonymous_login_warning">By continuing to log in as an anonymous player, you assume the risk of losing game progress and achievements. To avoid this, register using one of the methods indicated on the previous screen. You can also do this later in your account.</string>
+    <string name="too_many_google_signIn_requests">Too many authorization cancellations via Google, the system blocked them for 24h. To restore dial the combination *#*#66382723#*#* in your phone.</string>
 </resources>
